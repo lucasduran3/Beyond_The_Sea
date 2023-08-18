@@ -1,16 +1,23 @@
 module.exports = {
-	root: true,
-	parserOptions: { 
-		ecmaVersion: 6,
-		sourceType: 'module'
-	},
-	env: {
-		es6: true,
-		browser: true
-	},
-    extends: [
-		'eslint:recommended'
-	],
-	parser: "babel-eslint",
-	rules: {}
-}
+  env: {
+    browser: true,
+    es2021: true,
+  },
+  extends: ["airbnb-base", "prettier"],
+  overrides: [
+    {
+      env: {
+        node: true,
+      },
+      files: [".eslintrc.{js,cjs}"],
+      parserOptions: {
+        sourceType: "script",
+      },
+    },
+  ],
+  parserOptions: {
+    ecmaVersion: "latest",
+    sourceType: "module",
+  },
+  rules: {},
+};
