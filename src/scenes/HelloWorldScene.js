@@ -3,7 +3,7 @@ import Phaser from "phaser";
 // Manejador de eventos centralizados para comunicacion de componentes
 
 // Importacion
-// import { sharedInstance as events } from './EventCenter'
+// import events from './EventCenter'
 
 // Emisor de mensaje de difusion
 // Recibe el nombre del mensaje y los valores de parametro
