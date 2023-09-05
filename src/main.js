@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 
 import HelloWorldScene from "./scenes/HelloWorldScene";
+import UI from "./scenes/UI";
 
 const config = {
   type: Phaser.AUTO,
@@ -25,7 +26,7 @@ const config = {
       debug: false,
     },
   },
-  scene: [HelloWorldScene],
+  scene: [HelloWorldScene, UI],
 };
 
 export default new Phaser.Game(config);

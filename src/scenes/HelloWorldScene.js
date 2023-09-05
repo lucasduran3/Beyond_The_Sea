@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import events from "./EventCenter";
 
 // Manejador de eventos centralizados para comunicacion de componentes
 
@@ -48,5 +49,22 @@ export default class HelloWorldScene extends Phaser.Scene {
     logo.setCollideWorldBounds(true);
 
     emitter.emitParticleAt(logo.x, logo.y, 4);
+
+    // add green rectangle for collider and asign physics
+    const floor = this.add.rectangle(400, 600, 800, 20, 0x00ff00);
+    this.physics.add.existing(floor, true);
+
+    // launch UI scene
+    this.scene.launch("ui");
+
+    // add collider with floor
+    this.physics.add.collider(logo, floor, () => {
+      console.log("collider-event");
+
+      // Event emitter
+      events.emit("collider-event", {
+        fecha: new Date().toLocaleTimeString(),
+      });
+    });
   }
 }
