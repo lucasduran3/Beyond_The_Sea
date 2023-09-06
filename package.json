@@ -1,0 +1,47 @@
+{
+  "name": "phaser3-parcel-template",
+  "version": "1.0.0",
+  "description": "A template project for Phaser 3 using Parceljs",
+  "scripts": {
+    "start": "parcel src/index.html -p 8000",
+    "build": "parcel build src/index.html --out-dir dist",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install"
+  },
+  "author": "supertommy",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ourcade/phaser3-parcel-template.git"
+  },
+  "homepage": "https://github.com/ourcade/phaser3-parcel-template",
+  "devDependencies": {
+    "@babel/core": "^7.22.10",
+    "@babel/plugin-proposal-class-properties": "^7.18.6",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^8.47.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.28.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^14.0.0",
+    "minimist": ">=1.2.8",
+    "parcel": "^2.9.3",
+    "parcel-plugin-clean-easy": "^1.0.2",
+    "parcel-plugin-static-files-copy": "^2.6.0",
+    "parcel-reporter-static-files-copy": "^1.5.2"
+  },
+  "dependencies": {
+    "eslint-config-prettier": "^9.0.0",
+    "phaser": "^3.60.0"
+  },
+  "parcelCleanPaths": [
+    "dist"
+  ],
+  "staticFiles": {
+    "staticPath": "public",
+    "watcherGlob": "**"
+  },
+  "lint-staged": {
+    "*.js": "eslint --cache --fix"
+  }
+}
