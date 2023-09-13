@@ -215,6 +215,11 @@
                          "name":"colision",
                          "type":"bool",
                          "value":true
+                        }, 
+                        {
+                         "name":"collides",
+                         "type":"bool",
+                         "value":true
                         }]
                 }],
          "tilewidth":32

@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 import Bullet from "./Bullet";
 
-const ROTATION_SPEED = 1 * Math.PI;
+const ROTATION_SPEED = 5 * Math.PI;
 
 export default class Player extends Phaser.GameObjects.Sprite {
   constructor(scene, x, y, texture) {

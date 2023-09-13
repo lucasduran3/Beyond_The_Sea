@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import Player from "../components/Player";
+import Enemy from "../components/Enemy";
 
 export default class Level1 extends Phaser.Scene {
   constructor() {
@@ -24,6 +25,8 @@ export default class Level1 extends Phaser.Scene {
 
     this.player = new Player(this, spawnPoint.x, spawnPoint.y, "player");
 
+    this.enemy = new Enemy(this, 1500, 800, "player", 250, this.player, this.map);
+
     this.cameras.main.startFollow(this.player);
     this.physics.world.setBounds(
       0,
@@ -44,5 +47,6 @@ export default class Level1 extends Phaser.Scene {
 
   update(time, delta) {
     this.player.update(time, delta);
+    this.enemy.update();
   }
 }
