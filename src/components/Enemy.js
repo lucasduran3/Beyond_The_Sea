@@ -37,6 +37,8 @@ export default class Enemy extends Phaser.GameObjects.Sprite{
     findEnemyPath(){
         const playerTile = this.map.worldToTileXY(this.target.x, this.target.y);
         const enemyTile = this.map.worldToTileXY(this.x, this.y);
+        const targetX = playerTile.x;
+        const targetY = playerTile.y;
 
         this.easystar.findPath(
             enemyTile.x,
@@ -46,7 +48,10 @@ export default class Enemy extends Phaser.GameObjects.Sprite{
             (path) =>{
                 if(path){
                     if(path.length > 1){
-                      const angle = Phaser.Math.Angle.Between(this.x, this.y, this.target.x, this.target.y);
+                    const nextTile = path[1];
+                    const targetX = nextTile.x * this.map.tileWidth + this.map.tileWidth / 2;
+                    const targetY = nextTile.y * this.map.tileHeight + this.map.tileHeight / 2;
+                      const angle = Phaser.Math.Angle.Between(this.x, this.y, targetX, targetY);
                         this.setRotation(angle + Math.PI / 2);
                         // @ts-ignore
                         this.body.setVelocity(Math.cos(angle) * this.speed, Math.sin(angle) * this.speed);

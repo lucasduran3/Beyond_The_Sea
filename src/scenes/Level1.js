@@ -25,7 +25,7 @@ export default class Level1 extends Phaser.Scene {
 
     this.player = new Player(this, spawnPoint.x, spawnPoint.y, "player");
 
-    this.enemy = new Enemy(this, 1500, 800, "player", 250, this.player, this.map);
+    this.enemy = new Enemy(this, 1500, 800, "player", 200, this.player, this.map);
 
     this.cameras.main.startFollow(this.player);
     this.physics.world.setBounds(
