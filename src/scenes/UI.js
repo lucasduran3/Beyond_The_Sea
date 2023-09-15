@@ -16,28 +16,73 @@ import events from "./EventCenter";
 
 export default class UI extends Phaser.Scene {
   constructor() {
-    super("ui");
+    super("UI");
   }
 
   create() {
-    this.colliderCount = 0;
-    // add text with count collider and date
-    this.text = this.add.text(10, 10, `Collider count: ${this.colliderCount}`, {
-      font: "16px Courier",
-      fill: "#00ff00",
-    });
-
-    // add listener to the event
-    events.on("collider-event", this.colliderEvent, this);
-  }
-
-  colliderEvent(data) {
-    console.log("collider-event", data);
-
-    // update text
-    this.colliderCount += 1;
-    this.text.setText(
-      `Collider count: ${this.colliderCount} / Last: ${data.fecha}`
+    this.life = this.add.text(80,50,"Life:",{
+        fontSize: "40px",
+        color : "#fff"
+      }
     );
+
+    this.mana = this.add.text(80,100,"Mana:",{
+      fontSize: "40px",
+      color : "#fff"
+      }
+    );
+
+    this.coins = this.add.text(1600,50,"Coins:",{
+      fontSize: "40px",
+      color : "#fff"
+      }
+    );
+
+    this.bullets = this.add.text(80,950,"Bullets:",{
+      fontSize: "40px",
+      color : "#fff"
+      }
+    );
+
+    this.weapon1 = this.add.text(850,50,"weapon1",{
+      fontSize: "20px",
+      color : "#0f0"
+      }
+    );
+
+    this.weapon2 = this.add.text(950,50,"weapon2",{
+      fontSize: "20px",
+      color : "#0ff"
+      }
+    );
+
+    this.weapon3 = this.add.text(1050,50,"weapon3",{
+      fontSize: "20px",
+      color : "#ff0"
+      }
+    );
+
+    this.power1 = this.add.text(850,100,"power1",{
+      fontSize: "20px",
+      color : "#fff"
+      }
+    );
+
+    this.power2 = this.add.text(950,100,"power2",{
+      fontSize: "20px",
+      color : "#fff"
+      }
+    );
+
+    this.power3 = this.add.text(1050,100,"power3",{
+      fontSize: "20px",
+      color : "#fff"
+      }
+    );
+
   }
+
+  setText(){
+
+}
 }
