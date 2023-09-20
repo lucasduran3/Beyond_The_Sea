@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import Player from "../components/Player";
 import Enemy from "../components/Enemy";
+import HorrifiPostFxPipeline from "phaser3-rex-plugins/plugins/horrifipipeline";
 
 export default class Level1 extends Phaser.Scene {
   constructor() {
@@ -69,6 +70,47 @@ export default class Level1 extends Phaser.Scene {
     pauseButton.setScrollFactor(0);
 
     this.scene.launch("UI");
+
+    //horrifi plugin
+    const postFxPlugin = this.plugins.get('rexhorrifipipelineplugin');
+    console.log(postFxPlugin);
+    const effect = this.cameras.main.setPostPipeline(HorrifiPostFxPipeline);
+
+    // @ts-ignore
+    const postFxPipeline = postFxPlugin.add(effect, {
+        enable: true,
+
+        // Bloom
+        bloomRadius: 10,
+        bloomIntensity: 0,
+        bloomThreshold: 1,
+        bloomTexelWidth: 0.5,
+
+        // Chromatic abberation
+        chromaticEnable : true,
+        chabIntensity: 0.1,
+
+        // Vignette
+        vignetteStrength: 1,
+        vignetteIntensity: 0.7,
+
+        // Noise
+        noiseEnable : true,
+        noiseStrength: 0.05,
+        seed: 0.63,
+
+        // VHS
+        vhsEnable : true,
+        vhsStrength: 0.22,
+
+        // Scanlines
+        scanlinesEnable : false,
+        scanStrength: 0.1,
+
+        //CRT
+        crtWidth: 5,
+        crtHeight: 5,
+    });
   }
 
   update(time, delta) {
