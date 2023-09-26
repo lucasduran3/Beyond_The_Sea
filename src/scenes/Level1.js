@@ -1,14 +1,17 @@
 import Phaser from "phaser";
 import Player from "../components/Player";
 import Enemy from "../components/Enemy";
+import events from "./EventCenter";
 import HorrifiPostFxPipeline from "phaser3-rex-plugins/plugins/horrifipipeline";
 
 export default class Level1 extends Phaser.Scene {
   constructor() {
     super("Level1");
+    
   }
 
   create() {
+    this.collisionBetweenPlayerEnemy = false;
     this.map = this.make.tilemap({ key: "map" });
     const floorL = this.map.addTilesetImage("floor", "floor");
     const wallL = this.map.addTilesetImage("wall", "wall");
@@ -44,6 +47,7 @@ export default class Level1 extends Phaser.Scene {
 
     wallLayer.setCollisionByProperty({ colision: true });
     this.physics.add.collider(wallLayer, this.player);
+
 
     this.keyESC= this.input.keyboard.addKey("ESC");
 
@@ -122,5 +126,11 @@ export default class Level1 extends Phaser.Scene {
       this.scene.launch("Pause");
     }
     this.scene.setVisible(true, "UI");
+
+    this.physics.add.collider(this.player, this.enemy, this.change, null, this);
+  }
+  change(){
+    this.collisionBetweenPlayerEnemy = true;
+    this.player.looseLife;
   }
 }

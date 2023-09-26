@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import EasyStar from "easystarjs";
+import Events from "../scenes/EventCenter";
 
 export default class Enemy extends Phaser.GameObjects.Sprite{
     constructor(scene,x,y,texture,speed,target,map){
@@ -7,9 +8,11 @@ export default class Enemy extends Phaser.GameObjects.Sprite{
         scene.add.existing(this);
         scene.physics.world.enable(this);
 
+        this.scene = scene;
         this.speed = speed;
         this.target = target;
         this.map = map;
+        this.damage = 1;
 
         // @ts-ignore
         this.body.setCollideWorldBounds(true);
@@ -32,6 +35,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite{
 
     update(){
         this.findEnemyPath();
+        this.attackTarget(this.scene.colisionBetweenPlayerEnemy);
     }
 
     findEnemyPath(){
@@ -56,5 +60,11 @@ export default class Enemy extends Phaser.GameObjects.Sprite{
             }
         );
         this.easystar.calculate();
+    }
+
+    attackTarget(colision){
+        while(colision == true){
+            this.target.looseLife(this.damage);
+        }
     }
 }

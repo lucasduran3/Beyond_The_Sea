@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import Bullet from "./Bullet";
+import events from "../scenes/EventCenter";
 
 const ROTATION_SPEED = 5 * Math.PI;
 
@@ -11,6 +12,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
     this.scene = scene;
     this.target = 0;
+    this.lifes = 5;
 
     this.speed = 300;
     this.velocityX = 0;
@@ -75,4 +77,9 @@ export default class Player extends Phaser.GameObjects.Sprite {
     const bullet = new Bullet(this.scene, this.x, this.y, "bullet");
     bullet.fire(angle, speed);
   }
+
+  looseLife(damage){
+    this.lifes = this.lifes - damage;
+  }
+
 }

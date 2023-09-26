@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import events from "./EventCenter";
+import Player from "../components/Player";
 
 // Manejador de eventos centralizados para comunicacion de componentes
 
@@ -17,10 +18,15 @@ import events from "./EventCenter";
 export default class UI extends Phaser.Scene {
   constructor() {
     super("UI");
+    
+  }
+
+  init(){
+    this.lifes = 0;
   }
 
   create() {
-    this.life = this.add.text(80,50,"Life:",{
+    this.lifeText = this.add.text(80,50,"Life:" , {
         fontSize: "40px",
         color : "#fff"
       }
@@ -80,9 +86,8 @@ export default class UI extends Phaser.Scene {
       }
     );
 
+    //events.on("update", this.setText, this);
+
   }
 
-  setText(){
-
-}
 }

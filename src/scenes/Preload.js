@@ -18,6 +18,7 @@ export default class Preload extends Phaser.Scene{
 
         //plugins
         this.load.plugin('rexhorrifipipelineplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexhorrifipipelineplugin.min.js', true);
+
     }
 
     create(){
