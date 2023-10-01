@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import events from "./EventCenter";
 import Player from "../components/Player";
+import HealthBar from "../components/HealthBar";
 
 // Manejador de eventos centralizados para comunicacion de componentes
 
@@ -21,16 +22,16 @@ export default class UI extends Phaser.Scene {
     
   }
 
-  init(){
-    this.lifes = 0;
+  init({playerHp = new HealthBar(this, 80, 40, 300)}){
+    this.playerHP = playerHp;
   }
 
   create() {
-    this.lifeText = this.add.text(80,50,"Life:" , {
+    /*this.lifeText = this.add.text(80,50,"Life:" , {
         fontSize: "40px",
         color : "#fff"
       }
-    );
+    );*/
 
     this.mana = this.add.text(80,100,"Mana:",{
       fontSize: "40px",
@@ -86,8 +87,10 @@ export default class UI extends Phaser.Scene {
       }
     );
 
-    //events.on("update", this.setText, this);
+    events.on("update", this.updateUI, this);
 
   }
-
+  updateUI(data){
+    this.playerHP.decrease(data.damage);
+  }
 }

@@ -5,15 +5,16 @@ import events from "../scenes/EventCenter";
 const ROTATION_SPEED = 5 * Math.PI;
 
 export default class Player extends Phaser.GameObjects.Sprite {
-  constructor(scene, x, y, texture) {
+  constructor(scene, x, y, texture, enemy) {
     super(scene, x, y, texture);
     scene.add.existing(this);
     scene.physics.world.enable(this);
 
     this.scene = scene;
     this.target = 0;
-    this.lifes = 5;
-
+    this.lifes = 300;
+    this.enemy = enemy;
+    this.bullets = this.scene.physics.add.group();
     this.speed = 300;
     this.velocityX = 0;
     this.velocityY = 0;
@@ -63,6 +64,10 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
     // @ts-ignore
     this.body.setVelocity(this.velocityX, this.velocityY);
+    this.scene.physics.add.collider(this.enemy, this.bullets, ()=>{
+      this.enemy.looseLife();
+      this.bullets.clear(true, true);  
+    }, null, this);
   }
 
   fireBullet(pointer) {
@@ -75,11 +80,14 @@ export default class Player extends Phaser.GameObjects.Sprite {
     // const angle = Phaser.Math.Angle.Between(this.x, this.y, x, y);
 
     const bullet = new Bullet(this.scene, this.x, this.y, "bullet");
+    this.bullets.add(bullet);
     bullet.fire(angle, speed);
   }
 
-  looseLife(damage){
-    this.lifes = this.lifes - damage;
+  looseLife(amount){
+    this.lifes -= amount;
+    events.emit("update",{
+      damage : amount
+    });
   }
-
 }

@@ -7,7 +7,6 @@ import HorrifiPostFxPipeline from "phaser3-rex-plugins/plugins/horrifipipeline";
 export default class Level1 extends Phaser.Scene {
   constructor() {
     super("Level1");
-    
   }
 
   create() {
@@ -27,9 +26,13 @@ export default class Level1 extends Phaser.Scene {
       (obj) => obj.name === "player"
     );
 
-    this.player = new Player(this, spawnPoint.x, spawnPoint.y, "player");
+    
+    this.enemy = new Enemy(this, 1500, 800, "player", 200, this.map);
 
-    this.enemy = new Enemy(this, 1500, 800, "player", 200, this.player, this.map);
+    this.player = new Player(this, spawnPoint.x, spawnPoint.y, "player", this.enemy);
+
+    this.enemy.setTarget(this.player);
+
 
     this.cameras.main.startFollow(this.player);
     this.physics.world.setBounds(
@@ -47,7 +50,9 @@ export default class Level1 extends Phaser.Scene {
 
     wallLayer.setCollisionByProperty({ colision: true });
     this.physics.add.collider(wallLayer, this.player);
-
+    this.physics.add.collider(wallLayer, this.player.bullets, ()=>{
+      this.player.bullets.clear(true,true);
+    }, null, this);
 
     this.keyESC= this.input.keyboard.addKey("ESC");
 
@@ -114,7 +119,7 @@ export default class Level1 extends Phaser.Scene {
         //CRT
         crtWidth: 5,
         crtHeight: 5,
-    });
+    }); 
   }
 
   update(time, delta) {
@@ -126,11 +131,5 @@ export default class Level1 extends Phaser.Scene {
       this.scene.launch("Pause");
     }
     this.scene.setVisible(true, "UI");
-
-    this.physics.add.collider(this.player, this.enemy, this.change, null, this);
-  }
-  change(){
-    this.collisionBetweenPlayerEnemy = true;
-    this.player.looseLife;
   }
 }
