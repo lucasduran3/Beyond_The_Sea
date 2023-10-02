@@ -15,11 +15,9 @@ export default class HealthBar{
 
     draw(){
         this.bar.clear();
-
         this.bar.fillStyle(0x00ff00);
         this.bar.fillRect(this.x , this.y , this.value, 20);
     }
-
     
     decrease(amount){
         this.value -= amount;

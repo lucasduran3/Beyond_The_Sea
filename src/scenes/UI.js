@@ -86,6 +86,29 @@ export default class UI extends Phaser.Scene {
       color : "#fff"
       }
     );
+    
+    const pauseButton = this.add.text(1800,950,'Pause',{
+      fontSize : '30px',
+      color : "#fff",
+      align : 'center',
+      backgroundColor : "#6e3adf"
+    }).setPadding(16).setOrigin(0.5).setInteractive({useHandCursor : true});
+
+    pauseButton.on('pointerover', ()=>{
+      pauseButton.setBackgroundColor('#4e15af');
+    });
+  
+    pauseButton.on('pointerout',()=>{
+      pauseButton.setBackgroundColor('#6e3adf');
+    });
+
+    pauseButton.on('pointerdown', ()=>{
+      this.scene.pause("Level1");
+      this.scene.launch("Pause");
+    });
+
+    pauseButton.setScrollFactor(0);
+
 
     events.on("update", this.updateUI, this);
 

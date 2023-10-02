@@ -1,7 +1,6 @@
 import Phaser from "phaser";
 import Player from "../components/Player";
 import Enemy from "../components/Enemy";
-import events from "./EventCenter";
 import HorrifiPostFxPipeline from "phaser3-rex-plugins/plugins/horrifipipeline";
 
 export default class Level1 extends Phaser.Scene {
@@ -21,18 +20,34 @@ export default class Level1 extends Phaser.Scene {
     console.log(floorLayer);
     console.log(objectsLayer);
 
-    const spawnPoint = this.map.findObject(
+    this.enemysGroup = this.physics.add.group();
+    objectsLayer.objects.forEach((objData)=>{
+      const {x = 0, y = 0, name} = objData;
+        switch(name){
+          case "enemy" : {
+            this.enemy = new Enemy(this, x, y, "enemy", 300, this.map).setScale(3);
+            this.enemysGroup.add(this.enemy);
+            break;
+          }
+        }
+    });
+
+    let spawnPoint = this.map.findObject(
       "objects",
       (obj) => obj.name === "player"
     );
 
-    
-    this.enemy = new Enemy(this, 1500, 800, "player", 200, this.map);
+    this.enemyArr = this.enemysGroup.getChildren();
 
-    this.player = new Player(this, spawnPoint.x, spawnPoint.y, "player", this.enemy);
+    this.player = new Player(this, spawnPoint.x, spawnPoint.y, "player", this.enemyArr);
+    this.player.setScale(3);
 
     this.enemy.setTarget(this.player);
 
+    this.enemyArr.forEach(element => {
+      // @ts-ignore
+      element.setTarget(this.player);
+    });
 
     this.cameras.main.startFollow(this.player);
     this.physics.world.setBounds(
@@ -56,28 +71,7 @@ export default class Level1 extends Phaser.Scene {
 
     this.keyESC= this.input.keyboard.addKey("ESC");
 
-    const pauseButton = this.add.text(1800,950,'Pause',{
-      fontSize : '30px',
-      color : "#fff",
-      align : 'center',
-      backgroundColor : "#6e3adf"
-    }).setPadding(16).setOrigin(0.5).setInteractive({useHandCursor : true});
-
-    pauseButton.on('pointerover', ()=>{
-      pauseButton.setBackgroundColor('#4e15af');
-    });
-  
-    pauseButton.on('pointerout',()=>{
-      pauseButton.setBackgroundColor('#6e3adf');
-    });
-
-    pauseButton.on('pointerdown', ()=>{
-      this.scene.pause("Level1");
-      this.scene.launch("Pause");
-    });
-
-    pauseButton.setScrollFactor(0);
-
+    
     this.scene.launch("UI");
 
     //horrifi plugin
@@ -124,12 +118,25 @@ export default class Level1 extends Phaser.Scene {
 
   update(time, delta) {
     this.player.update(time, delta);
-    this.enemy.update();
+    
+    this.enemyArr.forEach(element => {
+      element.update();
+    });
 
     if(this.keyESC.isDown){
       this.scene.pause("Level1");
       this.scene.launch("Pause");
     }
     this.scene.setVisible(true, "UI");
+
+    this.isWin();
+  }
+
+  isWin(){
+    const enemysAlives = this.enemysGroup.getTotalUsed();
+
+    if(enemysAlives<=0){
+      console.log("Hola");
+    }
   }
 }

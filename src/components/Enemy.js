@@ -13,6 +13,10 @@ export default class Enemy extends Phaser.GameObjects.Sprite{
         this.map = map;
         this.damage = 1;
         this.lifes = 5;
+        this.c = 0;
+        
+        // @ts-ignore
+        this.body.setCircle(15,17,5);
 
         // @ts-ignore
         this.body.setCollideWorldBounds(true);
@@ -31,12 +35,31 @@ export default class Enemy extends Phaser.GameObjects.Sprite{
         this.easystar.setGrid(grid);
         this.easystar.setAcceptableTiles([0]);
         this.easystar.enableDiagonals();
-        
+
+        this.anims.create({
+            key:"walk",
+            frames : this.anims.generateFrameNumbers("enemy",{start : 12, end:25}),
+            frameRate : 20,
+            repeat : -1
+          });
+      
+          this.anims.create({
+            key:"none",
+            frames : [{key:"enemy", frame:0}],
+          });
+
+          this.anims.create({
+            key:"hit",
+            frames : this.anims.generateFrameNumbers("enemy",{start : 0, end:11}),
+            frameRate : 20,
+            repeat : -1
+          });
     }
 
     update(){
         this.findEnemyPath();   
-        this.scene.physics.add.collider (this.body, this.target, this.attack, null, this);
+        this.enemyDeath();
+        this.scene.physics.add.collider (this.body, this.target, this.attack, null, this);    
     }
 
     setTarget(target){
@@ -46,7 +69,6 @@ export default class Enemy extends Phaser.GameObjects.Sprite{
     findEnemyPath(){
         const playerTile = this.map.worldToTileXY(this.target.x, this.target.y);
         const enemyTile = this.map.worldToTileXY(this.x, this.y);
-
         this.easystar.findPath(
             enemyTile.x,
             enemyTile.y,
@@ -61,14 +83,16 @@ export default class Enemy extends Phaser.GameObjects.Sprite{
                         this.setRotation(angle + Math.PI / 2);
                         // @ts-ignore
                         this.body.setVelocity(Math.cos(angle) * this.speed, Math.sin(angle) * this.speed);
+                        
                 }
             }
         );
-        this.easystar.calculate();
+        this.easystar.calculate();   
     }
 
     attack(){
         this.target.looseLife(this.damage);
+        this.anims.play("hit", true);  
     }
 
     looseLife(){
@@ -79,6 +103,9 @@ export default class Enemy extends Phaser.GameObjects.Sprite{
             callbackScope: this
         });
         this.setTint(0xff0000);
+    }
+
+    enemyDeath(){
         if(this.lifes<=0){
             // @ts-ignore
             this.body.destroy();
