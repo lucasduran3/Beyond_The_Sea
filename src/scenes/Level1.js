@@ -129,7 +129,7 @@ export default class Level1 extends Phaser.Scene {
     }
     this.scene.setVisible(true, "UI");
 
-    this.isWin();
+    this.isOver();
   }
 
   isWin(){
@@ -137,6 +137,14 @@ export default class Level1 extends Phaser.Scene {
 
     if(enemysAlives<=0){
       console.log("Hola");
+    }
+  }
+
+  isOver(){
+    if(this.player.lifes <= 0){
+      this.scene.stop("Level1");
+      this.scene.stop("UI");
+      this.scene.start("GameOver");
     }
   }
 }

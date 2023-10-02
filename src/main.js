@@ -1,4 +1,4 @@
-import Phaser from "phaser";
+import Phaser, { Game } from "phaser";
 import Preload from "./scenes/Preload";
 import Level1 from "./scenes/Level1";
 import MainMenu from "./scenes/MainMenu";
@@ -8,6 +8,7 @@ import Pause from "./scenes/Pause";
 import UI from "./scenes/UI";
 import Controls from "./scenes/Controls";
 import PowerUp from "./scenes/PowerUp";
+import GameOver from "./scenes/GameOver";
 
 const config = {
   type: Phaser.AUTO,
@@ -32,7 +33,7 @@ const config = {
       debug: false,
     },
   },
-  scene: [Preload, MainMenu, Help, LevelSelector, Level1, UI, Pause, Controls, PowerUp],
+  scene: [Preload, MainMenu, Help, LevelSelector, Level1, UI, Pause, Controls, PowerUp, GameOver],
 };
 
 export default new Phaser.Game(config);
