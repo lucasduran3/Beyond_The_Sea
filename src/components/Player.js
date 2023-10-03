@@ -1,21 +1,29 @@
 import Phaser from "phaser";
 import Bullet from "./Bullet";
+import events from "../scenes/EventCenter";
 
 const ROTATION_SPEED = 5 * Math.PI;
 
 export default class Player extends Phaser.GameObjects.Sprite {
-  constructor(scene, x, y, texture) {
+  constructor(scene, x, y, texture, enemy) {
     super(scene, x, y, texture);
     scene.add.existing(this);
     scene.physics.world.enable(this);
 
     this.scene = scene;
+
     this.target = 0;
 
-    this.speed = 300;
+    this.lifes = 300;
+    this.enemy = enemy;
+    this.bullets = this.scene.physics.add.group();
+
+    this.speed = 400;
     this.velocityX = 0;
     this.velocityY = 0;
-
+    
+    // @ts-ignore
+    this.body.setCircle(15,17,25);
     this.scene.input.on("pointerdown", (pointer) => {
       this.fireBullet(pointer);
     });
@@ -34,6 +42,18 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
     // @ts-ignore
     this.body.setCollideWorldBounds(true);
+
+    this.anims.create({
+      key:"walk",
+      frames : this.anims.generateFrameNumbers("player",{start : 0, end:11}),
+      frameRate : 27,
+      repeat : -1
+    });
+
+    this.anims.create({
+      key:"none",
+      frames : [{key:"player", frame:0}],
+    });
   }
 
   update(time, delta) {
@@ -59,20 +79,48 @@ export default class Player extends Phaser.GameObjects.Sprite {
       this.velocityX = 0;
     }
 
+    if (this.keys.W.isDown||this.keys.S.isDown||this.keys.A.isDown||this.keys.D.isDown){
+      this.anims.play("walk", true);
+    }else{
+      this.anims.play("none", true);
+    }
+
     // @ts-ignore
     this.body.setVelocity(this.velocityX, this.velocityY);
+
+    this.shootAtEnemy();
   }
 
-  fireBullet(pointer) {
+  fireBullet(pointer){
     const speed = 500;
     const zeroPoint = new Phaser.Math.Vector2(
       this.scene.cameras.main.centerX,
       this.scene.cameras.main.centerY
     );
     const angle = Phaser.Math.Angle.BetweenPoints(zeroPoint, pointer);
-    // const angle = Phaser.Math.Angle.Between(this.x, this.y, x, y);
 
     const bullet = new Bullet(this.scene, this.x, this.y, "bullet");
+    this.bullets.add(bullet);
     bullet.fire(angle, speed);
+  }
+
+  looseLife(amount){
+    this.lifes -= amount;
+    events.emit("update",{
+      damage : amount
+    });
+  }
+
+  shootAtEnemy(){
+    if(this.enemy != null){
+    this.enemy.forEach(element => {
+      this.scene.physics.add.overlap(element, this.bullets, ()=>{
+        element.looseLife();
+        this.bullets.getFirstAlive().destroy();
+      });
+    }, null, this);
+    } else{
+      console.log("nothing");
+    }
   }
 }

@@ -1,5 +1,7 @@
 import Phaser from "phaser";
 import events from "./EventCenter";
+import Player from "../components/Player";
+import HealthBar from "../components/HealthBar";
 
 // Manejador de eventos centralizados para comunicacion de componentes
 
@@ -17,14 +19,19 @@ import events from "./EventCenter";
 export default class UI extends Phaser.Scene {
   constructor() {
     super("UI");
+    
+  }
+
+  init({playerHp = new HealthBar(this, 80, 40, 300)}){
+    this.playerHP = playerHp;
   }
 
   create() {
-    this.life = this.add.text(80,50,"Life:",{
+    /*this.lifeText = this.add.text(80,50,"Life:" , {
         fontSize: "40px",
         color : "#fff"
       }
-    );
+    );*/
 
     this.mana = this.add.text(80,100,"Mana:",{
       fontSize: "40px",
@@ -79,10 +86,34 @@ export default class UI extends Phaser.Scene {
       color : "#fff"
       }
     );
+    
+    const pauseButton = this.add.text(1800,950,'Pause',{
+      fontSize : '30px',
+      color : "#fff",
+      align : 'center',
+      backgroundColor : "#6e3adf"
+    }).setPadding(16).setOrigin(0.5).setInteractive({useHandCursor : true});
+
+    pauseButton.on('pointerover', ()=>{
+      pauseButton.setBackgroundColor('#4e15af');
+    });
+  
+    pauseButton.on('pointerout',()=>{
+      pauseButton.setBackgroundColor('#6e3adf');
+    });
+
+    pauseButton.on('pointerdown', ()=>{
+      this.scene.pause("Level1");
+      this.scene.launch("Pause");
+    });
+
+    pauseButton.setScrollFactor(0);
+
+
+    events.on("update", this.updateUI, this);
 
   }
-
-  setText(){
-
-}
+  updateUI(data){
+    this.playerHP.decrease(data.damage);
+  }
 }
