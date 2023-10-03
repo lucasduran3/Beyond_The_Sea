@@ -17,9 +17,6 @@ export default class Level1 extends Phaser.Scene {
     const wallLayer = this.map.createLayer("wall", wallL, 0, 0);
     const objectsLayer = this.map.getObjectLayer("objects");
 
-    console.log(floorLayer);
-    console.log(objectsLayer);
-
     this.enemysGroup = this.physics.add.group();
     objectsLayer.objects.forEach((objData)=>{
       const {x = 0, y = 0, name} = objData;
@@ -66,7 +63,7 @@ export default class Level1 extends Phaser.Scene {
     wallLayer.setCollisionByProperty({ colision: true });
     this.physics.add.collider(wallLayer, this.player);
     this.physics.add.collider(wallLayer, this.player.bullets, ()=>{
-      this.player.bullets.clear(true,true);
+      this.player.bullets.getFirstAlive().destroy();
     }, null, this);
 
     this.keyESC= this.input.keyboard.addKey("ESC");
@@ -76,7 +73,6 @@ export default class Level1 extends Phaser.Scene {
 
     //horrifi plugin
     const postFxPlugin = this.plugins.get('rexhorrifipipelineplugin');
-    console.log(postFxPlugin);
     const effect = this.cameras.main.setPostPipeline(HorrifiPostFxPipeline);
 
     // @ts-ignore
@@ -129,21 +125,22 @@ export default class Level1 extends Phaser.Scene {
     }
     this.scene.setVisible(true, "UI");
 
+    this.isWin();
     this.isOver();
   }
 
   isWin(){
-    const enemysAlives = this.enemysGroup.getTotalUsed();
+    const enemysAlives = this.enemysGroup.getMatching('active', true).length;
 
     if(enemysAlives<=0){
-      console.log("Hola");
+      this.scene.stop("Level1");
+      this.scene.start("GameWin");
     }
   }
 
   isOver(){
     if(this.player.lifes <= 0){
       this.scene.stop("Level1");
-      this.scene.stop("UI");
       this.scene.start("GameOver");
     }
   }

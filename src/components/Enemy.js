@@ -59,7 +59,8 @@ export default class Enemy extends Phaser.GameObjects.Sprite{
     update(){
         this.findEnemyPath();   
         this.enemyDeath();
-        this.scene.physics.add.collider (this.body, this.target, this.attack, null, this);    
+
+        this.scene.physics.add.collider(this.body, this.target, this.attack, null, this);    
     }
 
     setTarget(target){
@@ -110,6 +111,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite{
             // @ts-ignore
             this.body.destroy();
             this.setVisible(false);
+            this.active = false;
         }
     }
 }

@@ -11,6 +11,7 @@ import PowerUp from "./scenes/PowerUp";
 import GameOver from "./scenes/GameOver";
 import Prologue from "./scenes/Prologue";
 import Lobby from "./scenes/Lobby";
+import GameWin from "./scenes/GameWin";
 
 
 const config = {
@@ -36,7 +37,7 @@ const config = {
       debug: false,
     },
   },
-  scene: [Preload, MainMenu, Help, LevelSelector,Prologue, Lobby, Level1, UI, Pause, Controls, PowerUp, GameOver],
+  scene: [Preload, MainMenu, Help, LevelSelector,Prologue, Lobby, Level1, UI, Pause, Controls, PowerUp, GameOver, GameWin],
 };
 
 export default new Phaser.Game(config);

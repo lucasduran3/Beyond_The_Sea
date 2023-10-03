@@ -114,9 +114,9 @@ export default class Player extends Phaser.GameObjects.Sprite {
   shootAtEnemy(){
     if(this.enemy != null){
     this.enemy.forEach(element => {
-      this.scene.physics.add.collider(element, this.bullets, ()=>{
+      this.scene.physics.add.overlap(element, this.bullets, ()=>{
         element.looseLife();
-        this.bullets.clear(true,true);
+        this.bullets.getFirstAlive().destroy();
       });
     }, null, this);
     } else{
