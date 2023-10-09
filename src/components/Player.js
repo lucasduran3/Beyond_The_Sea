@@ -22,8 +22,25 @@ export default class Player extends Phaser.GameObjects.Sprite {
     this.velocityX = 0;
     this.velocityY = 0;
     
+    this.anims.create({
+      key:"walk",
+      frames : this.anims.generateFrameNumbers("player",{start : 0, end:10}),
+      frameRate : 27,
+      repeat : -1
+    });
+
+    this.anims.create({
+      key:"shoot",
+      frames : [{key:"player", frame:11}]
+    });
+
+    this.anims.create({
+      key:"none",
+      frames : [{key:"player", frame:0}],
+    });
+
     // @ts-ignore
-    this.body.setCircle(15,17,25);
+    this.body.setCircle(45,45,70);
     this.scene.input.on("pointerdown", (pointer) => {
       this.fireBullet(pointer);
     });
@@ -43,20 +60,11 @@ export default class Player extends Phaser.GameObjects.Sprite {
     // @ts-ignore
     this.body.setCollideWorldBounds(true);
 
-    this.anims.create({
-      key:"walk",
-      frames : this.anims.generateFrameNumbers("player",{start : 0, end:11}),
-      frameRate : 27,
-      repeat : -1
-    });
-
-    this.anims.create({
-      key:"none",
-      frames : [{key:"player", frame:0}],
-    });
+    
   }
 
   update(time, delta) {
+
     this.rotation = Phaser.Math.Angle.RotateTo(
       this.rotation,
       this.target,
@@ -89,9 +97,12 @@ export default class Player extends Phaser.GameObjects.Sprite {
     this.body.setVelocity(this.velocityX, this.velocityY);
 
     this.shootAtEnemy();
+
+    events.on("updateWeapon", this.setWeapon, this);
   }
 
   fireBullet(pointer){
+    this.anims.play("shoot", true);
     const speed = 500;
     const zeroPoint = new Phaser.Math.Vector2(
       this.scene.cameras.main.centerX,
@@ -121,6 +132,17 @@ export default class Player extends Phaser.GameObjects.Sprite {
     }, null, this);
     } else{
       console.log("nothing");
+    }
+
+  }
+
+  setWeapon(data){
+    if(data.weapon == "weapon1"){
+      this.setTint(0x00ff00);
+    } else if(data.weapon == "weapon2"){
+      this.setTint(0x0000ff);
+    } else{
+      this.setTint(0xffff00);
     }
   }
 }

@@ -27,12 +27,6 @@ export default class UI extends Phaser.Scene {
   }
 
   create() {
-    /*this.lifeText = this.add.text(80,50,"Life:" , {
-        fontSize: "40px",
-        color : "#fff"
-      }
-    );*/
-
     this.mana = this.add.text(80,100,"Mana:",{
       fontSize: "40px",
       color : "#fff"
@@ -55,19 +49,61 @@ export default class UI extends Phaser.Scene {
       fontSize: "20px",
       color : "#0f0"
       }
-    );
+    ).setInteractive({useHandCursor : true});
+
+    this.weapon1.on('pointerover', ()=>{
+      this.weapon1.setFontSize("25px");
+    });
+  
+    this.weapon1.on('pointerout',()=>{
+      this.weapon1.setFontSize('20px');
+    });
+
+    this.weapon1.on('pointerdown', ()=>{
+      events.emit("updateWeapon",{
+        weapon : "weapon1"
+      });
+    });    
 
     this.weapon2 = this.add.text(950,50,"weapon2",{
       fontSize: "20px",
       color : "#0ff"
       }
-    );
+    ).setInteractive({useHandCursor : true});
+
+    this.weapon2.on('pointerover', ()=>{
+      this.weapon2.setFontSize("25px");
+    });
+  
+    this.weapon2.on('pointerout',()=>{
+      this.weapon2.setFontSize('20px');
+    });
+
+    this.weapon2.on('pointerdown', ()=>{
+      events.emit("updateWeapon",{
+        weapon : "weapon2"
+      });
+    }); 
 
     this.weapon3 = this.add.text(1050,50,"weapon3",{
       fontSize: "20px",
       color : "#ff0"
       }
-    );
+    ).setInteractive({useHandCursor : true});
+
+    this.weapon3.on('pointerover', ()=>{
+      this.weapon3.setFontSize("25px");
+    });
+  
+    this.weapon3.on('pointerout',()=>{
+      this.weapon3.setFontSize('20px');
+    });
+
+    this.weapon3.on('pointerdown', ()=>{
+      events.emit("updateWeapon",{
+        weapon : "weapon3"
+      });
+    }); 
 
     this.power1 = this.add.text(850,100,"power1",{
       fontSize: "20px",
@@ -108,7 +144,6 @@ export default class UI extends Phaser.Scene {
     });
 
     pauseButton.setScrollFactor(0);
-
 
     events.on("update", this.updateUI, this);
 
