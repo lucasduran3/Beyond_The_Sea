@@ -16,7 +16,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite{
         this.c = 0;
         
         // @ts-ignore
-        this.body.setCircle(15,17,5);
+        this.body.setCircle(45,45,55);
 
         // @ts-ignore
         this.body.setCollideWorldBounds(true);
@@ -50,7 +50,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite{
 
           this.anims.create({
             key:"hit",
-            frames : this.anims.generateFrameNumbers("enemy",{start : 0, end:11}),
+            frames : this.anims.generateFrameNumbers("enemy",{start : 0, end:10}),
             frameRate : 20,
             repeat : -1
           });
