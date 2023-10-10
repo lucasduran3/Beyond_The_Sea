@@ -1,21 +1,25 @@
 import Phaser from "phaser";
-import { EN_US, ES_AR } from "../enums/languages";
-import { FETCHED, FETCHING, READY, TODO } from "../enums/status";
+
 import { getPhrase } from "../services/translation";
-import keys from "../enums/key";
+
 
 export default class MainMenu extends Phaser.Scene{
     constructor(){
         super("MainMenu");
     }
 
+    language;
+
+    init(language){
+        this.language = language
+    }
     create(){
         const titleText = this.add.text(550,140, 'BEYOND THE SEA',{
             fontSize : '100px'
         });
         titleText.setTint(0xff00ff, 0xffff00, 0x0000ff, 0xff0000);
 
-        const playButton = this.add.text(960,400, 'Jugar',{
+        const playButton = this.add.text(960,400, getPhrase('Jugar'),{
             fontSize : '50px',
             color : '#fff',
             align : "center",
@@ -36,7 +40,7 @@ export default class MainMenu extends Phaser.Scene{
             this.scene.start("Level1");
         });
 
-        const LevelButton = this.add.text(960,600, getPhrase('Select Level'),{
+        const LevelButton = this.add.text(960,600, getPhrase('Seleccionar nivel'),{
             fontSize : '50px',
             color : '#fff',
             align : "center",

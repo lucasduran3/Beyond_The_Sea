@@ -1,12 +1,22 @@
 import Phaser from "phaser";
+
 import { EN_US, ES_AR } from "../enums/languages";
 import { FETCHED, FETCHING, READY, TODO } from "../enums/status";
-import { getTranslation,getPhrase } from "../services/translation";
+import { getTranslations, getPhrase } from "../services/translation";
 import keys from "../enums/key";
 
 export default class SelectLang extends Phaser.Scene{
+    #textSpanish;
+    #textEnglish;
+    #language;
+    #wasChangedLanguage = TODO;
+
     constructor(){
         super("SelectLang");
+    }
+
+    init({language}){
+        this.language = language;   
     }
 
     create(){
@@ -33,8 +43,8 @@ export default class SelectLang extends Phaser.Scene{
         });
 
         ES.on('pointerdown', ()=>{
-            getTranslation(ES_AR);
-            this.scene.start("MainMenu");
+            this.getTranslation(ES_AR);
+            this.scene.start("MainMenu",{language : this.#language});
         });
 
         const EN = this.add.text(960,600, 'EN',{
@@ -54,9 +64,25 @@ export default class SelectLang extends Phaser.Scene{
             EN.setBackgroundColor('#2d2d2d');
         });
 
-        EN.on('pointerdown', ()=>{
-            getTranslation(EN_US);
-            this.scene.start("MainMenu");
+        EN.on('pointerdown', async ()=>{
+            await this.getTranslation(EN_US);
+            this.scene.start("MainMenu",{language : this.#language});
         });
     }
+
+    update(){
+        if(this.#wasChangedLanguage == FETCHED){
+            this.#wasChangedLanguage = READY;
+        }
+    }
+
+    updateWasChangedLanguage(){
+        this.#wasChangedLanguage = FETCHING;
+    }
+
+    async getTranslation(language) {
+        this.language = language;
+    
+        await getTranslations(language);
+      }
 }
