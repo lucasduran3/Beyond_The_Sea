@@ -14,7 +14,6 @@ import Lobby from "./scenes/Lobby";
 import GameWin from "./scenes/GameWin";
 import SelectLang from "./scenes/SelectLang";
 
-
 const config = {
   type: Phaser.AUTO,
   width: 1920,
