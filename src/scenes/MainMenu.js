@@ -38,6 +38,7 @@ export default class MainMenu extends Phaser.Scene{
 
         playButton.on('pointerdown', ()=>{
             this.scene.start("Level1");
+            this.scene.launch("UI");
         });
 
         const LevelButton = this.add.text(960,600, getPhrase('Seleccionar nivel'),{

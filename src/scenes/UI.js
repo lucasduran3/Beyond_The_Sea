@@ -22,11 +22,12 @@ export default class UI extends Phaser.Scene {
     
   }
 
-  init({playerHp = new HealthBar(this, 80, 40, 300)}){
-    this.playerHP = playerHp;
+  init(){
+   
   }
 
   create() {
+    this.playerHP = new HealthBar(this, 80, 40, 300);
     this.mana = this.add.text(80,100,"Mana:",{
       fontSize: "40px",
       color : "#fff"
@@ -34,6 +35,12 @@ export default class UI extends Phaser.Scene {
     );
 
     this.coins = this.add.text(1600,50,"Coins:",{
+      fontSize: "40px",
+      color : "#fff"
+      }
+    );
+
+    this.key1 = this.add.text(1600,200,"",{
       fontSize: "40px",
       color : "#fff"
       }
@@ -149,6 +156,10 @@ export default class UI extends Phaser.Scene {
 
   }
   updateUI(data){
-    this.playerHP.decrease(data.damage);
+
+    this.playerHP.decrease(data.damage||0);
+
+    console.log(data.damage);
+    this.key1.setText(data.key1);
   }
 }
