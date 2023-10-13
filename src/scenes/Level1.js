@@ -1,19 +1,35 @@
 import Phaser from "phaser";
 import Player from "../components/Player";
 import Enemy from "../components/Enemy";
+import events from "../scenes/EventCenter";
 import HorrifiPostFxPipeline from "phaser3-rex-plugins/plugins/horrifipipeline";
 
 export default class Level1 extends Phaser.Scene {
   constructor() {
     super("Level1");
+    this.level = "lobby";
+    this.keyDoor1 = false;
+    this.keyDoor2 = false;
+    this.keyDoor3 = false;
+    this.keyDoor4 = false;
+  }
+
+  init(data){
+   this.level = data.level || "lobby";
+   this.keyDoor1 = data.keyDoor1 || false;
+   this.keyDoor2 = data.keyDoor2 || false;
+   this.keyDoor3 = data.keyDoor3 || false;
+   this.keyDoor4 = data.keyDoor4 || false;
   }
 
   create() {
     this.collisionBetweenPlayerEnemy = false;
-    this.map = this.make.tilemap({ key: "map" });
+    this.map = this.make.tilemap({ key: "map-"+this.level });
     const floorL = this.map.addTilesetImage("floor", "floor");
     const wallL = this.map.addTilesetImage("wall", "wall");
+    const doorL = this.map.addTilesetImage("door", "door");
     const floorLayer = this.map.createLayer("floor", floorL, 0, 0);
+    const doorLayer = this.map.createLayer("door", doorL, 0, 0);
     const wallLayer = this.map.createLayer("wall", wallL, 0, 0);
     const objectsLayer = this.map.getObjectLayer("objects");
 
@@ -23,6 +39,7 @@ export default class Level1 extends Phaser.Scene {
         switch(name){
           case "enemy" : {
             this.enemy = new Enemy(this, x, y, "enemy", 300, this.map);
+            console.log(this.enemy);
             this.enemysGroup.add(this.enemy);
             break;
           }
@@ -38,7 +55,26 @@ export default class Level1 extends Phaser.Scene {
 
     this.player = new Player(this, spawnPoint.x, spawnPoint.y, "player", this.enemyArr);
 
-    this.enemy.setTarget(this.player);
+    spawnPoint = this.map.findObject(
+      "objects",
+      (obj) => obj.name === "key-door1"
+    );
+
+    objectsLayer.objects.forEach((objData)=>{
+      const {x = 0, y = 0, name} = objData;
+        switch(name){
+          case "key-door1" : {
+            this.key_door1_sprite = this.physics.add.sprite(x, y, "key");
+            break;
+          }
+        }
+    });
+
+    this.map.objects.forEach(element => {
+      if(element.name == "key-door1"){
+        this.key_door1_sprite = this.physics.add.sprite(spawnPoint.x, spawnPoint.y, "key");
+      }
+    });
 
     this.enemyArr.forEach(element => {
       // @ts-ignore
@@ -60,15 +96,24 @@ export default class Level1 extends Phaser.Scene {
     );
 
     wallLayer.setCollisionByProperty({ colision: true });
+    doorLayer.setCollisionByProperty({ colision: true });
     this.physics.add.collider(wallLayer, this.player);
+    this.physics.add.collider(doorLayer, this.player, ()=>{this.scene.start("Level1",{
+    level : "level1", 
+    keyDoor1 : this.keyDoor1,
+    keyDoor2 : this.keyDoor2,
+    keyDoor3 : this.keyDoor3,
+    keyDoor4 : this.keyDoor4})}, 
+    ()=>this.keyDoor1 == true, this);
+
     this.physics.add.collider(wallLayer, this.player.bullets, ()=>{
       this.player.bullets.getFirstAlive().destroy();
     }, null, this);
 
+   
     this.keyESC= this.input.keyboard.addKey("ESC");
 
     
-    this.scene.launch("UI");
 
     //horrifi plugin
     const postFxPlugin = this.plugins.get('rexhorrifipipelineplugin');
@@ -112,6 +157,12 @@ export default class Level1 extends Phaser.Scene {
   }
 
   update(time, delta) {
+    this.physics.add.overlap(this.player, this.key_door1_sprite, ()=>{
+    this.key_door1_sprite.destroy(); 
+    this.keyDoor1 = true
+    events.emit("update",{key1 : "Key 1"});
+    }, null, this);
+
     this.player.update(time, delta);
     
     this.enemyArr.forEach(element => {
@@ -124,17 +175,7 @@ export default class Level1 extends Phaser.Scene {
     }
     this.scene.setVisible(true, "UI");
 
-    this.isWin();
     this.isOver();
-  }
-
-  isWin(){
-    const enemysAlives = this.enemysGroup.getMatching('active', true).length;
-
-    if(enemysAlives<=0){
-      this.scene.stop("Level1");
-      this.scene.start("GameWin");
-    }
   }
 
   isOver(){
