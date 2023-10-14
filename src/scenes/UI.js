@@ -52,63 +52,43 @@ export default class UI extends Phaser.Scene {
       }
     );
 
-    this.weapon1 = this.add.text(850,50,"weapon1",{
+    this.revolver = this.add.text(850,50,"revolver",{
       fontSize: "20px",
       color : "#0f0"
       }
     ).setInteractive({useHandCursor : true});
 
-    this.weapon1.on('pointerover', ()=>{
-      this.weapon1.setFontSize("25px");
+    this.revolver.on('pointerover', ()=>{
+      this.revolver.setFontSize("25px");
     });
   
-    this.weapon1.on('pointerout',()=>{
-      this.weapon1.setFontSize('20px');
+    this.revolver.on('pointerout',()=>{
+      this.revolver.setFontSize('20px');
     });
 
-    this.weapon1.on('pointerdown', ()=>{
+    this.revolver.on('pointerdown', ()=>{
       events.emit("updateWeapon",{
-        weapon : "weapon1"
+        weapon : "revolver"
       });
     });    
 
-    this.weapon2 = this.add.text(950,50,"weapon2",{
+    this.rifle = this.add.text(950,50,"rifle",{
       fontSize: "20px",
       color : "#0ff"
       }
     ).setInteractive({useHandCursor : true});
 
-    this.weapon2.on('pointerover', ()=>{
-      this.weapon2.setFontSize("25px");
+    this.rifle.on('pointerover', ()=>{
+      this.rifle.setFontSize("25px");
     });
   
-    this.weapon2.on('pointerout',()=>{
-      this.weapon2.setFontSize('20px');
+    this.rifle.on('pointerout',()=>{
+      this.rifle.setFontSize('20px');
     });
 
-    this.weapon2.on('pointerdown', ()=>{
+    this.rifle.on('pointerdown', ()=>{
       events.emit("updateWeapon",{
-        weapon : "weapon2"
-      });
-    }); 
-
-    this.weapon3 = this.add.text(1050,50,"weapon3",{
-      fontSize: "20px",
-      color : "#ff0"
-      }
-    ).setInteractive({useHandCursor : true});
-
-    this.weapon3.on('pointerover', ()=>{
-      this.weapon3.setFontSize("25px");
-    });
-  
-    this.weapon3.on('pointerout',()=>{
-      this.weapon3.setFontSize('20px');
-    });
-
-    this.weapon3.on('pointerdown', ()=>{
-      events.emit("updateWeapon",{
-        weapon : "weapon3"
+        weapon : "rifle"
       });
     }); 
 

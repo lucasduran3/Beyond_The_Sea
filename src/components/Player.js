@@ -5,7 +5,7 @@ import events from "../scenes/EventCenter";
 const ROTATION_SPEED = 5 * Math.PI;
 
 export default class Player extends Phaser.GameObjects.Sprite {
-  constructor(scene, x, y, texture, enemy) {
+  constructor(scene, x, y, texture, enemy, weapons, nBullets) {
     super(scene, x, y, texture);
     scene.add.existing(this);
     scene.physics.world.enable(this);
@@ -17,10 +17,14 @@ export default class Player extends Phaser.GameObjects.Sprite {
     this.lifes = 300;
     this.enemy = enemy;
     this.bullets = this.scene.physics.add.group();
+    this.nBullets = nBullets;
 
     this.speed = 400;
     this.velocityX = 0;
     this.velocityY = 0;
+
+    this.weaponsGroup = weapons;
+    this.activatedWeapon = null;
     
     this.anims.create({
       key:"walk",
@@ -64,7 +68,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
   }
 
   update(time, delta) {
-
+    //console.log(this.activatedWeapon);
     this.rotation = Phaser.Math.Angle.RotateTo(
       this.rotation,
       this.target,
@@ -102,8 +106,9 @@ export default class Player extends Phaser.GameObjects.Sprite {
   }
 
   fireBullet(pointer){
+    if(this.activatedWeapon != null && this.nBullets>0){
     this.anims.play("shoot", true);
-    const speed = 500;
+    const speed = this.activatedWeapon.speed;
     const zeroPoint = new Phaser.Math.Vector2(
       this.scene.cameras.main.centerX,
       this.scene.cameras.main.centerY
@@ -113,6 +118,9 @@ export default class Player extends Phaser.GameObjects.Sprite {
     const bullet = new Bullet(this.scene, this.x, this.y, "bullet");
     this.bullets.add(bullet);
     bullet.fire(angle, speed);
+
+    this.nBullets--;
+    }
   }
 
   looseLife(amount){
@@ -136,13 +144,15 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
   }
 
+  addWeapon(weapon){
+    this.weaponsGroup[weapon.name] = weapon;
+  }
+
   setWeapon(data){
-    if(data.weapon == "weapon1"){
-      this.setTint(0x00ff00);
-    } else if(data.weapon == "weapon2"){
-      this.setTint(0x0000ff);
-    } else{
-      this.setTint(0xffff00);
-    }
+    this.activatedWeapon = this.weaponsGroup[data.weapon];
+  }
+
+  incrementBullets(){
+    this.nBullets++;
   }
 }
