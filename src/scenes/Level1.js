@@ -15,8 +15,6 @@ export default class Level1 extends Phaser.Scene {
     this.keyDoor4 = false;
 
     this.weaponsGroup = {};
-
-    this.nBullets;
   }
 
   init(data){
@@ -28,7 +26,6 @@ export default class Level1 extends Phaser.Scene {
 
    this.weaponsGroup = data.weaponsGroup || {};
 
-   this.nBullets = data.nBullets || 0;
   }
 
   create() {
@@ -65,7 +62,7 @@ export default class Level1 extends Phaser.Scene {
 
     this.enemyArr = this.enemysGroup.getChildren();
 
-    this.player = new Player(this, spawnPoint.x, spawnPoint.y, "player", this.enemyArr, this.weaponsGroup, this.nBullets);
+    this.player = new Player(this, spawnPoint.x, spawnPoint.y, "player", this.enemyArr, this.weaponsGroup);
 
     this.bulletsGroup = this.physics.add.group();
     objectsLayer.objects.forEach((objData)=>{
@@ -116,8 +113,7 @@ export default class Level1 extends Phaser.Scene {
     keyDoor2 : this.keyDoor2,
     keyDoor3 : this.keyDoor3,
     keyDoor4 : this.keyDoor4,
-    weaponsGroup : this.weaponsGroup,
-    nBullets : this.nBullets});
+    weaponsGroup : this.weaponsGroup});
     }, 
     ()=>this.keyDoor1 == true, this);
 
@@ -205,8 +201,6 @@ export default class Level1 extends Phaser.Scene {
     this.scene.setVisible(true, "UI");
 
     this.isOver();
-
-   console.log(this.player.nBullets);
   }
 
   isOver(){
@@ -218,7 +212,6 @@ export default class Level1 extends Phaser.Scene {
 
   collectBullet(player, bullet){
     bullet.destroy();
-    this.nBullets++;
     this.player.incrementBullets();
   }
 }
