@@ -19,7 +19,6 @@ import HealthBar from "../components/HealthBar";
 export default class UI extends Phaser.Scene {
   constructor() {
     super("UI");
-    
   }
 
   init(){
@@ -104,8 +103,13 @@ export default class UI extends Phaser.Scene {
     });
 
     this.power1.on('pointerdown', ()=>{
-      this.updateMana({ammount : 20});
-      events.emit("usePowerUp");
+      
+      if(this.playerMana.value>20){
+        events.emit("usePowerUp",{
+          cost : 20
+        });
+        this.updateMana({ammount : 20});
+      } 
     });
 
     this.power2 = this.add.text(950,100,"power2",{
@@ -156,6 +160,5 @@ export default class UI extends Phaser.Scene {
 
   updateMana(data){
     this.playerMana.decrease(data.ammount||0);
-    console.log(data.ammount);
   }
 }

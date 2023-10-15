@@ -12,10 +12,10 @@ export default class Player extends Phaser.GameObjects.Sprite {
     scene.physics.world.enable(this);
 
     this.scene = scene;
-
     this.target = 0;
 
     this.lifes = 300;
+    this.mana = 300;
     this.enemy = enemy;
     this.bullets = this.scene.physics.add.group();
 
@@ -63,7 +63,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
     // @ts-ignore
     this.body.setCollideWorldBounds(true);
-
+    events.on("usePowerUp", this.usePowerUp, this);
     
   }
 
@@ -102,7 +102,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
     this.shootAtEnemy();
 
     events.on("updateWeapon", this.setWeapon, this);
-    events.on("usePowerUp", this.usePowerUp, this);
+
   }
 
   fireBullet(pointer){
@@ -156,10 +156,14 @@ export default class Player extends Phaser.GameObjects.Sprite {
     nBullets++;
   }
 
-  usePowerUp(){
+  usePowerUp(data){
+    if(this.mana>20){
     this.enemy.forEach(element => {
       element.freeze();
     });
-
+    this.mana-=1;
+    }else{
+      console.log("no hay suficiente mana");
+    }
   }
 }
