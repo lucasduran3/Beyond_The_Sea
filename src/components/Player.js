@@ -1,9 +1,10 @@
 import Phaser from "phaser";
 import Bullet from "./Bullet";
 import events from "../scenes/EventCenter";
+import {revolver} from "./weapons";
 
 const ROTATION_SPEED = 5 * Math.PI;
-let nBullets = 0;
+let nBullets = 1000;
 
 export default class Player extends Phaser.GameObjects.Sprite {
   constructor(scene, x, y, texture, enemy, weapons) {
@@ -24,7 +25,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
     this.velocityY = 0;
 
     this.weaponsGroup = weapons;
-    this.activatedWeapon = null;
+    this.activatedWeapon = revolver;
     
     this.anims.create({
       key:"walk",
@@ -149,7 +150,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
   }
 
   setWeapon(data){
-    this.activatedWeapon = this.weaponsGroup[data.weapon];
+    this.activatedWeapon = revolver;
   }
 
   incrementBullets(){
