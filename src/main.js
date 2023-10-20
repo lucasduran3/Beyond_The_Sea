@@ -11,6 +11,10 @@ import PowerUp from "./scenes/PowerUp";
 import GameOver from "./scenes/GameOver";
 import GameWin from "./scenes/GameWin";
 import SelectLang from "./scenes/SelectLang";
+import Bar from "./scenes/Bar";
+import BarAnimation from "./scenes/BarAnimation";
+import Dialog from "./scenes/Dialog";
+import BarWinAnimation from "./scenes/BarWinAnimation";
 
 const config = {
   type: Phaser.AUTO,
@@ -35,7 +39,7 @@ const config = {
       debug: false,
     },
   },
-  scene: [Preload, SelectLang, MainMenu, Help, LevelSelector, Level1, UI, Pause, Controls, PowerUp, GameOver, GameWin],
+  scene: [Preload, SelectLang, MainMenu, Help, LevelSelector, Level1, BarAnimation, Bar, UI, Pause, Controls, PowerUp, GameOver, GameWin, BarWinAnimation, Dialog],
 };
 
 export default new Phaser.Game(config);
