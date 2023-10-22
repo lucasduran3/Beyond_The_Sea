@@ -73,7 +73,13 @@ export default class UI extends Phaser.Scene {
     );
 
     this.key1 = this.add.text(1600,200,"",{
-      fontSize: "40px",
+      fontSize: "30px",
+      color : "#fff"
+      }
+    );
+
+    this.keyBar = this.add.text(1800,200,"",{
+      fontSize: "30px",
       color : "#fff"
       }
     );
@@ -199,7 +205,9 @@ export default class UI extends Phaser.Scene {
 
     this.playerHP.decrease(data.damage||0);
 
-    this.key1.setText(data.key1);
+    this.key1.setText(data.key1||"");
+
+    this.keyBar.setText(data.keyBar||"");
   }
 
   updateHP(data){

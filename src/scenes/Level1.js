@@ -148,7 +148,7 @@ export default class Level1 extends Phaser.Scene {
       this.player,
       () => {
         this.scene.start("Level1", {
-          level: "level1",
+          level: "mercado",
           player: this.player,
           keyDoor1: this.keyDoor1,
           keyDoor2: this.keyDoor2,

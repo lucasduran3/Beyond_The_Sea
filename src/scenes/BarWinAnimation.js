@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import HorrifiPostFxPipeline from "phaser3-rex-plugins/plugins/horrifipipeline";
+import { getPhrase } from "../services/translation";
 
 export default class BarWinAnimation extends Phaser.Scene{
     constructor(){
@@ -76,10 +77,15 @@ export default class BarWinAnimation extends Phaser.Scene{
             callback: ()=>{
                 
             const content = [
-                'Phaser is a fast, free, and fun open source HTML5 game framework\n',
-                'that offers WebGL and DynamicText rendering across desktop and mobile web browsers.\n',
-                'Games can be compiled to iOS, Android and native apps by using 3rd party tools.\n',
-                'You can use JavaScript or TypeScript for development.'
+                '...\n',
+                'No...\n',
+                getPhrase('No lo entiendo...'),
+                getPhrase('Como podes vivir asi?'),
+                getPhrase('Sin saber quien sos?'),
+                getPhrase('Con tu identidad a la merced de ese cerdo?'),
+                getPhrase('... NO! ... no puedo.'),
+                getPhrase('No voy a dejar que una rata de laboratorio decida mi destino'),
+                getPhrase('...Yo si soy mi dueño.')
             ];
             
             this.scene.launch("Dialog",{
