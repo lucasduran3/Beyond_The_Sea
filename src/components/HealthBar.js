@@ -30,4 +30,14 @@ export default class HealthBar{
         this.draw();
     }
 
+    increment(amount){
+        this.value += amount;
+
+        if(this.value<0){
+            this.value = 0;
+        }
+
+        this.draw();
+    }
+
 }

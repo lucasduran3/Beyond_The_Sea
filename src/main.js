@@ -15,6 +15,7 @@ import Bar from "./scenes/Bar";
 import BarAnimation from "./scenes/BarAnimation";
 import Dialog from "./scenes/Dialog";
 import BarWinAnimation from "./scenes/BarWinAnimation";
+import Drawer from "./scenes/Drawer";
 
 const config = {
   type: Phaser.AUTO,
@@ -39,7 +40,7 @@ const config = {
       debug: false,
     },
   },
-  scene: [Preload, SelectLang, MainMenu, Help, LevelSelector, Level1, BarAnimation, Bar, UI, Pause, Controls, PowerUp, GameOver, GameWin, BarWinAnimation, Dialog],
+  scene: [Preload, SelectLang, MainMenu, Help, LevelSelector, Level1, BarAnimation, Bar, UI, Pause, Controls, PowerUp, GameOver, GameWin, Drawer, BarWinAnimation, Dialog],
 };
 
 export default new Phaser.Game(config);
