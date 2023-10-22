@@ -13,6 +13,13 @@ export default class Bar extends Phaser.Scene{
 
     init(data){
         this.weaponsGroup = data.weaponsGroup || {};
+        this.keyDoor1 = data.keyDoor1;
+        this.keyDoor2 = data.keyDoor2;
+        this.keyDoor3 = data.keyDoor3;
+        this.keyDoor4 = data.keyDoor4;
+        this.weaponsGroup = data.weaponsGroup;
+        this.playerLifes = data.playerLifes;
+        this.playerMana = data.playerMana;
     }
 
     create(){

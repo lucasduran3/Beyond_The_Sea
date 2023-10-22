@@ -1,7 +1,9 @@
 const sceneMainMenu = {
     play : 'Jugar',
-    selectLevel : 'Seleccionar nivel',
-    help : 'Help'
+    help : 'Help',
+    continue : 'Continuar',
+    controls : 'Controles',
+    powers : "Habilidades especiales"
 };
 
 export default {
