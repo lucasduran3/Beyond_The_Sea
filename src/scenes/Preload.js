@@ -29,6 +29,7 @@ export default class Preload extends Phaser.Scene {
     this.load.image("bar-table", "/assets/sprites/bar-table.png");
     this.load.image("arrow", "/assets/sprites/arrow.png");
     this.load.image("drawer", "/assets/sprites/drawer.png");
+    this.load.image("drawerBg", "/assets/sprites/drawerBg.png");
 
 
     //tilemaps

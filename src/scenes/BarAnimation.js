@@ -106,6 +106,8 @@ export default class BarAnimation extends Phaser.Scene{
             callbackScope: this, 
             repeat : 0 
         });
+
+        this.scene.setVisible(false, "UI");
     }
 
     update(){

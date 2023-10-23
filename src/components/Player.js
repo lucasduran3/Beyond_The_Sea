@@ -165,7 +165,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
     this.enemy.forEach(element => {
       element.freeze();
     });
-    this.mana-=1;
+    this.mana-=20;
     }else{
       console.log("no hay suficiente mana");
     }
