@@ -78,7 +78,7 @@ export default class BarWinAnimation extends Phaser.Scene{
                 
             const content = [
                 '...\n',
-                'No...\n',
+                getPhrase('No...'),
                 getPhrase('No lo entiendo...'),
                 getPhrase('Como podes vivir asi?'),
                 getPhrase('Sin saber quien sos?'),
