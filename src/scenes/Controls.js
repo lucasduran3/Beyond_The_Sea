@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { getPhrase } from "../services/translation";
 
 export default class Controls extends Phaser.Scene{
     constructor(){
@@ -6,7 +7,7 @@ export default class Controls extends Phaser.Scene{
     }
 
     create(){
-        const titleText = this.add.text(750,240,'CONTROLS',{
+        const titleText = this.add.text(750,240,getPhrase('Controles'),{
             fontSize : '100px'
         });
 

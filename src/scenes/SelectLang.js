@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 
-import { EN_US, ES_AR } from "../enums/languages";
+import { EN_US, ES_AR, DE_DE } from "../enums/languages";
 import { FETCHED, FETCHING, READY, TODO } from "../enums/status";
 import { getTranslations, getPhrase } from "../services/translation";
 
@@ -65,6 +65,28 @@ export default class SelectLang extends Phaser.Scene{
 
         EN.on('pointerdown', async ()=>{
             await this.getTranslation(EN_US);
+            this.scene.start("MainMenu",{language : this.#language});
+        });
+
+        const DE = this.add.text(960,800, 'DE',{
+            fontSize : '50px',
+            color : '#fff',
+            align : "center",
+            backgroundColor : '#2d2d2d'
+        }).setPadding(32).setOrigin(0.5);
+
+        DE.setInteractive({useHandCursor : true});
+
+        DE.on('pointerover',()=>{
+            DE.setBackgroundColor('#8d8d8d');
+        });
+
+        DE.on('pointerout', ()=>{
+            DE.setBackgroundColor('#2d2d2d');
+        });
+
+        DE.on('pointerdown', async ()=>{
+            await this.getTranslation(DE_DE);
             this.scene.start("MainMenu",{language : this.#language});
         });
     }
