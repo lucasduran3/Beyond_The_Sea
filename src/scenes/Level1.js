@@ -36,6 +36,7 @@ export default class Level1 extends Phaser.Scene {
   }
 
   create() {
+    events.emit('updateHP',{isIncrease : true, ammount : this.playerLifes});
     this.cameras.main.fadeIn(500);
     this.lights.enable();
     this.lights.setAmbientColor(0x0000ff);
@@ -45,10 +46,15 @@ export default class Level1 extends Phaser.Scene {
     const wallL = this.map.addTilesetImage("wall", "wall");
     const doorL = this.map.addTilesetImage("door", "door");
     const barDoorL = this.map.addTilesetImage("door", "door");
+    const lobbyDoorL = this.map.addTilesetImage("door", "door");
+    const decoL = this.map.addTilesetImage("deco", "deco");
+    
 
     const floorLayer = this.map.createLayer("floor", floorL, 0, 0);
     const doorLayer = this.map.createLayer("door", doorL, 0, 0);
     const barDoorLayer = this.map.createLayer("bar-door", barDoorL, 0, 0);
+    const lobbyDoorLayer = this.map.createLayer("lobby-door", lobbyDoorL, 0, 0);
+    const decoLayer = this.map.createLayer("deco", decoL, 0, 0);
     const wallLayer = this.map.createLayer("wall", wallL, 0, 0);
 
     const objectsLayer = this.map.getObjectLayer("objects");
@@ -150,14 +156,38 @@ export default class Level1 extends Phaser.Scene {
     wallLayer.setCollisionByProperty({ colision: true });
     doorLayer.setCollisionByProperty({ colision: true });
     barDoorLayer.setCollisionByProperty({colision: true});
+    lobbyDoorLayer.setCollisionByProperty({colision: true});
+    decoLayer.setCollisionByProperty({colision: true});
 
     this.physics.add.collider(wallLayer, this.player);
+    this.physics.add.collider(decoLayer, this.player);
     this.physics.add.collider(
       doorLayer,
       this.player,
       () => {
         this.scene.start("Level1", {
           level: "mercado",
+          player: this.player,
+          keyDoor1: this.keyDoor1,
+          keyDoor2: this.keyDoor2,
+          keyDoor3: this.keyDoor3,
+          keyDoor4: this.keyDoor4,
+          weaponsGroup: this.weaponsGroup,
+          playerLifes : this.playerLifes,
+          playerMana : this.playerMana
+        });
+
+      },
+      () => this.keyDoor1 == true,
+      this
+    );
+
+    this.physics.add.collider(
+      lobbyDoorLayer,
+      this.player,
+      () => {
+        this.scene.start("Level1", {
+          level: "lobby",
           player: this.player,
           keyDoor1: this.keyDoor1,
           keyDoor2: this.keyDoor2,
@@ -255,6 +285,24 @@ export default class Level1 extends Phaser.Scene {
     });
     console.log("vida" + this.player.lifes);
     console.log("mana" + this.player.mana);
+
+    
+    //Wepaons tween
+    const revolverTween = this.tweens.add({
+      targets: this.revolverSprite,
+      scale: 1.2,
+      yoyo : true,
+      duration : 500,
+      repeat : -1
+    });
+
+    const rifleTween = this.tweens.add({
+      targets: this.rifleSprite,
+      scale: 1.2,
+      yoyo : true,
+      duration : 500,
+      repeat : -1
+    });
   }
 
   update(time, delta) {

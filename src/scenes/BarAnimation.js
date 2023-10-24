@@ -21,13 +21,11 @@ export default class BarAnimation extends Phaser.Scene{
         this.cameras.main.fadeIn(500);
         this.map = this.make.tilemap({key:"map-mercado-bar"});
         const floorL = this.map.addTilesetImage("floor", "floor");
-        //const wallL = this.map.addTilesetImage("wall", "wall");
-        //const doorL = this.map.addTilesetImage("door", "door");
+        const wallL = this.map.addTilesetImage("wall", "wall");
         const barTableL = this.map.addTilesetImage("bar-table", "bar-table");
     
         const floorLayer = this.map.createLayer("floor", floorL, 0, 0);
-       // const doorLayer = this.map.createLayer("door", doorL, 0, 0);
-       // const wallLayer = this.map.createLayer("wall", wallL, 0, 0);
+        const wallLayer = this.map.createLayer("wall", wallL, 0, 0);
         const barTableLayer = this.map.createLayer("bar-table", barTableL, 0, 0);
 
     
