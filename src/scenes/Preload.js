@@ -51,7 +51,7 @@ export default class Preload extends Phaser.Scene {
     );
 
     //this.scene.start("SelectLang",{language : this.#language});
-    //this.scene.launch("UI");
-    this.scene.start("SelectLang");
+    this.scene.launch("UI");
+    this.scene.start("Level1");
   }
 }

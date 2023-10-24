@@ -1,20 +1,9 @@
 import Phaser from "phaser";
 import HorrifiPostFxPipeline from "phaser3-rex-plugins/plugins/horrifipipeline";
-import { getPhrase } from "../services/translation";
 
 export default class BarAnimation extends Phaser.Scene{
     constructor(){
         super("BarAnimation");
-    }
-
-    init(data){
-        this.keyDoor1 = data.keyDoor1;
-        this.keyDoor2 = data.keyDoor2;
-        this.keyDoor3 = data.keyDoor3;
-        this.keyDoor4 = data.keyDoor4;
-        this.weaponsGroup = data.weaponsGroup;
-        this.playerLifes = data.playerLifes;
-        this.playerMana = data.playerMana;
     }
 
     create(){
@@ -82,25 +71,16 @@ export default class BarAnimation extends Phaser.Scene{
             callback: ()=>{
                 
             const content = [
-                getPhrase('Oh... Quien te dejo entrar?!'),
-                getPhrase('No permitiré que nadie arruine nuestro pequeño momento de felicidad...'),
-                getPhrase('Este es el único lugar donde podemos calmar el daño...'),
-                getPhrase('Las voces en mi cabeza...'),
-                getPhrase('Pero ustedes nunca tienen suficiente de nosotros!'),
-                getPhrase('Muchachos, atrapen a esta mascota!')
+                'Phaser is a fast, free, and fun open source HTML5 game framework\n',
+                'that offers WebGL and DynamicText rendering across desktop and mobile web browsers.\n',
+                'Games can be compiled to iOS, Android and native apps by using 3rd party tools.\n',
+                'You can use JavaScript or TypeScript for development.'
             ];
             
             this.scene.launch("Dialog",{
                 content : content,
                 sceneToStop : "BarAnimation",
-                sceneToStart : "Bar",
-                keyDoor1: this.keyDoor1,
-                keyDoor2: this.keyDoor2,
-                keyDoor3: this.keyDoor3,
-                keyDoor4: this.keyDoor4,
-                weaponsGroup: this.weaponsGroup,
-                playerLifes : this.playerLifes,
-                playerMana : this.playerMana
+                sceneToStart : "Bar"
             });
         }, 
             callbackScope: this, 

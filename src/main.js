@@ -2,6 +2,7 @@ import Phaser, { Game } from "phaser";
 import Preload from "./scenes/Preload";
 import Level1 from "./scenes/Level1";
 import MainMenu from "./scenes/MainMenu";
+import LevelSelector from "./scenes/LevelSelector";
 import Help from "./scenes/Help";
 import Pause from "./scenes/Pause";
 import UI from "./scenes/UI";
@@ -39,7 +40,7 @@ const config = {
       debug: false,
     },
   },
-  scene: [Preload, SelectLang, MainMenu, Help, Level1, BarAnimation, Bar, UI, Pause, Controls, PowerUp, GameOver, GameWin, Drawer, BarWinAnimation, Dialog],
+  scene: [Preload, SelectLang, MainMenu, Help, LevelSelector, Level1, BarAnimation, Bar, UI, Pause, Controls, PowerUp, GameOver, GameWin, Drawer, BarWinAnimation, Dialog],
 };
 
 export default new Phaser.Game(config);

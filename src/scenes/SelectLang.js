@@ -3,6 +3,7 @@ import Phaser from "phaser";
 import { EN_US, ES_AR } from "../enums/languages";
 import { FETCHED, FETCHING, READY, TODO } from "../enums/status";
 import { getTranslations, getPhrase } from "../services/translation";
+import keys from "../enums/key";
 
 export default class SelectLang extends Phaser.Scene{
     #textSpanish;
