@@ -12,7 +12,6 @@ import GameOver from "./scenes/GameOver";
 import Prologue from "./scenes/Prologue";
 import Lobby from "./scenes/Lobby";
 import GameWin from "./scenes/GameWin";
-import SelectLang from "./scenes/SelectLang";
 
 
 const config = {
@@ -35,10 +34,10 @@ const config = {
     default: "arcade",
     arcade: {
       gravity: { y: 0 },
-      debug: true,
+      debug: false,
     },
   },
-  scene: [Preload, SelectLang, MainMenu, Help, LevelSelector,Prologue, Lobby, Level1, UI, Pause, Controls, PowerUp, GameOver, GameWin],
+  scene: [Preload, MainMenu, Help, LevelSelector,Prologue, Lobby, Level1, UI, Pause, Controls, PowerUp, GameOver, GameWin],
 };
 
 export default new Phaser.Game(config);
