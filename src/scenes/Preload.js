@@ -7,8 +7,8 @@ export default class Preload extends Phaser.Scene{
 
     preload(){
         //sprites
-        this.load.spritesheet("player", "/assets/sprites/player.png",{frameWidth:192, frameHeight:192});
-        this.load.spritesheet("enemy", "/assets/sprites/enemy.png",{frameWidth:192, frameHeight:192});
+        this.load.spritesheet("player", "/assets/sprites/player.png",{frameWidth:64, frameHeight:64});
+        this.load.spritesheet("enemy", "/assets/sprites/enemy.png",{frameWidth:64, frameHeight:64});
         this.load.image('bullet', '/assets/sprites/bullet.png');
         this.load.image('wall', '/assets/sprites/wall.png');
         this.load.image('floor', '/assets/sprites/floor.png');
@@ -23,6 +23,6 @@ export default class Preload extends Phaser.Scene{
     }
 
     create(){
-        this.scene.start("Level1");
+        this.scene.start("MainMenu");
     }
 }

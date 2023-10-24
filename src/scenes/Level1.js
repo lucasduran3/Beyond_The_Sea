@@ -22,7 +22,7 @@ export default class Level1 extends Phaser.Scene {
       const {x = 0, y = 0, name} = objData;
         switch(name){
           case "enemy" : {
-            this.enemy = new Enemy(this, x, y, "enemy", 300, this.map);
+            this.enemy = new Enemy(this, x, y, "enemy", 300, this.map).setScale(3);
             this.enemysGroup.add(this.enemy);
             break;
           }
@@ -37,6 +37,7 @@ export default class Level1 extends Phaser.Scene {
     this.enemyArr = this.enemysGroup.getChildren();
 
     this.player = new Player(this, spawnPoint.x, spawnPoint.y, "player", this.enemyArr);
+    this.player.setScale(3);
 
     this.enemy.setTarget(this.player);
 
