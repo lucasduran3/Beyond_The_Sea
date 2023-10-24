@@ -13,7 +13,6 @@ export default class Level1 extends Phaser.Scene {
     this.keyDoor2 = false;
     this.keyDoor3 = false;
     this.keyDoor4 = false;
-    this.keyBar = false;
 
     this.weaponsGroup = {};
 
@@ -27,7 +26,6 @@ export default class Level1 extends Phaser.Scene {
     this.keyDoor2 = data.keyDoor2 || false;
     this.keyDoor3 = data.keyDoor3 || false;
     this.keyDoor4 = data.keyDoor4 || false;
-    this.keyBar = data.keyBar || false;
 
     this.weaponsGroup = data.weaponsGroup || {};
 
@@ -44,11 +42,9 @@ export default class Level1 extends Phaser.Scene {
     const floorL = this.map.addTilesetImage("floor", "floor");
     const wallL = this.map.addTilesetImage("wall", "wall");
     const doorL = this.map.addTilesetImage("door", "door");
-    const barDoorL = this.map.addTilesetImage("door", "door");
 
     const floorLayer = this.map.createLayer("floor", floorL, 0, 0);
     const doorLayer = this.map.createLayer("door", doorL, 0, 0);
-    const barDoorLayer = this.map.createLayer("bar-door", barDoorL, 0, 0);
     const wallLayer = this.map.createLayer("wall", wallL, 0, 0);
 
     const objectsLayer = this.map.getObjectLayer("objects");
@@ -92,16 +88,12 @@ export default class Level1 extends Phaser.Scene {
     });
 
     this.bulletsGroup = this.physics.add.group();
-
+    //this.drawersGroup = this.physics.add.staticGroup();
     objectsLayer.objects.forEach((objData) => {
       const { x = 0, y = 0, name } = objData;
       switch (name) {
         case "key-door1": {
           this.key_door1_sprite = this.physics.add.sprite(x, y, "key");
-          break;
-        }
-        case "key-bar" : {
-          this.keyBarSprite = this.physics.add.sprite(x, y, "key");
           break;
         }
         case "revolver": {
@@ -122,7 +114,8 @@ export default class Level1 extends Phaser.Scene {
           break;
         }
         case "drawer": {
-          this.drawer = this.physics.add.staticSprite(x,y,"drawer").setInteractive();
+          this.drawer = this.physics.add.staticSprite(x,y,"revolver").setInteractive();
+          //this.drawersGroup.add(this.drawer);
         }
       }
     });
@@ -149,8 +142,6 @@ export default class Level1 extends Phaser.Scene {
     
     wallLayer.setCollisionByProperty({ colision: true });
     doorLayer.setCollisionByProperty({ colision: true });
-    barDoorLayer.setCollisionByProperty({colision: true});
-
     this.physics.add.collider(wallLayer, this.player);
     this.physics.add.collider(
       doorLayer,
@@ -170,26 +161,6 @@ export default class Level1 extends Phaser.Scene {
 
       },
       () => this.keyDoor1 == true,
-      this
-    );
-
-    this.physics.add.collider(
-      barDoorLayer,
-      this.player,
-      () => {
-        this.scene.start("BarAnimation", {
-          player: this.player,
-          keyDoor1: this.keyDoor1,
-          keyDoor2: this.keyDoor2,
-          keyDoor3: this.keyDoor3,
-          keyDoor4: this.keyDoor4,
-          keyBar : this.keyBar,
-          weaponsGroup: this.weaponsGroup,
-          playerLifes : this.playerLifes,
-          playerMana : this.playerMana
-        });
-      },
-      () => this.keyBar == true,
       this
     );
 
@@ -268,18 +239,6 @@ export default class Level1 extends Phaser.Scene {
         this.key_door1_sprite.destroy();
         this.keyDoor1 = true;
         events.emit("update", { key1: "Key 1" });
-      },
-      null,
-      this
-    );
-
-    this.physics.add.overlap(
-      this.player,
-      this.keyBarSprite,
-      () => {
-        this.keyBarSprite.destroy();
-        this.keyBar = true;
-        events.emit("update", { keyBar: "Key Bar" });
       },
       null,
       this

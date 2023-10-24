@@ -10,16 +10,6 @@ export default class BarWinAnimation extends Phaser.Scene{
     init(data){
         this.playerX = data.playerX;
         this.playerY = data.playerY;
-        this.level = data.level;
-        this.weaponsGroup = data.weaponsGroup || {};
-        this.keyDoor1 = data.keyDoor1;
-        this.keyDoor2 = data.keyDoor2;
-        this.keyDoor3 = data.keyDoor3;
-        this.keyDoor4 = data.keyDoor4;
-        this.keyBar = data.keyBar;
-        this.weaponsGroup = data.weaponsGroup;
-        this.playerLifes = data.playerLifes;
-        this.playerMana = data.playerMana;
     }
 
     create(){
@@ -101,23 +91,12 @@ export default class BarWinAnimation extends Phaser.Scene{
             this.scene.launch("Dialog",{
                 content : content,
                 sceneToStart : "Level1",
-                sceneToStop : "BarWinAnimation",
-                level : this.level,
-                keyDoor1: this.keyDoor1,
-                keyDoor2: this.keyDoor2,
-                keyDoor3: this.keyDoor3,
-                keyDoor4: this.keyDoor4,
-                keyBar : this.keyBar,
-                weaponsGroup: this.weaponsGroup,
-                playerLifes : this.playerLifes,
-                playerMana : this.playerMana
+                sceneToStop : "BarWinAnimation"
             });
         }, 
             callbackScope: this, 
             repeat : 0 
         });
-        
-        this.scene.setVisible(false, "UI");
     }
 
     update(){

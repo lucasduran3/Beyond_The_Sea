@@ -18,7 +18,7 @@ export default class Drawer extends Phaser.Scene{
         this.chipsGroup = this.physics.add.staticGroup();
         this.bulletsGroup = this.physics.add.staticGroup();
 
-        this.background = this.add.sprite(950,550,'drawerBg').setScale(3);
+        this.background = this.add.sprite(950,550,'drawer').setScale(3);
 
         for(let i = 0; i<this.nKits; i++ ){
             this.kit = this.physics.add.sprite(600,225,'revolver').setInteractive({useHandCursor : true});

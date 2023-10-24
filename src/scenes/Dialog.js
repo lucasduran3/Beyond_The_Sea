@@ -9,17 +9,7 @@ export default class Dialog extends Phaser.Scene{
         this.content = data.content;
         this.sceneToStop = data.sceneToStop;
         this.sceneToStart = data.sceneToStart;
-        
-        this.level = data.level;
-        this.weaponsGroup = data.weaponsGroup || {};
-        this.keyDoor1 = data.keyDoor1;
-        this.keyDoor2 = data.keyDoor2;
-        this.keyDoor3 = data.keyDoor3;
-        this.keyDoor4 = data.keyDoor4;
-        this.keyBar = data.keyBar;
-        this.weaponsGroup = data.weaponsGroup;
-        this.playerLifes = data.playerLifes;
-        this.playerMana = data.playerMana;
+        console.log(this.content);
     }
 
     create(){
@@ -47,17 +37,8 @@ export default class Dialog extends Phaser.Scene{
         } else {
             this.scene.stop("Dialog");
             this.scene.stop(this.sceneToStop);
-            this.scene.start(this.sceneToStart,{
-                level : this.level,
-                keyDoor1: this.keyDoor1,
-                keyDoor2: this.keyDoor2,
-                keyDoor3: this.keyDoor3,
-                keyDoor4: this.keyDoor4,
-                keyBar : this.keyBar,
-                weaponsGroup: this.weaponsGroup,
-                playerLifes : this.playerLifes,
-                playerMana : this.playerMana
-            }); 
+            this.scene.start(this.sceneToStart); 
+            this.scene.launch("UI");
         }
     }
 

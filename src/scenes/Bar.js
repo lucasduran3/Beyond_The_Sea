@@ -17,14 +17,12 @@ export default class Bar extends Phaser.Scene{
         this.keyDoor2 = data.keyDoor2;
         this.keyDoor3 = data.keyDoor3;
         this.keyDoor4 = data.keyDoor4;
-        this.keyBar = data.keyBar;
         this.weaponsGroup = data.weaponsGroup;
         this.playerLifes = data.playerLifes;
         this.playerMana = data.playerMana;
     }
 
     create(){
-      this.scene.setVisible(true, "UI");
       this.cameras.main.fadeIn(200);
         this.map = this.make.tilemap({key:"map-mercado-bar"});
         const floorL = this.map.addTilesetImage("floor", "floor");
@@ -65,9 +63,7 @@ export default class Bar extends Phaser.Scene{
           spawnPoint.y,
           "player",
           this.enemyArr,
-          this.weaponsGroup,
-          this.playerLifes,
-          this.playerMana
+          this.weaponsGroup
         );
 
         spawnPoint = this.map.findObject(
@@ -154,16 +150,7 @@ export default class Bar extends Phaser.Scene{
           this.scene.stop("Bar");
           this.scene.start("BarWinAnimation",{
             playerX : this.player.x,
-            playerY : this.player.y,
-            level : "mercado",
-            keyDoor1: this.keyDoor1,
-            keyDoor2: this.keyDoor2,
-            keyDoor3: this.keyDoor3,
-            keyDoor4: this.keyDoor4,
-            keyBar : this.keyBar,
-            weaponsGroup: this.weaponsGroup,
-            playerLifes : this.playerLifes,
-            playerMana : this.playerMana
+            playerY : this.player.y
           });
         }
     }

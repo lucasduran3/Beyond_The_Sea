@@ -456,18 +456,6 @@
                  "width":0,
                  "x":1858,
                  "y":1626
-                }, 
-                {
-                 "height":0,
-                 "id":4,
-                 "name":"key-bar",
-                 "point":true,
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":1352,
-                 "y":1332
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -476,7 +464,7 @@
          "y":0
         }],
  "nextlayerid":7,
- "nextobjectid":5,
+ "nextobjectid":4,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.1",
