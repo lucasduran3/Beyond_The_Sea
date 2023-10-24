@@ -27,9 +27,12 @@ export default class UI extends Phaser.Scene {
   }
 
   create() {
-    this.playerHP = new HealthBar(this, 80, 40, 300, '0x00ff00');
-   
-    this.playerMana = new HealthBar(this, 80, 90, 300, '0x00a0ff');
+    this.playerHP = new HealthBar(this, 80, 40, 300);
+    this.mana = this.add.text(80,100,"Mana:",{
+      fontSize: "40px",
+      color : "#fff"
+      }
+    );
 
     this.coins = this.add.text(1600,50,"Coins:",{
       fontSize: "40px",
@@ -93,20 +96,7 @@ export default class UI extends Phaser.Scene {
       fontSize: "20px",
       color : "#fff"
       }
-    ).setInteractive({useHandCursor : true});
-
-    this.power1.on('pointerover', ()=>{
-      this.power1.setFontSize("25px");
-    });
-  
-    this.power1.on('pointerout',()=>{
-      this.power1.setFontSize('20px');
-    });
-
-    this.power1.on('pointerdown', ()=>{
-      this.updateMana({ammount : 20});
-      events.emit("usePowerUp");
-    });
+    );
 
     this.power2 = this.add.text(950,100,"power2",{
       fontSize: "20px",
@@ -144,18 +134,12 @@ export default class UI extends Phaser.Scene {
 
     events.on("update", this.updateUI, this);
 
-    events.on("updateMana", this.updateMana, this);
-
   }
   updateUI(data){
 
     this.playerHP.decrease(data.damage||0);
 
+    console.log(data.damage);
     this.key1.setText(data.key1);
-  }
-
-  updateMana(data){
-    this.playerMana.decrease(data.ammount||0);
-    console.log(data.ammount);
   }
 }

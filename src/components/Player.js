@@ -3,10 +3,9 @@ import Bullet from "./Bullet";
 import events from "../scenes/EventCenter";
 
 const ROTATION_SPEED = 5 * Math.PI;
-let nBullets = 0;
 
 export default class Player extends Phaser.GameObjects.Sprite {
-  constructor(scene, x, y, texture, enemy, weapons) {
+  constructor(scene, x, y, texture, enemy, weapons, nBullets) {
     super(scene, x, y, texture);
     scene.add.existing(this);
     scene.physics.world.enable(this);
@@ -18,6 +17,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
     this.lifes = 300;
     this.enemy = enemy;
     this.bullets = this.scene.physics.add.group();
+    this.nBullets = nBullets;
 
     this.speed = 400;
     this.velocityX = 0;
@@ -68,6 +68,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
   }
 
   update(time, delta) {
+    //console.log(this.activatedWeapon);
     this.rotation = Phaser.Math.Angle.RotateTo(
       this.rotation,
       this.target,
@@ -102,11 +103,10 @@ export default class Player extends Phaser.GameObjects.Sprite {
     this.shootAtEnemy();
 
     events.on("updateWeapon", this.setWeapon, this);
-    events.on("usePowerUp", this.usePowerUp, this);
   }
 
   fireBullet(pointer){
-    if(this.activatedWeapon != null && nBullets>0){
+    if(this.activatedWeapon != null && this.nBullets>0){
     this.anims.play("shoot", true);
     const speed = this.activatedWeapon.speed;
     const zeroPoint = new Phaser.Math.Vector2(
@@ -119,8 +119,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
     this.bullets.add(bullet);
     bullet.fire(angle, speed);
 
-    nBullets--;
-    this.scene.nBullets--;
+    this.nBullets--;
     }
   }
 
@@ -139,9 +138,10 @@ export default class Player extends Phaser.GameObjects.Sprite {
         this.bullets.getFirstAlive().destroy();
       });
     }, null, this);
-    }else{
+    } else{
       console.log("nothing");
     }
+
   }
 
   addWeapon(weapon){
@@ -153,13 +153,6 @@ export default class Player extends Phaser.GameObjects.Sprite {
   }
 
   incrementBullets(){
-    nBullets++;
-  }
-
-  usePowerUp(){
-    this.enemy.forEach(element => {
-      element.freeze();
-    });
-
+    this.nBullets++;
   }
 }

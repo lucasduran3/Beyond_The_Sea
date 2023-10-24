@@ -1,13 +1,12 @@
 import Phaser from "phaser";
 
 export default class HealthBar{
-    constructor(scene, x, y, value, color){
+    constructor(scene, x, y, value){
         this.bar = new Phaser.GameObjects.Graphics(scene);
 
         this.x = x;
         this.y = y;
         this.value = value;
-        this.color = color;
 
         this.draw();
 
@@ -16,7 +15,7 @@ export default class HealthBar{
 
     draw(){
         this.bar.clear();
-        this.bar.fillStyle(this.color);
+        this.bar.fillStyle(0x00ff00);
         this.bar.fillRect(this.x , this.y , this.value, 20);
     }
     
