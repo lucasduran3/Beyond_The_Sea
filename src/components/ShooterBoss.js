@@ -23,7 +23,6 @@ export default class ShooterBoss extends Phaser.GameObjects.Sprite{
 
     update(){
         this.rotation = Phaser.Math.Angle.Between(this.x, this.y, this.target.x, this.target.y) + Math.PI / 2;
-        this.shootAtPlayer();
 
     }
 
@@ -44,13 +43,5 @@ export default class ShooterBoss extends Phaser.GameObjects.Sprite{
             callbackScope: this
         });
         this.setTint(0xff0000);
-    }
-
-    shootAtPlayer(){
-        this.scene.physics.add.overlap(this.target, this.bullets, ()=>{
-            this.target.looseLife(20);
-            this.bullets.getFirstAlive().destroy();
-            console.log("fdf");
-        }, null, this);
     }
 }
