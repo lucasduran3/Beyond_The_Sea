@@ -28,11 +28,13 @@ export default class Bar extends Phaser.Scene{
       this.cameras.main.fadeIn(200);
         this.map = this.make.tilemap({key:"map-mercado-bar"});
         const floorL = this.map.addTilesetImage("floor", "floor");
-        const wallL = this.map.addTilesetImage("wall", "wall");
+        //const wallL = this.map.addTilesetImage("wall", "wall");
+        //const doorL = this.map.addTilesetImage("door", "door");
         const barTableL = this.map.addTilesetImage("bar-table", "bar-table");
     
         const floorLayer = this.map.createLayer("floor", floorL, 0, 0);
-        const wallLayer = this.map.createLayer("wall", wallL, 0, 0);
+       // const doorLayer = this.map.createLayer("door", doorL, 0, 0);
+       // const wallLayer = this.map.createLayer("wall", wallL, 0, 0);
         const barTableLayer = this.map.createLayer("bar-table", barTableL, 0, 0);
     
         const objectsLayer = this.map.getObjectLayer("objects");
@@ -138,9 +140,6 @@ export default class Bar extends Phaser.Scene{
 
         this.time.addEvent({ delay: 2000, callback: this.spawnEnemy, callbackScope: this, repeat : 4 });
 
-        wallLayer.setCollisionByProperty({ colision: true });
-        this.physics.add.collider(wallLayer, this.player);
-
     }
 
     update(time, delta){
@@ -163,25 +162,11 @@ export default class Bar extends Phaser.Scene{
             keyDoor4: this.keyDoor4,
             keyBar : this.keyBar,
             weaponsGroup: this.weaponsGroup,
+            playerLifes : this.playerLifes,
             playerMana : this.playerMana
           });
         }
-
-        if(this.player.lifes <= 0 ){
-          
-          this.scene.stop("Bar");
-          this.scene.start("Level1", {
-            level: "mercado",
-            player: this.player,
-            keyDoor1: this.keyDoor1,
-            keyDoor2: this.keyDoor2,
-            keyDoor3: this.keyDoor3,
-            keyDoor4: this.keyDoor4,
-            weaponsGroup: this.weaponsGroup,    
-          });
-        }
     }
-    
 
     spawnEnemy(){
       this.enemy = new Enemy(this, 600, 100, "enemy", 300, this.map);
