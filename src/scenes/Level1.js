@@ -2,7 +2,6 @@ import Phaser from "phaser";
 import Player from "../components/Player";
 import Enemy from "../components/Enemy";
 import events from "../scenes/EventCenter";
-import { revolver, rifle } from "../components/weapons";
 import HorrifiPostFxPipeline from "phaser3-rex-plugins/plugins/horrifipipeline";
 
 export default class Level1 extends Phaser.Scene {
@@ -13,10 +12,6 @@ export default class Level1 extends Phaser.Scene {
     this.keyDoor2 = false;
     this.keyDoor3 = false;
     this.keyDoor4 = false;
-
-    this.weaponsGroup = {};
-
-    this.nBullets;
   }
 
   init(data){
@@ -25,24 +20,17 @@ export default class Level1 extends Phaser.Scene {
    this.keyDoor2 = data.keyDoor2 || false;
    this.keyDoor3 = data.keyDoor3 || false;
    this.keyDoor4 = data.keyDoor4 || false;
-
-   this.weaponsGroup = data.weaponsGroup || {};
-
-   this.nBullets = data.nBullets || 0;
   }
 
   create() {
     this.collisionBetweenPlayerEnemy = false;
     this.map = this.make.tilemap({ key: "map-"+this.level });
-
     const floorL = this.map.addTilesetImage("floor", "floor");
     const wallL = this.map.addTilesetImage("wall", "wall");
     const doorL = this.map.addTilesetImage("door", "door");
-
     const floorLayer = this.map.createLayer("floor", floorL, 0, 0);
     const doorLayer = this.map.createLayer("door", doorL, 0, 0);
     const wallLayer = this.map.createLayer("wall", wallL, 0, 0);
-
     const objectsLayer = this.map.getObjectLayer("objects");
 
     this.enemysGroup = this.physics.add.group();
@@ -65,27 +53,28 @@ export default class Level1 extends Phaser.Scene {
 
     this.enemyArr = this.enemysGroup.getChildren();
 
-    this.player = new Player(this, spawnPoint.x, spawnPoint.y, "player", this.enemyArr, this.weaponsGroup, this.nBullets);
+    this.player = new Player(this, spawnPoint.x, spawnPoint.y, "player", this.enemyArr);
 
-    this.bulletsGroup = this.physics.add.group();
+    spawnPoint = this.map.findObject(
+      "objects",
+      (obj) => obj.name === "key-door1"
+    );
+
     objectsLayer.objects.forEach((objData)=>{
       const {x = 0, y = 0, name} = objData;
         switch(name){
           case "key-door1" : {
             this.key_door1_sprite = this.physics.add.sprite(x, y, "key");
             break;
-          } case "revolver" : {
-            this.revolverSprite = this.physics.add.sprite(x, y, "revolver");
-            break;
-          } case "rifle" : {
-            this.rifleSprite = this.physics.add.sprite(x, y, "rifle");
-            break;
-          } case "bullet" : {
-            this.bulletToCollect = this.physics.add.sprite(x,y, "bulletToCollect");
-            this.bulletsGroup.add(this.bulletToCollect);
           }
         }
-    });    
+    });
+
+    this.map.objects.forEach(element => {
+      if(element.name == "key-door1"){
+        this.key_door1_sprite = this.physics.add.sprite(spawnPoint.x, spawnPoint.y, "key");
+      }
+    });
 
     this.enemyArr.forEach(element => {
       // @ts-ignore
@@ -111,21 +100,20 @@ export default class Level1 extends Phaser.Scene {
     this.physics.add.collider(wallLayer, this.player);
     this.physics.add.collider(doorLayer, this.player, ()=>{this.scene.start("Level1",{
     level : "level1", 
-    player : this.player,
     keyDoor1 : this.keyDoor1,
     keyDoor2 : this.keyDoor2,
     keyDoor3 : this.keyDoor3,
-    keyDoor4 : this.keyDoor4,
-    weaponsGroup : this.weaponsGroup,
-    nBullets : this.nBullets});
-    }, 
+    keyDoor4 : this.keyDoor4})}, 
     ()=>this.keyDoor1 == true, this);
 
     this.physics.add.collider(wallLayer, this.player.bullets, ()=>{
       this.player.bullets.getFirstAlive().destroy();
     }, null, this);
-  
+
+   
     this.keyESC= this.input.keyboard.addKey("ESC");
+
+    
 
     //horrifi plugin
     const postFxPlugin = this.plugins.get('rexhorrifipipelineplugin');
@@ -170,26 +158,10 @@ export default class Level1 extends Phaser.Scene {
 
   update(time, delta) {
     this.physics.add.overlap(this.player, this.key_door1_sprite, ()=>{
-      this.key_door1_sprite.destroy(); 
-      this.keyDoor1 = true
-      events.emit("update",{key1 : "Key 1"});
-      }, null, this);
-
-    this.physics.add.overlap(this.player, this.revolverSprite, ()=>{
-      this.weaponsGroup['revolver'] = revolver;
-      this.player.addWeapon(revolver);
-      this.revolverSprite.destroy(); 
-      }, null, this);
-
-      
-    this.physics.add.overlap(this.player, this.rifleSprite, ()=>{
-      this.weaponsGroup['rifle'] = rifle;
-      this.player.addWeapon(rifle);
-      this.rifleSprite.destroy(); 
-      }, null, this);
-
-    this.physics.add.overlap(this.player, this.bulletsGroup, this.collectBullet, null, this);
-  
+    this.key_door1_sprite.destroy(); 
+    this.keyDoor1 = true
+    events.emit("update",{key1 : "Key 1"});
+    }, null, this);
 
     this.player.update(time, delta);
     
@@ -201,12 +173,9 @@ export default class Level1 extends Phaser.Scene {
       this.scene.pause("Level1");
       this.scene.launch("Pause");
     }
-
     this.scene.setVisible(true, "UI");
 
     this.isOver();
-
-   console.log(this.player.nBullets);
   }
 
   isOver(){
@@ -214,11 +183,5 @@ export default class Level1 extends Phaser.Scene {
       this.scene.stop("Level1");
       this.scene.start("GameOver");
     }
-  }
-
-  collectBullet(player, bullet){
-    bullet.destroy();
-    this.nBullets++;
-    this.player.incrementBullets();
   }
 }
