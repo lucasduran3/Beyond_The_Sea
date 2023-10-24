@@ -1,18 +1,20 @@
 import Phaser from "phaser";
 
+import { getPhrase } from "../services/translation";
+
 export default class Help extends Phaser.Scene{
     constructor(){
         super("Help");
     }
 
     create(){
-        const titleText = this.add.text(850,240,'HELP',{
+        const titleText = this.add.text(850,240,getPhrase('Ayuda'),{
             fontSize : '100px'
         });
 
         titleText.setTint(0xff00ff, 0xffff00, 0x0000ff, 0xff0000);
 
-        const controlsButton = this.add.text(960,500,'Controls',{
+        const controlsButton = this.add.text(960,500, getPhrase('Controles'),{
             fontSize : '50px',
             color : "#fff",
             align : 'center',
@@ -31,7 +33,7 @@ export default class Help extends Phaser.Scene{
             this.scene.start("Controls");
         });
 
-        const powerupsButton = this.add.text(960,700,'Power ups',{
+        const powerupsButton = this.add.text(960,700, getPhrase('Habilidades especiales'),{
             fontSize : '50px',
             color : "#fff",
             align : 'center',

@@ -1,29 +1,51 @@
 import Phaser from "phaser";
 import Bullet from "./Bullet";
 import events from "../scenes/EventCenter";
+import {revolver} from "./weapons";
 
 const ROTATION_SPEED = 5 * Math.PI;
+let nBullets = 0;
 
 export default class Player extends Phaser.GameObjects.Sprite {
-  constructor(scene, x, y, texture, enemy) {
+  constructor(scene, x, y, texture, enemy, weapons, lifes, mana) {
     super(scene, x, y, texture);
     scene.add.existing(this);
     scene.physics.world.enable(this);
 
     this.scene = scene;
-
     this.target = 0;
 
-    this.lifes = 300;
+    this.lifes = lifes || 300;
+    this.mana = mana || 300;
     this.enemy = enemy;
     this.bullets = this.scene.physics.add.group();
 
     this.speed = 400;
     this.velocityX = 0;
     this.velocityY = 0;
+
+    this.weaponsGroup = weapons;
+    this.activatedWeapon = null;
     
+    this.anims.create({
+      key:"walk",
+      frames : this.anims.generateFrameNumbers("player",{start : 0, end:10}),
+      frameRate : 27,
+      repeat : -1
+    });
+
+    this.anims.create({
+      key:"shoot",
+      frames : [{key:"player", frame:11}]
+    });
+
+    this.anims.create({
+      key:"none",
+      frames : [{key:"player", frame:0}],
+    });
+
     // @ts-ignore
-    this.body.setCircle(15,17,25);
+    this.body.setCircle(45,45,70);
     this.scene.input.on("pointerdown", (pointer) => {
       this.fireBullet(pointer);
     });
@@ -42,18 +64,8 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
     // @ts-ignore
     this.body.setCollideWorldBounds(true);
-
-    this.anims.create({
-      key:"walk",
-      frames : this.anims.generateFrameNumbers("player",{start : 0, end:11}),
-      frameRate : 27,
-      repeat : -1
-    });
-
-    this.anims.create({
-      key:"none",
-      frames : [{key:"player", frame:0}],
-    });
+    events.on("usePowerUp", this.usePowerUp, this);
+    
   }
 
   update(time, delta) {
@@ -89,10 +101,15 @@ export default class Player extends Phaser.GameObjects.Sprite {
     this.body.setVelocity(this.velocityX, this.velocityY);
 
     this.shootAtEnemy();
+
+    events.on("updateWeapon", this.setWeapon, this);
+
   }
 
   fireBullet(pointer){
-    const speed = 500;
+    if(this.activatedWeapon != null && nBullets>0){
+    this.anims.play("shoot", true);
+    const speed = this.activatedWeapon.speed;
     const zeroPoint = new Phaser.Math.Vector2(
       this.scene.cameras.main.centerX,
       this.scene.cameras.main.centerY
@@ -102,6 +119,13 @@ export default class Player extends Phaser.GameObjects.Sprite {
     const bullet = new Bullet(this.scene, this.x, this.y, "bullet");
     this.bullets.add(bullet);
     bullet.fire(angle, speed);
+
+    nBullets--;
+    this.scene.nBullets--;
+    events.emit("updateBullets", {
+      isIncrease : false
+    });
+    }
   }
 
   looseLife(amount){
@@ -119,8 +143,32 @@ export default class Player extends Phaser.GameObjects.Sprite {
         this.bullets.getFirstAlive().destroy();
       });
     }, null, this);
-    } else{
+    }else{
       console.log("nothing");
     }
   }
+
+  addWeapon(weapon){
+    this.weaponsGroup[weapon.name] = weapon;
+  }
+
+  setWeapon(data){
+    this.activatedWeapon = this.weaponsGroup[data.weapon];
+  }
+
+  incrementBullets(){
+    nBullets++;
+  }
+
+  usePowerUp(data){
+    if(this.mana>20){
+    this.enemy.forEach(element => {
+      element.freeze();
+    });
+    this.mana-=20;
+    }else{
+      console.log("no hay suficiente mana");
+    }
+  }
+
 }

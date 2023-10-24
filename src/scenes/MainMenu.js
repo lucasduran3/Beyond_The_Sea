@@ -1,17 +1,25 @@
 import Phaser from "phaser";
 
+import { getPhrase } from "../services/translation";
+
+
 export default class MainMenu extends Phaser.Scene{
     constructor(){
         super("MainMenu");
     }
 
+    language;
+
+    init(language){
+        this.language = language
+    }
     create(){
         const titleText = this.add.text(550,140, 'BEYOND THE SEA',{
             fontSize : '100px'
         });
         titleText.setTint(0xff00ff, 0xffff00, 0x0000ff, 0xff0000);
 
-        const playButton = this.add.text(960,400, 'Play',{
+        const playButton = this.add.text(960,500, getPhrase('Jugar'),{
             fontSize : '50px',
             color : '#fff',
             align : "center",
@@ -30,30 +38,32 @@ export default class MainMenu extends Phaser.Scene{
 
         playButton.on('pointerdown', ()=>{
             this.scene.start("Level1");
+            this.scene.launch("UI");
         });
 
-        const LevelButton = this.add.text(960,600, 'Select Level',{
+        const continueButton = this.add.text(960,700, getPhrase('Continuar'),{
             fontSize : '50px',
             color : '#fff',
             align : "center",
             backgroundColor : '#2d2d2d'
         }).setPadding(32).setOrigin(0.5);
 
-        LevelButton.setInteractive({useHandCursor : true});
+        continueButton.setInteractive({useHandCursor : true});
 
-        LevelButton.on('pointerover',()=>{
-            LevelButton.setBackgroundColor('#8d8d8d');
+        continueButton.on('pointerover',()=>{
+            continueButton.setBackgroundColor('#8d8d8d');
         });
 
-        LevelButton.on('pointerout', ()=>{
-            LevelButton.setBackgroundColor('#2d2d2d');
+        continueButton.on('pointerout', ()=>{
+            continueButton.setBackgroundColor('#2d2d2d');
         });
 
-        LevelButton.on('pointerdown', ()=>{
-            this.scene.start("LevelSelector");
+        continueButton.on('pointerdown', ()=>{
+            this.scene.start("Level1");
+            this.scene.launch("UI");
         });
 
-        const helpButton = this.add.text(960,800, 'Help',{
+        const helpButton = this.add.text(960,900, getPhrase('Ayuda'),{
             fontSize : '50px',
             color : '#fff',
             align : "center",

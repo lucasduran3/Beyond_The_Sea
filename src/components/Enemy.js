@@ -14,9 +14,10 @@ export default class Enemy extends Phaser.GameObjects.Sprite{
         this.damage = 1;
         this.lifes = 5;
         this.c = 0;
+        this.isMoving = true;
         
         // @ts-ignore
-        this.body.setCircle(15,17,5);
+        this.body.setCircle(45,45,55);
 
         // @ts-ignore
         this.body.setCollideWorldBounds(true);
@@ -50,14 +51,14 @@ export default class Enemy extends Phaser.GameObjects.Sprite{
 
           this.anims.create({
             key:"hit",
-            frames : this.anims.generateFrameNumbers("enemy",{start : 0, end:11}),
+            frames : this.anims.generateFrameNumbers("enemy",{start : 0, end:10}),
             frameRate : 20,
             repeat : -1
           });
     }
 
     update(){
-        this.findEnemyPath();   
+        this.findEnemyPath(this.isMoving);   
         this.enemyDeath();
 
         this.scene.physics.add.collider(this.body, this.target, this.attack, null, this);    
@@ -67,7 +68,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite{
         this.target = target;
     }
 
-    findEnemyPath(){
+    findEnemyPath(isMoving){
         const playerTile = this.map.worldToTileXY(this.target.x, this.target.y);
         const enemyTile = this.map.worldToTileXY(this.x, this.y);
         this.easystar.findPath(
@@ -82,13 +83,15 @@ export default class Enemy extends Phaser.GameObjects.Sprite{
                     const targetY = nextTile.y * this.map.tileHeight + this.map.tileHeight / 2;
                       const angle = Phaser.Math.Angle.Between(this.x, this.y, targetX, targetY);
                         this.setRotation(angle + Math.PI / 2);
+                        
+                        if( Phaser.Math.Distance.Between(this.x, this.y, this.target.x, this.target.y) <= 500 && isMoving){
                         // @ts-ignore
-                        this.body.setVelocity(Math.cos(angle) * this.speed, Math.sin(angle) * this.speed);
+                        this.body.setVelocity(Math.cos(angle) * this.speed, Math.sin(angle) * this.speed);}
                         
                 }
             }
         );
-        this.easystar.calculate();   
+        this.easystar.calculate();
     }
 
     attack(){
@@ -113,5 +116,22 @@ export default class Enemy extends Phaser.GameObjects.Sprite{
             this.setVisible(false);
             this.active = false;
         }
+    }
+
+    freeze(){
+        // @ts-ignore
+        this.body.stop();
+        // @ts-ignore
+        this.body.setVelocity(0);
+        this.isMoving = false;
+
+        this.scene.time.addEvent({
+            delay: 2500, 
+            callback: () => {
+                this.isMoving = true;
+            },
+            callbackScope: this
+        });
+
     }
 }
