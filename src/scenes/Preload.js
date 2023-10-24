@@ -15,12 +15,9 @@ export default class Preload extends Phaser.Scene{
         this.load.image('wall', '/assets/sprites/wall.png');
         this.load.image('floor', '/assets/sprites/floor.png');
         this.load.image('sofa', '/assets/sprites/sofa.png');
-        this.load.image('door', '/assets/sprites/door.png')
-        this.load.image('key', '/assets/sprites/key.png')
 
         //tilemaps
-        this.load.tilemapTiledJSON("map-lobby", "/assets/tilemaps/lobby.json")
-        this.load.tilemapTiledJSON("map-level1", "/assets/tilemaps/level1.json");       
+        this.load.tilemapTiledJSON("map", "/assets/tilemaps/map.json");
 
         //plugins
         this.load.plugin('rexhorrifipipelineplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexhorrifipipelineplugin.min.js', true);
@@ -33,8 +30,6 @@ export default class Preload extends Phaser.Scene{
             () => this.scene.start('menu', { language: this.#language }),
         );
 
-        //this.scene.start("SelectLang",{language : this.#language});
-        this.scene.start("SelectLang");
-        
+        this.scene.start("SelectLang",{language : this.#language});
     }
 }

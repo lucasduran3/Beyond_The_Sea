@@ -1,11 +1,10 @@
 import Phaser from "phaser";
 import Player from "../components/Player";
-import Enemy from "../components/Enemy";
 import HorrifiPostFxPipeline from "phaser3-rex-plugins/plugins/horrifipipeline";
 
-export default class Level1 extends Phaser.Scene {
+export default class Lobby extends Phaser.Scene {
   constructor() {
-    super("Level1");
+    super("Lobby");
   }
 
   create() {
@@ -17,33 +16,17 @@ export default class Level1 extends Phaser.Scene {
     const wallLayer = this.map.createLayer("wall", wallL, 0, 0);
     const objectsLayer = this.map.getObjectLayer("objects");
 
-    this.enemysGroup = this.physics.add.group();
-    objectsLayer.objects.forEach((objData)=>{
-      const {x = 0, y = 0, name} = objData;
-        switch(name){
-          case "enemy" : {
-            this.enemy = new Enemy(this, x, y, "enemy", 300, this.map);
-            this.enemysGroup.add(this.enemy);
-            break;
-          }
-        }
-    });
+    console.log(floorLayer);
+    console.log(objectsLayer);
+
 
     let spawnPoint = this.map.findObject(
       "objects",
       (obj) => obj.name === "player"
     );
 
-    this.enemyArr = this.enemysGroup.getChildren();
-
-    this.player = new Player(this, spawnPoint.x, spawnPoint.y, "player", this.enemyArr);
-
-    this.enemy.setTarget(this.player);
-
-    this.enemyArr.forEach(element => {
-      // @ts-ignore
-      element.setTarget(this.player);
-    });
+    this.player = new Player(this, spawnPoint.x, spawnPoint.y, "player");
+    this.player.setScale(3);
 
     this.cameras.main.startFollow(this.player);
     this.physics.world.setBounds(
@@ -62,7 +45,7 @@ export default class Level1 extends Phaser.Scene {
     wallLayer.setCollisionByProperty({ colision: true });
     this.physics.add.collider(wallLayer, this.player);
     this.physics.add.collider(wallLayer, this.player.bullets, ()=>{
-      this.player.bullets.getFirstAlive().destroy();
+      this.player.bullets.clear(true,true);
     }, null, this);
 
     this.keyESC= this.input.keyboard.addKey("ESC");
@@ -72,6 +55,7 @@ export default class Level1 extends Phaser.Scene {
 
     //horrifi plugin
     const postFxPlugin = this.plugins.get('rexhorrifipipelineplugin');
+    console.log(postFxPlugin);
     const effect = this.cameras.main.setPostPipeline(HorrifiPostFxPipeline);
 
     // @ts-ignore
@@ -114,32 +98,23 @@ export default class Level1 extends Phaser.Scene {
   update(time, delta) {
     this.player.update(time, delta);
     
-    this.enemyArr.forEach(element => {
-      element.update();
-    });
 
     if(this.keyESC.isDown){
-      this.scene.pause("Level1");
+      this.scene.pause("Lobby");
       this.scene.launch("Pause");
     }
     this.scene.setVisible(true, "UI");
 
-    this.isWin();
     this.isOver();
   }
 
   isWin(){
-    const enemysAlives = this.enemysGroup.getMatching('active', true).length;
-
-    if(enemysAlives<=0){
-      this.scene.stop("Level1");
-      this.scene.start("GameWin");
-    }
   }
 
   isOver(){
     if(this.player.lifes <= 0){
-      this.scene.stop("Level1");
+      this.scene.stop("Lobby");
+      this.scene.stop("UI");
       this.scene.start("GameOver");
     }
   }
