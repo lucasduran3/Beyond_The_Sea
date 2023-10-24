@@ -28,8 +28,6 @@ export default class Preload extends Phaser.Scene {
     this.load.image("bulletToCollect", "/assets/sprites/bulletToCollect.png");
     this.load.image("bar-table", "/assets/sprites/bar-table.png");
     this.load.image("arrow", "/assets/sprites/arrow.png");
-    this.load.image("drawer", "/assets/sprites/drawer.png");
-
 
     //tilemaps
     this.load.tilemapTiledJSON("map-lobby", "/assets/tilemaps/lobby.json");
@@ -51,7 +49,7 @@ export default class Preload extends Phaser.Scene {
     );
 
     //this.scene.start("SelectLang",{language : this.#language});
-    this.scene.launch("UI");
-    this.scene.start("Level1");
+    //this.scene.launch("UI");
+    this.scene.start("BarAnimation");
   }
 }

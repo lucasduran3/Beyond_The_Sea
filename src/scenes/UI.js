@@ -19,52 +19,16 @@ import HealthBar from "../components/HealthBar";
 export default class UI extends Phaser.Scene {
   constructor() {
     super("UI");
-    this.nBullets = 0;
-    this.nKits = 0;
-    this.nChips = 0;
-    this.nBullets = 0;
   }
 
   init(){
-    
+   
   }
 
   create() {
     this.playerHP = new HealthBar(this, 80, 40, 300, '0x00ff00');
    
     this.playerMana = new HealthBar(this, 80, 90, 300, '0x00a0ff');
-
-    this.kitsUI = this.add.text(80,140,'KITS'+this.nKits,{
-      fontSize : "30px",
-      color : "#fff"
-    }).setInteractive({useHandCursor : true});
-
-    this.kitsUI.on('pointerdown', ()=>{
-      events.emit('updateHP',{
-        ammount : 20,
-        isIncrease : true
-      });
-
-      events.emit('updateKits',{
-        isIncrease : false
-      });
-    });
-
-    this.chipsUI = this.add.text(80,190,'CHIPS'+this.nChips,{
-      fontSize : "30px",
-      color : "#fff"
-    }).setInteractive({useHandCursor : true});
-
-    this.chipsUI.on('pointerdown', ()=>{
-      events.emit('updateMana',{
-        ammount : 20,
-        isIncrease : true
-      });
-
-      events.emit('updateChips',{
-        isIncrease : false
-      });
-    });
 
     this.coins = this.add.text(1600,50,"Coins:",{
       fontSize: "40px",
@@ -144,7 +108,7 @@ export default class UI extends Phaser.Scene {
         events.emit("usePowerUp",{
           cost : 20
         });
-        this.updateMana({ammount : 20, isIncrease : false});
+        this.updateMana({ammount : 20});
       } 
     });
 
@@ -186,14 +150,6 @@ export default class UI extends Phaser.Scene {
 
     events.on("updateMana", this.updateMana, this);
 
-    events.on("updateHP", this.updateHP, this);
-
-    events.on("updateKits", this.updateKits, this);
-
-    events.on("updateChips", this.updateChips, this);
-
-    events.on("updateBullets", this.updateBullets, this);
-
   }
   updateUI(data){
 
@@ -202,49 +158,7 @@ export default class UI extends Phaser.Scene {
     this.key1.setText(data.key1);
   }
 
-  updateHP(data){
-    if(data.isIncrease == true && this.playerHP.value != 300 && this.nKits>0){
-      this.playerHP.increment(data.ammount||0);
-    }else if(data.isIncrease == false){
-      this.playerHP.decrease(data.ammout||0);
-    }
-  }
-
   updateMana(data){
-    if(data.isIncrease == true && this.playerMana.value != 300 && this.nChips>0){
-      this.playerMana.increment(data.ammount||0);
-    }else if(data.isIncrease == false){
-      this.playerMana.decrease(data.ammount||0);
-    }
-  }
-
-  updateKits(data){
-    if(data.isIncrease == true){
-      this.nKits++;
-      this.kitsUI.setText('KITS'+this.nKits);
-    }else if(data.isIncrease == false && this.nKits>0){
-      this.nKits--;
-      this.kitsUI.setText('KITS'+this.nKits);
-    }
-  }
-
-  updateChips(data){
-    if(data.isIncrease == true){
-      this.nChips++;
-      this.chipsUI.setText('CHIPS'+this.nChips);
-    }else if(data.isIncrease == false && this.nChips>0){
-      this.nChips--;
-      this.chipsUI.setText('CHIPS'+this.nChips);
-    }
-  }
-
-  updateBullets(data){
-    if(data.isIncrease == true){
-      this.nBullets++;
-      this.bullets.setText('Bullets: ' + this.nBullets);
-    }else if(data.isIncrease == false && this.nBullets>0){
-      this.nBullets--;
-      this.bullets.setText('Bullets: ' + this.nBullets);
-    }
+    this.playerMana.decrease(data.ammount||0);
   }
 }

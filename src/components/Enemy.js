@@ -84,7 +84,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite{
                       const angle = Phaser.Math.Angle.Between(this.x, this.y, targetX, targetY);
                         this.setRotation(angle + Math.PI / 2);
                         
-                        if( Phaser.Math.Distance.Between(this.x, this.y, this.target.x, this.target.y) <= 500 && isMoving){
+                        if(isMoving){
                         // @ts-ignore
                         this.body.setVelocity(Math.cos(angle) * this.speed, Math.sin(angle) * this.speed);}
                         

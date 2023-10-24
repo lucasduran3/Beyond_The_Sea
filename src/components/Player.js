@@ -4,10 +4,10 @@ import events from "../scenes/EventCenter";
 import {revolver} from "./weapons";
 
 const ROTATION_SPEED = 5 * Math.PI;
-let nBullets = 0;
+let nBullets = 1000;
 
 export default class Player extends Phaser.GameObjects.Sprite {
-  constructor(scene, x, y, texture, enemy, weapons, lifes, mana) {
+  constructor(scene, x, y, texture, enemy, weapons) {
     super(scene, x, y, texture);
     scene.add.existing(this);
     scene.physics.world.enable(this);
@@ -15,8 +15,8 @@ export default class Player extends Phaser.GameObjects.Sprite {
     this.scene = scene;
     this.target = 0;
 
-    this.lifes = lifes || 300;
-    this.mana = mana || 300;
+    this.lifes = 300;
+    this.mana = 300;
     this.enemy = enemy;
     this.bullets = this.scene.physics.add.group();
 
@@ -25,7 +25,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
     this.velocityY = 0;
 
     this.weaponsGroup = weapons;
-    this.activatedWeapon = null;
+    this.activatedWeapon = revolver;
     
     this.anims.create({
       key:"walk",
@@ -122,9 +122,6 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
     nBullets--;
     this.scene.nBullets--;
-    events.emit("updateBullets", {
-      isIncrease : false
-    });
     }
   }
 
@@ -153,7 +150,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
   }
 
   setWeapon(data){
-    this.activatedWeapon = this.weaponsGroup[data.weapon];
+    this.activatedWeapon = revolver;
   }
 
   incrementBullets(){
@@ -170,5 +167,4 @@ export default class Player extends Phaser.GameObjects.Sprite {
       console.log("no hay suficiente mana");
     }
   }
-
 }

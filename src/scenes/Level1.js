@@ -15,9 +15,6 @@ export default class Level1 extends Phaser.Scene {
     this.keyDoor4 = false;
 
     this.weaponsGroup = {};
-
-    this.playerLifes = null;
-    this.playerMana = null;
   }
 
   init(data) {
@@ -28,9 +25,6 @@ export default class Level1 extends Phaser.Scene {
     this.keyDoor4 = data.keyDoor4 || false;
 
     this.weaponsGroup = data.weaponsGroup || {};
-
-    this.playerLifes = data.playerLifes || null;
-    this.playerMana = data.playerMana || null;
   }
 
   create() {
@@ -75,20 +69,10 @@ export default class Level1 extends Phaser.Scene {
       spawnPoint.y,
       "player",
       this.enemyArr,
-      this.weaponsGroup,
-      this.playerLifes,
-      this.playerMana
+      this.weaponsGroup
     );
 
-    events.emit("updatePlayerLife",{
-      lifes : this.player.lifes
-    });
-    events.emit("updatePlayerMana",{
-      mana : this.player.mana
-    });
-
     this.bulletsGroup = this.physics.add.group();
-    //this.drawersGroup = this.physics.add.staticGroup();
     objectsLayer.objects.forEach((objData) => {
       const { x = 0, y = 0, name } = objData;
       switch (name) {
@@ -111,11 +95,6 @@ export default class Level1 extends Phaser.Scene {
             "bulletToCollect"
           );
           this.bulletsGroup.add(this.bulletToCollect);
-          break;
-        }
-        case "drawer": {
-          this.drawer = this.physics.add.staticSprite(x,y,"revolver").setInteractive();
-          //this.drawersGroup.add(this.drawer);
         }
       }
     });
@@ -148,17 +127,14 @@ export default class Level1 extends Phaser.Scene {
       this.player,
       () => {
         this.scene.start("Level1", {
-          level: "level1",
+          level: "mercado",
           player: this.player,
           keyDoor1: this.keyDoor1,
           keyDoor2: this.keyDoor2,
           keyDoor3: this.keyDoor3,
           keyDoor4: this.keyDoor4,
           weaponsGroup: this.weaponsGroup,
-          playerLifes : this.playerLifes,
-          playerMana : this.playerMana
         });
-
       },
       () => this.keyDoor1 == true,
       this
@@ -173,8 +149,6 @@ export default class Level1 extends Phaser.Scene {
       null,
       this
     );
-
-    this.physics.add.collider(this.drawer, this.player);
 
     this.keyESC = this.input.keyboard.addKey("ESC");
 
@@ -217,21 +191,9 @@ export default class Level1 extends Phaser.Scene {
       crtWidth: 5,
       crtHeight: 5,
     });
-
-    this.drawer.on('pointerdown',()=>{
-      this.scene.pause("Level1");
-      this.scene.run("Drawer",{
-        player : this.player
-      });
-    });
-    console.log("vida" + this.player.lifes);
-    console.log("mana" + this.player.mana);
   }
 
   update(time, delta) {
-    this.playerLifes = this.player.lifes;
-    this.playerMana = this.player.mana;
-
     this.physics.add.overlap(
       this.player,
       this.key_door1_sprite,
