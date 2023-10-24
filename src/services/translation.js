@@ -5,7 +5,7 @@ const PROJECT_ID = '58';
 let translations = null;
 let language = ES_AR
 
-export async function getTranslations(lang = language, callback){
+export async function getTranslation(lang = language, callback){
     localStorage.clear();
     language = lang;
 
