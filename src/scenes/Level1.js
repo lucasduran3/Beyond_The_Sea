@@ -28,11 +28,9 @@ export default class Level1 extends Phaser.Scene {
   }
 
   create() {
-    this.cameras.main.fadeIn(500);
-    this.lights.enable();
-    this.lights.setAmbientColor(0x0000ff);
-
+    this.collisionBetweenPlayerEnemy = false;
     this.map = this.make.tilemap({ key: "map-" + this.level });
+
     const floorL = this.map.addTilesetImage("floor", "floor");
     const wallL = this.map.addTilesetImage("wall", "wall");
     const doorL = this.map.addTilesetImage("door", "door");
@@ -118,7 +116,6 @@ export default class Level1 extends Phaser.Scene {
       this.map.heightInPixels
     );
 
-    
     wallLayer.setCollisionByProperty({ colision: true });
     doorLayer.setCollisionByProperty({ colision: true });
     this.physics.add.collider(wallLayer, this.player);
@@ -168,15 +165,15 @@ export default class Level1 extends Phaser.Scene {
 
       // Chromatic abberation
       chromaticEnable: true,
-      chabIntensity: 0.2,
+      chabIntensity: 0.1,
 
       // Vignette
       vignetteStrength: 1,
-      vignetteIntensity: 0.82,
+      vignetteIntensity: 0.7,
 
       // Noise
       noiseEnable: true,
-      noiseStrength: 0.1,
+      noiseStrength: 0.05,
       seed: 0.63,
 
       // VHS

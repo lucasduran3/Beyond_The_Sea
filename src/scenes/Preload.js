@@ -26,14 +26,11 @@ export default class Preload extends Phaser.Scene {
     this.load.image("revolver", "/assets/sprites/revolver.png");
     this.load.image("rifle", "/assets/sprites/rifle.png");
     this.load.image("bulletToCollect", "/assets/sprites/bulletToCollect.png");
-    this.load.image("bar-table", "/assets/sprites/bar-table.png");
-    this.load.image("arrow", "/assets/sprites/arrow.png");
 
     //tilemaps
     this.load.tilemapTiledJSON("map-lobby", "/assets/tilemaps/lobby.json");
     this.load.tilemapTiledJSON("map-mercado", "/assets/tilemaps/mercado.json");
     this.load.tilemapTiledJSON("map-level1", "/assets/tilemaps/level1.json");
-    this.load.tilemapTiledJSON("map-mercado-bar", "/assets/tilemaps/mercado-bar.json");
 
     //plugins
     this.load.plugin(
@@ -49,7 +46,6 @@ export default class Preload extends Phaser.Scene {
     );
 
     //this.scene.start("SelectLang",{language : this.#language});
-    //this.scene.launch("UI");
-    this.scene.start("BarAnimation");
+    this.scene.start("MainMenu");
   }
 }
