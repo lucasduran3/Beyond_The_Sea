@@ -1,5 +1,4 @@
 import Phaser1 from "phaser";
-import { getPhrase } from "../services/translation";
 
 export default class Pause extends Phaser.Scene{
     constructor(){
@@ -15,7 +14,7 @@ export default class Pause extends Phaser.Scene{
 
         titleText.setTint(0xff00ff, 0xffff00, 0x0000ff, 0xff0000);
 
-        const resumeButton = this.add.text(960,500,getPhrase('Continuar'),{
+        const resumeButton = this.add.text(960,500,'Resume',{
             fontSize : '50px',
             color : "#fff",
             align : 'center',

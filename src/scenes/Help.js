@@ -8,7 +8,7 @@ export default class Help extends Phaser.Scene{
     }
 
     create(){
-        const titleText = this.add.text(850,240,getPhrase('Ayuda'),{
+        const titleText = this.add.text(850,240,'HELP',{
             fontSize : '100px'
         });
 
