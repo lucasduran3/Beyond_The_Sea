@@ -13,6 +13,10 @@ export default class Preload extends Phaser.Scene {
       frameWidth: 192,
       frameHeight: 192,
     });
+    this.load.spritesheet("player2", "/assets/sprites/player2.png", {
+      frameWidth: 192,
+      frameHeight: 192,
+    });
     this.load.spritesheet("enemy", "/assets/sprites/enemy.png", {
       frameWidth: 192,
       frameHeight: 192,

@@ -30,6 +30,8 @@ export default class UI extends Phaser.Scene {
   }
 
   create() {
+    
+
     this.playerHP = new HealthBar(this, 80, 40, 300, '0x00ff00');
    
     this.playerMana = new HealthBar(this, 80, 90, 300, '0x00a0ff');
@@ -39,32 +41,10 @@ export default class UI extends Phaser.Scene {
       color : "#fff"
     }).setInteractive({useHandCursor : true});
 
-    this.kitsUI.on('pointerdown', ()=>{
-      events.emit('updateHP',{
-        ammount : 20,
-        isIncrease : true
-      });
-
-      events.emit('updateKits',{
-        isIncrease : false
-      });
-    });
-
     this.chipsUI = this.add.text(80,190,'CHIPS'+this.nChips,{
       fontSize : "30px",
       color : "#fff"
     }).setInteractive({useHandCursor : true});
-
-    this.chipsUI.on('pointerdown', ()=>{
-      events.emit('updateMana',{
-        ammount : 20,
-        isIncrease : true
-      });
-
-      events.emit('updateChips',{
-        isIncrease : false
-      });
-    });
 
     this.coins = this.add.text(1600,50,"Coins:",{
       fontSize: "40px",
@@ -94,41 +74,13 @@ export default class UI extends Phaser.Scene {
       fontSize: "20px",
       color : "#0f0"
       }
-    ).setInteractive({useHandCursor : true});
-
-    this.revolver.on('pointerover', ()=>{
-      this.revolver.setFontSize("25px");
-    });
-  
-    this.revolver.on('pointerout',()=>{
-      this.revolver.setFontSize('20px');
-    });
-
-    this.revolver.on('pointerdown', ()=>{
-      events.emit("updateWeapon",{
-        weapon : "revolver"
-      });
-    });    
+    ).setInteractive({useHandCursor : true});   
 
     this.rifle = this.add.text(950,50,"rifle",{
       fontSize: "20px",
       color : "#0ff"
       }
-    ).setInteractive({useHandCursor : true});
-
-    this.rifle.on('pointerover', ()=>{
-      this.rifle.setFontSize("25px");
-    });
-  
-    this.rifle.on('pointerout',()=>{
-      this.rifle.setFontSize('20px');
-    });
-
-    this.rifle.on('pointerdown', ()=>{
-      events.emit("updateWeapon",{
-        weapon : "rifle"
-      });
-    }); 
+    ).setInteractive({useHandCursor : true}); 
 
     this.power1 = this.add.text(850,100,"power1",{
       fontSize: "20px",
@@ -138,20 +90,6 @@ export default class UI extends Phaser.Scene {
 
     this.power1.on('pointerover', ()=>{
       this.power1.setFontSize("25px");
-    });
-  
-    this.power1.on('pointerout',()=>{
-      this.power1.setFontSize('20px');
-    });
-
-    this.power1.on('pointerdown', ()=>{
-      
-      if(this.playerMana.value>20){
-        events.emit("usePowerUp",{
-          cost : 20
-        });
-        this.updateMana({ammount : 20, isIncrease : false});
-      } 
     });
 
     this.power2 = this.add.text(950,100,"power2",{
@@ -194,13 +132,17 @@ export default class UI extends Phaser.Scene {
 
     events.on("updateHP", this.updateHP, this);
 
-    events.on("updateKits", this.updateKits, this);
+    events.on("updateKitsUI", this.updateKitsUI, this);
 
-    events.on("updateChips", this.updateChips, this);
+    events.on("updateChipsUI", this.updateChipsUI, this);
 
     events.on("updateBullets", this.updateBullets, this);
 
   }
+
+  update(){
+  }
+
   updateUI(data){
 
     this.playerHP.decrease(data.damage||0);
@@ -226,9 +168,9 @@ export default class UI extends Phaser.Scene {
     }
   }
 
-  updateKits(data){
+  updateKitsUI(data){
     if(data.isIncrease == true){
-      this.nKits++;
+      this.nKits+=data.ammount;
       this.kitsUI.setText('KITS'+this.nKits);
     }else if(data.isIncrease == false && this.nKits>0){
       this.nKits--;
@@ -236,9 +178,9 @@ export default class UI extends Phaser.Scene {
     }
   }
 
-  updateChips(data){
+  updateChipsUI(data){
     if(data.isIncrease == true){
-      this.nChips++;
+      this.nChips+=data.ammount;
       this.chipsUI.setText('CHIPS'+this.nChips);
     }else if(data.isIncrease == false && this.nChips>0){
       this.nChips--;
@@ -248,7 +190,7 @@ export default class UI extends Phaser.Scene {
 
   updateBullets(data){
     if(data.isIncrease == true){
-      this.nBullets++;
+      this.nBullets+=data.ammount;
       this.bullets.setText('Bullets: ' + this.nBullets);
     }else if(data.isIncrease == false && this.nBullets>0){
       this.nBullets--;

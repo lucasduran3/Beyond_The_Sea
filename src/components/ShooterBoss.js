@@ -14,7 +14,7 @@ export default class ShooterBoss extends Phaser.GameObjects.Sprite{
 
         this.bullets = this.scene.physics.add.group();
 
-        this.lifes = 5;
+        this.lifes = 15;
     }
 
     create(){
@@ -52,5 +52,21 @@ export default class ShooterBoss extends Phaser.GameObjects.Sprite{
             this.bullets.getFirstAlive().destroy();
             console.log("fdf");
         }, null, this);
+    }
+
+    freeze(){
+        // @ts-ignore
+        this.body.stop();
+        // @ts-ignore
+        this.body.setVelocity(0);
+        this.isMoving = false;
+
+        this.scene.time.addEvent({
+            delay: 2500, 
+            callback: () => {
+                this.isMoving = true;
+            },
+            callbackScope: this
+        });
     }
 }

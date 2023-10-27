@@ -192,4 +192,6 @@ export default class Bar extends Phaser.Scene{
       this.enemy.setTarget(this.player);
       this.enemysGroup.add(this.enemy);
     }
+
+    enemyDropObjects(){}
 }

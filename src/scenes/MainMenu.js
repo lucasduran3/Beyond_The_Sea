@@ -59,8 +59,9 @@ export default class MainMenu extends Phaser.Scene{
         });
 
         continueButton.on('pointerdown', ()=>{
-            this.scene.start("Level1");
             this.scene.launch("UI");
+            this.scene.start("Level1");
+            
         });
 
         const helpButton = this.add.text(960,900, getPhrase('Ayuda'),{

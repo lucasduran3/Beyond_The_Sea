@@ -18,7 +18,7 @@ export default class Level1 extends Phaser.Scene {
     this.weaponsGroup = {};
 
     this.playerLifes = null;
-    this.playerMana = null;
+    this.playerMana = null;   
   }
 
   init(data) {
@@ -151,8 +151,6 @@ export default class Level1 extends Phaser.Scene {
       this.map.widthInPixels,
       this.map.heightInPixels
     );
-
-    
     wallLayer.setCollisionByProperty({ colision: true });
     doorLayer.setCollisionByProperty({ colision: true });
     barDoorLayer.setCollisionByProperty({colision: true});
@@ -160,7 +158,9 @@ export default class Level1 extends Phaser.Scene {
     decoLayer.setCollisionByProperty({colision: true});
 
     this.physics.add.collider(wallLayer, this.player);
+    this.physics.add.collider(wallLayer, this.enemysGroup);
     this.physics.add.collider(decoLayer, this.player);
+    this.physics.add.collider(decoLayer, this.enemysGroup);
     this.physics.add.collider(
       doorLayer,
       this.player,
@@ -233,6 +233,8 @@ export default class Level1 extends Phaser.Scene {
       this
     );
 
+
+
     this.physics.add.collider(this.drawer, this.player);
 
     this.keyESC = this.input.keyboard.addKey("ESC");
@@ -276,16 +278,14 @@ export default class Level1 extends Phaser.Scene {
       crtWidth: 5,
       crtHeight: 5,
     });
-
+    
     this.drawer.on('pointerdown',()=>{
       this.scene.pause("Level1");
       this.scene.run("Drawer",{
         player : this.player
       });
+      this.drawer.disableInteractive();
     });
-    console.log("vida" + this.player.lifes);
-    console.log("mana" + this.player.mana);
-
     
     //Wepaons tween
     const revolverTween = this.tweens.add({
@@ -303,11 +303,24 @@ export default class Level1 extends Phaser.Scene {
       duration : 500,
       repeat : -1
     });
+
+    this.objectsGroup = this.physics.add.group();
+
+
   }
 
   update(time, delta) {
+
     this.playerLifes = this.player.lifes;
     this.playerMana = this.player.mana;
+
+    this.physics.add.overlap(
+      this.objectsGroup,
+      this.player,
+      this.collectObject,
+      null,
+      this
+    );
 
     this.physics.add.overlap(
       this.player,
@@ -392,4 +405,49 @@ export default class Level1 extends Phaser.Scene {
     bullet.destroy();
     this.player.incrementBullets();
   }
+
+  enemyDropObjects(x, y){
+    const n = Phaser.Math.Between(0,2);
+
+    for(let i = 0; i<n; i++){
+    let randomObject = Phaser.Math.RND.pick(["revolver", "rifle"]);
+
+    this.objectsGroup.create(x, y, randomObject);
+    x+=30;
+    y+=10;
+    }
+
+    this.objectsGroup.getChildren().forEach(element => {
+      this.tweenObjects(element);
+    });
+    
+  }
+
+  tweenObjects(target){
+    const tween = this.tweens.add({
+      targets: target,
+      scale: 1.2,
+      yoyo : true,
+      duration : 500,
+      repeat : -1
+    });
+  }
+
+  collectObject(player, shape){
+    const objectName = shape.texture.key;
+    if(objectName == 'revolver'){
+      events.emit("updatePlayerKits",{
+        isIncrease : true, 
+        ammount : 1
+      });
+    } else if(objectName == 'rifle'){
+      events.emit("updatePlayerChips",{
+        isIncrease : true, 
+        ammount : 1
+      });
+    }
+
+    shape.destroy();
+  }
+
 }

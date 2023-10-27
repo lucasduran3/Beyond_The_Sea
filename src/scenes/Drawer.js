@@ -7,9 +7,9 @@ export default class Drawer extends Phaser.Scene{
     }
 
     init(data){
-        this.nKits = Phaser.Math.Between(1,4);
-        this.nChips = Phaser.Math.Between(1,4);
-        this.nBullets = Phaser.Math.Between(15,30);
+        this.nKits = Phaser.Math.Between(2,4);
+        this.nChips = Phaser.Math.Between(1,3);
+        this.nBullets = Phaser.Math.Between(37,60);
         this.player = data.player;
     }
 
@@ -52,31 +52,32 @@ export default class Drawer extends Phaser.Scene{
         });
 
         this.kit.on('pointerdown',()=>{
-            this.kitsGroup.getFirstAlive().destroy();
-            this.nKits--;
-            this.nKitText.setText('x'+this.nKits);
-            events.emit('updateKits', {
+            events.emit('updatePlayerKits', {
                 isIncrease : true,
+                ammount : this.nKits
             });
+            this.nKits = 0;
+            this.nKitText.setText('x'+this.nKits);
         });
 
-        this.chip.on('pointerdown',()=>{
-            this.chipsGroup.getFirstAlive().destroy();
-            this.nChips--;
-            this.nChipText.setText('x'+this.nChips);
-            events.emit('updateChips',{
+        this.chip.on('pointerdown',()=>{       
+            events.emit('updatePlayerChips',{
                 isIncrease : true,
-            })
+                ammount : this.nChips
+            });
+            this.nChips = 0;
+            this.nChipText.setText('x'+this.nChips);
         });
 
         this.bullet.on('pointerdown',()=>{
-            this.bulletsGroup.getFirstAlive().destroy();
-            this.nBullets--;
-            this.nBulletText.setText('x'+this.nBullets);
-            this.player.incrementBullets();
+            this.player.incrementBullets(this.nBullets);
+
             events.emit("updateBullets",{
-                isIncrease: true
+                isIncrease: true,
+                ammount : this.nBullets
             });
+            this.nBullets = 0;
+            this.nBulletText.setText('x'+this.nBullets);
         });
 
         this.exitButton = this.add.text(1200,940,"Exit",{
@@ -86,7 +87,7 @@ export default class Drawer extends Phaser.Scene{
         ).setInteractive({useHandCursor : true});
 
         this.exitButton.on('pointerdown',()=>{
-            this.scene.sleep("Drawer");
+            this.scene.stop("Drawer");
             this.scene.setVisible(false);
             this.scene.resume("Level1");
         });
