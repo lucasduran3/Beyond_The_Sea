@@ -33,6 +33,7 @@
   "dependencies": {
     "easystarjs": "^0.4.4",
     "eslint-config-prettier": "^9.0.0",
+    "firebase": "^10.5.2",
     "phaser": "^3.60.0",
     "phaser3-rex-plugins": "^1.60.5"
   },
