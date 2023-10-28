@@ -4,9 +4,6 @@ import events from "../scenes/EventCenter";
 import {revolver} from "./weapons";
 
 const ROTATION_SPEED = 5 * Math.PI;
-let nBullets = 0;
-let nChips = 0;
-let nKits = 0;
 
 export default class Player extends Phaser.GameObjects.Sprite {
   constructor(scene, x, y, texture, enemy, weapons, lifes, mana) {
@@ -28,6 +25,10 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
     this.weaponsGroup = weapons;
     this.activatedWeapon = null;
+
+    this.nBullets = 0;
+    this.nChips = 0;
+    this.nKits = 0;
     
     this.anims.create({
       key:"walk",
@@ -151,7 +152,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
   }
 
   fireBullet(pointer){
-    if(this.activatedWeapon != null && nBullets>0){
+    if(this.activatedWeapon != null && this.nBullets>0){
 
     const speed = this.activatedWeapon.speed;
     const worldPointer = this.scene.cameras.main.getWorldPoint(pointer.x, pointer.y);
@@ -162,7 +163,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
     this.bullets.add(bullet);
     bullet.fire(angle, speed);
 
-    nBullets--;
+    this.nBullets--;
     this.scene.nBullets--;
 
     events.emit("updateBullets", {
@@ -198,7 +199,19 @@ export default class Player extends Phaser.GameObjects.Sprite {
   }
 
   incrementBullets(ammount){
-    nBullets += ammount;
+    this.nBullets += ammount;
+  }
+
+  setNBullets(n){
+    this.nBullets = n;
+  }
+
+  setNChips(n){
+    this.nChips = n;
+  }
+
+  setNKits(n){
+    this.nKits = n;
   }
 
   usePowerUp(){
@@ -249,22 +262,22 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
   updateChips(data){
     if(data.isIncrease == true){
-      nChips += data.ammount;
+      this.nChips += data.ammount;
       events.emit("updateChipsUI", {isIncrease : true, ammount : data.ammount});
-    }else if(data.isIncrease == false && nChips>0){
-      nChips--;
+    }else if(data.isIncrease == false && this.nChips>0){
+      this.nChips--;
       events.emit("updateChipsUI", {isIncrease : false});
     }
-    console.log(nChips);
+    console.log(this.nChips);
   }
 
   updateKits(data){
     console.log("hola");
     if(data.isIncrease == true){
-      nKits += data.ammount;
+      this.nKits += data.ammount;
       events.emit("updateKitsUI", {isIncrease : true, ammount : data.ammount});
-    }else if(data.isIncrease == false && nKits>0){
-      nKits--;
+    }else if(data.isIncrease == false && this.nKits>0){
+      this.nKits--;
       events.emit("updateKitsUI", {isIncrease : false});
     }
   }

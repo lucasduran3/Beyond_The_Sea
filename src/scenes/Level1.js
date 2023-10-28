@@ -33,11 +33,13 @@ export default class Level1 extends Phaser.Scene {
 
     this.playerLifes = data.playerLifes || null;
     this.playerMana = data.playerMana || null;
+    this.playerBullets = data.playerBullets || 0;
+    this.playerChips = data.playerChips || 0;
+    this.playerKits = data.playerKits || 0;
   }
 
   create() {
-
-    events.emit('updateHP',{isIncrease : true, ammount : this.playerLifes});
+    
     this.cameras.main.fadeIn(500);
     this.lights.enable();
     this.lights.setAmbientColor(0x0000ff);
@@ -91,12 +93,11 @@ export default class Level1 extends Phaser.Scene {
       this.playerMana
     );
 
-    events.emit("updatePlayerLife",{
-      lifes : this.player.lifes
-    });
-    events.emit("updatePlayerMana",{
-      mana : this.player.mana
-    });
+    this.player.setNBullets(this.playerBullets);
+    this.player.setNChips(this.playerChips);
+    this.player.setNKits(this.playerKits);
+
+    console.log("balas: ", this.player.nBullets);
 
     this.bulletsGroup = this.physics.add.group();
 
@@ -168,14 +169,16 @@ export default class Level1 extends Phaser.Scene {
       () => {
         this.scene.start("Level1", {
           level: "mercado",
-          player: this.player,
           keyDoor1: this.keyDoor1,
           keyDoor2: this.keyDoor2,
           keyDoor3: this.keyDoor3,
           keyDoor4: this.keyDoor4,
           weaponsGroup: this.weaponsGroup,
           playerLifes : this.playerLifes,
-          playerMana : this.playerMana
+          playerMana : this.playerMana,
+          playerBullets : this.player.nBullets,
+          playerChips : this.player.nChips,
+          playerKits : this.player.nKits
         });
 
       },
@@ -189,14 +192,16 @@ export default class Level1 extends Phaser.Scene {
       () => {
         this.scene.start("Level1", {
           level: "lobby",
-          player: this.player,
           keyDoor1: this.keyDoor1,
           keyDoor2: this.keyDoor2,
           keyDoor3: this.keyDoor3,
           keyDoor4: this.keyDoor4,
           weaponsGroup: this.weaponsGroup,
           playerLifes : this.playerLifes,
-          playerMana : this.playerMana
+          playerMana : this.playerMana,
+          playerBullets : this.player.nBullets,
+          playerChips : this.player.nChips,
+          playerKits : this.player.nKits
         });
 
       },
@@ -209,7 +214,6 @@ export default class Level1 extends Phaser.Scene {
       this.player,
       () => {
         this.scene.start("BarAnimation", {
-          player: this.player,
           keyDoor1: this.keyDoor1,
           keyDoor2: this.keyDoor2,
           keyDoor3: this.keyDoor3,
@@ -217,7 +221,10 @@ export default class Level1 extends Phaser.Scene {
           keyBar : this.keyBar,
           weaponsGroup: this.weaponsGroup,
           playerLifes : this.playerLifes,
-          playerMana : this.playerMana
+          playerMana : this.playerMana,
+          playerBullets : this.player.nBullets,
+          playerChips : this.player.nChips,
+          playerKits : this.player.nKits
         });
       },
       () => this.keyBar == true,
@@ -233,8 +240,6 @@ export default class Level1 extends Phaser.Scene {
       null,
       this
     );
-
-
 
     this.physics.add.collider(this.drawer, this.player);
 
@@ -399,8 +404,21 @@ export default class Level1 extends Phaser.Scene {
 
   isOver() {
     if (this.player.lifes <= 0) {
-      this.scene.stop("Level1");
-      this.scene.start("GameOver");
+      this.scene.start("Level1",{
+        level: "lobby",
+        keyDoor1: null,
+        keyDoor2: null,
+        keyDoor3: null,
+        keyDoor4: null,
+        weaponsGroup: {},
+        playerLifes : 300,
+        playerMana : 300,
+        playerBullets : 0,
+        playerChips : 0,
+        playerKits : 0
+      });
+      events.emit('resetUI');
+      this.scene.launch('UI');
     }
   }
 

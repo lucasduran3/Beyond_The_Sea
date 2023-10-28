@@ -19,8 +19,7 @@ export default class Bar extends Phaser.Scene{
         this.keyDoor4 = data.keyDoor4;
         this.keyBar = data.keyBar;
         this.weaponsGroup = data.weaponsGroup;
-        this.playerLifes = data.playerLifes;
-        this.playerMana = data.playerMana;
+        this.playerObj = data.playerObj;
     }
 
     create(){
@@ -57,15 +56,13 @@ export default class Bar extends Phaser.Scene{
     
         this.enemyArr = this.enemysGroup.getChildren();
     
-        this.player = new Player(
+        this.player = this.playerObj || new Player(
           this,
           spawnPoint.x,
           spawnPoint.y,
           "player",
           this.enemyArr,
           this.weaponsGroup,
-          this.playerLifes,
-          this.playerMana
         );
 
         spawnPoint = this.map.findObject(
@@ -163,7 +160,7 @@ export default class Bar extends Phaser.Scene{
             keyDoor4: this.keyDoor4,
             keyBar : this.keyBar,
             weaponsGroup: this.weaponsGroup,
-            playerMana : this.playerMana
+            playerObj : this.player
           });
         }
 
@@ -177,7 +174,8 @@ export default class Bar extends Phaser.Scene{
             keyDoor2: this.keyDoor2,
             keyDoor3: this.keyDoor3,
             keyDoor4: this.keyDoor4,
-            weaponsGroup: this.weaponsGroup,    
+            weaponsGroup: this.weaponsGroup,
+            playerObj : this.player    
           });
         }
     }

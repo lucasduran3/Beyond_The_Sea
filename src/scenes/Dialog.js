@@ -20,6 +20,9 @@ export default class Dialog extends Phaser.Scene{
         this.weaponsGroup = data.weaponsGroup;
         this.playerLifes = data.playerLifes;
         this.playerMana = data.playerMana;
+        this.playerBullets = data.playerBullets;
+        this.playerChips = data.playerChips;
+        this.playerKits = data.playerKits;
     }
 
     create(){
@@ -56,7 +59,9 @@ export default class Dialog extends Phaser.Scene{
                 keyBar : this.keyBar,
                 weaponsGroup: this.weaponsGroup,
                 playerLifes : this.playerLifes,
-                playerMana : this.playerMana
+                playerMana : this.playerMana,
+                playerBullets : this.playerBullets,
+                playerKits : this.playerKits,
             }); 
         }
     }

@@ -31,7 +31,7 @@ export default class UI extends Phaser.Scene {
 
   create() {
     
-
+    console.log(this.nKits);
     this.playerHP = new HealthBar(this, 80, 40, 300, '0x00ff00');
    
     this.playerMana = new HealthBar(this, 80, 90, 300, '0x00a0ff');
@@ -138,6 +138,8 @@ export default class UI extends Phaser.Scene {
 
     events.on("updateBullets", this.updateBullets, this);
 
+    events.on('resetUI', this.reset, this);
+
   }
 
   update(){
@@ -196,5 +198,14 @@ export default class UI extends Phaser.Scene {
       this.nBullets--;
       this.bullets.setText('Bullets: ' + this.nBullets);
     }
+  }
+
+  reset(data){
+    this.nKits = 0;
+    this.nChips = 0;
+    this.nBullets = 0;
+
+    this.kitsUI.setText('Kits'+this.nKits);
+    this.chipsUI.setText('Chips'+this.nChips);
   }
 }
