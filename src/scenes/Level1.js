@@ -36,6 +36,7 @@ export default class Level1 extends Phaser.Scene {
   }
 
   create() {
+
     events.emit('updateHP',{isIncrease : true, ammount : this.playerLifes});
     this.cameras.main.fadeIn(500);
     this.lights.enable();
@@ -306,7 +307,9 @@ export default class Level1 extends Phaser.Scene {
 
     this.objectsGroup = this.physics.add.group();
 
-
+    // @ts-ignore
+    const user = this.firebase.getUser();
+    console.log(user.displayName || user.uid);
   }
 
   update(time, delta) {

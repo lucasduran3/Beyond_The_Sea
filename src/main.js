@@ -17,6 +17,7 @@ import BarWinAnimation from "./scenes/BarWinAnimation";
 import Drawer from "./scenes/Drawer";
 import FirebasePlugin from "./plugins/FirebasePlugin";
 
+
 const config = {
   type: Phaser.AUTO,
   width: 1920,
