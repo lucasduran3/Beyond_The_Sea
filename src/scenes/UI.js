@@ -179,6 +179,7 @@ export default class UI extends Phaser.Scene {
   }
 
   updateChipsUI(data){
+    console.log(this.nChips);
     if(data.isIncrease == true){
       this.nChips+=data.ammount;
       this.chipsUI.setText('CHIPS: ' + this.nChips);

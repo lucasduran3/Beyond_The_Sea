@@ -65,7 +65,6 @@ export default class Level1 extends Phaser.Scene {
       switch (name) {
         case "enemy": {
           this.enemy = new Enemy(this, x, y, "enemy", 300, this.map);
-          console.log(this.enemy);
           this.enemysGroup.add(this.enemy);
           break;
         }
@@ -93,8 +92,6 @@ export default class Level1 extends Phaser.Scene {
     this.player.setNBullets(this.playerBullets);
     this.player.setNChips(this.playerChips || 0);
     this.player.setNKits(this.playerKits || 0);
-
-    console.log("balas: ", this.player.nBullets);
 
     this.bulletsGroup = this.physics.add.group();
 
@@ -125,9 +122,6 @@ export default class Level1 extends Phaser.Scene {
           );
           this.bulletsGroup.add(this.bulletToCollect);
           break;
-        }
-        case "drawer": {
-          this.drawer = this.physics.add.staticSprite(x,y,"drawer").setInteractive();
         }
       }
     });
@@ -215,8 +209,6 @@ export default class Level1 extends Phaser.Scene {
       this
     );
 
-    this.physics.add.collider(this.drawer, this.player);
-
     this.keyESC = this.input.keyboard.addKey("ESC");
 
     //horrifi plugin
@@ -257,14 +249,6 @@ export default class Level1 extends Phaser.Scene {
       //CRT
       crtWidth: 5,
       crtHeight: 5,
-    });
-    
-    this.drawer.on('pointerdown',()=>{
-      this.scene.pause("Level1");
-      this.scene.run("Drawer",{
-        player : this.player
-      });
-      this.drawer.disableInteractive();
     });
     
     //Wepaons tween
@@ -387,7 +371,7 @@ export default class Level1 extends Phaser.Scene {
         weaponsGroup: this.player.weaponsGroup,
         playerLifes : 300,
         playerMana : this.player.mana,
-        playerBullets : null,
+        playerBullets : 60,
         playerChips : null,
         playerKits : null
       });
@@ -402,7 +386,7 @@ export default class Level1 extends Phaser.Scene {
   }
 
   enemyDropObjects(x, y){
-    const n = Phaser.Math.Between(0,2);
+    const n = Phaser.Math.Between(2,4);
 
     for(let i = 0; i<n; i++){
     let randomObject = Phaser.Math.RND.pick(["revolver", "rifle"]);
@@ -431,15 +415,9 @@ export default class Level1 extends Phaser.Scene {
   collectObject(player, shape){
     const objectName = shape.texture.key;
     if(objectName == 'revolver'){
-      events.emit("updatePlayerKits",{
-        isIncrease : true, 
-        ammount : 1
-      });
+      this.player.incrementKits();
     } else if(objectName == 'rifle'){
-      events.emit("updatePlayerChips",{
-        isIncrease : true, 
-        ammount : 1
-      });
+      this.player.incrementChips();
     }
 
     shape.destroy();

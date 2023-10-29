@@ -14,7 +14,6 @@ import Bar from "./scenes/Bar";
 import BarAnimation from "./scenes/BarAnimation";
 import Dialog from "./scenes/Dialog";
 import BarWinAnimation from "./scenes/BarWinAnimation";
-import Drawer from "./scenes/Drawer";
 import FirebasePlugin from "./plugins/FirebasePlugin";
 
 
@@ -51,7 +50,7 @@ const config = {
       },
     ],
   },
-  scene: [Preload, SelectLang, MainMenu, Help, Level1, BarAnimation, Bar, UI, Pause, Controls, PowerUp, GameOver, GameWin, Drawer, BarWinAnimation, Dialog],
+  scene: [Preload, SelectLang, MainMenu, Help, Level1, BarAnimation, Bar, UI, Pause, Controls, PowerUp, GameOver, GameWin, BarWinAnimation, Dialog],
 };
 
 export default new Phaser.Game(config);

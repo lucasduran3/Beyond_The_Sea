@@ -146,6 +146,8 @@ export default class Enemy extends Phaser.GameObjects.Sprite{
     freeze(){
         // @ts-ignore
         this.body.stop();
+
+        this.setTint(0x00cdff);
         // @ts-ignore
         this.body.setVelocity(0);
         this.isMoving = false;
@@ -153,6 +155,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite{
         this.scene.time.addEvent({
             delay: 2500, 
             callback: () => {
+                this.setTint();
                 this.isMoving = true;
             },
             callbackScope: this

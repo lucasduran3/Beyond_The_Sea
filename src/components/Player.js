@@ -57,21 +57,14 @@ export default class Player extends Phaser.GameObjects.Sprite {
     });
 
     this.scene.input.on("pointermove", (pointer) => {
-      // crear un vector que este en el centro de la scene
-        /*const zeroPoint = new Phaser.Math.Vector2(
-        this.scene.cameras.main.centerX,
-        this.scene.cameras.main.centerY
-      );
-      this.target =
-        Phaser.Math.Angle.BetweenPoints(zeroPoint, pointer) + Math.PI / 2;*/
         const worldPointer = this.scene.cameras.main.getWorldPoint(pointer.x, pointer.y);
         const playerPosition = new Phaser.Math.Vector2(this.x, this.y);
         const angleToPointer = Phaser.Math.Angle.BetweenPoints(playerPosition, worldPointer);
 
         this.target = angleToPointer + Math.PI/2;
     });
-    events.on("updatePlayerChips", this.updateChips, this);
-    events.on("updatePlayerKits", this.updateKits, this);
+    //events.on("updatePlayerChips", this.updateChips, this);
+    //events.on("updatePlayerKits", this.updateKits, this);
     this.keys = scene.input.keyboard.addKeys("W,A,S,D,H,E,F,ONE,TWO");
     this.isHKeyPressed = false;
     this.isEKeyPressed = false;
@@ -199,8 +192,14 @@ export default class Player extends Phaser.GameObjects.Sprite {
     this.activatedWeapon = this.weaponsGroup[data.weapon];
   }
 
-  incrementBullets(ammount){
+  incrementBullets(){
+    const ammount = Phaser.Math.Between(15,32);
     this.nBullets += ammount;
+
+    events.emit('updateBullets',{
+      isIncrease : true,
+      ammount : ammount
+    })
   }
 
   setNBullets(n){
@@ -226,13 +225,13 @@ export default class Player extends Phaser.GameObjects.Sprite {
       isIncrease : false
     });
     }else{
-      console.log("no hay suficiente mana");
+
     }
-    console.log(this.mana);
+
   }
 
   incrementLife(){
-    if(this.lifes<300){
+    if(this.lifes<300 && this.nKits>0){
       this.lifes += 20;
 
       events.emit('updateHP',{
@@ -240,46 +239,62 @@ export default class Player extends Phaser.GameObjects.Sprite {
         isIncrease : true
       });
 
-    this.updateKits({isIncrease : false});
+      this.nKits--;
+      
+      events.emit('updateKitsUI',{
+        isIncrease : false
+      });
     } else {
-      console.log("vida llena");
+    
     }
   }
 
   incrementMana(){
-    if(this.mana<300){
+    if(this.mana<300 && this.nChips>0){
       this.mana += 20;
-      
+      this.nChips--;
+
       events.emit('updateMana',{
         ammount : 20,
         isIncrease : true
+      }); 
+      
+      events.emit('updateChipsUI',{
+        isIncrease : false
       });
       
-      this.updateChips({isIncrease : false});
     } else{
-      console.log("mana lleno");
+      
     }
   }
 
-  updateChips(data){
-    if(data.isIncrease == true){
-      this.nChips += data.ammount;
-      events.emit("updateChipsUI", {isIncrease : true, ammount : data.ammount});
-    }else if(data.isIncrease == false && this.nChips>0){
-      this.nChips--;
-      events.emit("updateChipsUI", {isIncrease : false});
-    }
-    console.log(this.nChips);
+  incrementChips(){
+    this.nChips++;
+    events.emit('updateChipsUI',{
+      isIncrease : true,
+      ammount : 1
+    });
   }
 
-  updateKits(data){
-    console.log("hola");
-    if(data.isIncrease == true){
-      this.nKits += data.ammount;
-      events.emit("updateKitsUI", {isIncrease : true, ammount : data.ammount});
-    }else if(data.isIncrease == false && this.nKits>0){
-      this.nKits--;
-      events.emit("updateKitsUI", {isIncrease : false});
-    }
+  incrementKits(){
+    this.nKits++;
+    events.emit('updateKitsUI',{
+      isIncrease : true,
+      ammount : 1
+    });
+  }
+
+  decreaseChips(){
+    this.nKits--;
+    events.emit('updateKitsUI',{
+      isIncrease : false,
+    });
+  }
+
+  decreaseKits(){
+    this.nChips--;
+    events.emit('updateChipsUI',{
+      isIncrease : false,
+    });
   }
 }

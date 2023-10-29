@@ -378,15 +378,39 @@
                 }, 
                 {
                  "height":0,
-                 "id":13,
-                 "name":"drawer",
+                 "id":14,
+                 "name":"bullet",
                  "point":true,
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":1815.15151515152,
-                 "y":800
+                 "x":1002,
+                 "y":356
+                }, 
+                {
+                 "height":0,
+                 "id":15,
+                 "name":"bullet",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1048,
+                 "y":386
+                }, 
+                {
+                 "height":0,
+                 "id":16,
+                 "name":"bullet",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":960,
+                 "y":352
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -395,7 +419,7 @@
          "y":0
         }],
  "nextlayerid":11,
- "nextobjectid":14,
+ "nextobjectid":17,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.1",
