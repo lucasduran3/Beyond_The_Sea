@@ -39,10 +39,7 @@ export default class Level1 extends Phaser.Scene {
   }
 
   create() {
-    
     this.cameras.main.fadeIn(500);
-    this.lights.enable();
-    this.lights.setAmbientColor(0x0000ff);
 
     this.map = this.make.tilemap({ key: "map-" + this.level });
     const floorL = this.map.addTilesetImage("floor", "floor");
@@ -94,8 +91,8 @@ export default class Level1 extends Phaser.Scene {
     );
 
     this.player.setNBullets(this.playerBullets);
-    this.player.setNChips(this.playerChips);
-    this.player.setNKits(this.playerKits);
+    this.player.setNChips(this.playerChips || 0);
+    this.player.setNKits(this.playerKits || 0);
 
     console.log("balas: ", this.player.nBullets);
 
@@ -187,29 +184,6 @@ export default class Level1 extends Phaser.Scene {
     );
 
     this.physics.add.collider(
-      lobbyDoorLayer,
-      this.player,
-      () => {
-        this.scene.start("Level1", {
-          level: "lobby",
-          keyDoor1: this.keyDoor1,
-          keyDoor2: this.keyDoor2,
-          keyDoor3: this.keyDoor3,
-          keyDoor4: this.keyDoor4,
-          weaponsGroup: this.weaponsGroup,
-          playerLifes : this.playerLifes,
-          playerMana : this.playerMana,
-          playerBullets : this.player.nBullets,
-          playerChips : this.player.nChips,
-          playerKits : this.player.nKits
-        });
-
-      },
-      () => this.keyDoor1 == true,
-      this
-    );
-
-    this.physics.add.collider(
       barDoorLayer,
       this.player,
       () => {
@@ -219,7 +193,7 @@ export default class Level1 extends Phaser.Scene {
           keyDoor3: this.keyDoor3,
           keyDoor4: this.keyDoor4,
           keyBar : this.keyBar,
-          weaponsGroup: this.weaponsGroup,
+          weaponsGroup: this.player.weaponsGroup,
           playerLifes : this.playerLifes,
           playerMana : this.playerMana,
           playerBullets : this.player.nBullets,
@@ -336,7 +310,7 @@ export default class Level1 extends Phaser.Scene {
       () => {
         this.key_door1_sprite.destroy();
         this.keyDoor1 = true;
-        events.emit("update", { key1: "Key 1" });
+        events.emit("updateKeys", { key1: "Key 1" });
       },
       null,
       this
@@ -348,7 +322,7 @@ export default class Level1 extends Phaser.Scene {
       () => {
         this.keyBarSprite.destroy();
         this.keyBar = true;
-        events.emit("update", { keyBar: "Key Bar" });
+        events.emit("updateKeys", { keyBar: "Key Bar" });
       },
       null,
       this
@@ -405,20 +379,20 @@ export default class Level1 extends Phaser.Scene {
   isOver() {
     if (this.player.lifes <= 0) {
       this.scene.start("Level1",{
-        level: "lobby",
-        keyDoor1: null,
-        keyDoor2: null,
-        keyDoor3: null,
-        keyDoor4: null,
-        weaponsGroup: {},
+        level: this.level,
+        keyDoor1: this.keyDoor1,
+        keyDoor2: this.keyDoor2,
+        keyDoor3: this.keyDoor3,
+        keyDoor4: this.keyDoor4,
+        weaponsGroup: this.player.weaponsGroup,
         playerLifes : 300,
-        playerMana : 300,
-        playerBullets : 0,
-        playerChips : 0,
-        playerKits : 0
+        playerMana : this.player.mana,
+        playerBullets : null,
+        playerChips : null,
+        playerKits : null
       });
+
       events.emit('resetUI');
-      this.scene.launch('UI');
     }
   }
 

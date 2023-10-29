@@ -19,7 +19,12 @@ export default class Bar extends Phaser.Scene{
         this.keyDoor4 = data.keyDoor4;
         this.keyBar = data.keyBar;
         this.weaponsGroup = data.weaponsGroup;
-        this.playerObj = data.playerObj;
+
+        this.playerLifes = data.playerLifes || null;
+        this.playerMana = data.playerMana || null;
+        this.playerBullets = data.playerBullets || 0;
+        this.playerChips = data.playerChips || 0;
+        this.playerKits = data.playerKits || 0;
     }
 
     create(){
@@ -56,14 +61,20 @@ export default class Bar extends Phaser.Scene{
     
         this.enemyArr = this.enemysGroup.getChildren();
     
-        this.player = this.playerObj || new Player(
+        this.player = new Player(
           this,
           spawnPoint.x,
           spawnPoint.y,
           "player",
           this.enemyArr,
           this.weaponsGroup,
-        );
+          this.playerLifes,
+          this.playerMana
+        );    
+
+        this.player.setNBullets(this.playerBullets);
+        this.player.setNChips(this.playerChips);
+        this.player.setNKits(this.playerKits);
 
         spawnPoint = this.map.findObject(
             "objects",
@@ -153,33 +164,43 @@ export default class Bar extends Phaser.Scene{
           this.scene.start("BarWinAnimation",{
             playerX : this.player.x,
             playerY : this.player.y,
-            level : "mercado",
+            level : "lobby",
             keyDoor1: this.keyDoor1,
             keyDoor2: this.keyDoor2,
             keyDoor3: this.keyDoor3,
             keyDoor4: this.keyDoor4,
             keyBar : this.keyBar,
             weaponsGroup: this.weaponsGroup,
-            playerObj : this.player
+            playerLifes : this.playerLifes,
+            playerMana : this.playerMana,
+            playerBullets : this.player.nBullets,
+            playerChips : this.player.nChips,
+            playerKits : this.player.nKits
           });
         }
 
-        if(this.player.lifes <= 0 ){
-          
-          this.scene.stop("Bar");
-          this.scene.start("Level1", {
-            level: "mercado",
-            player: this.player,
-            keyDoor1: this.keyDoor1,
-            keyDoor2: this.keyDoor2,
-            keyDoor3: this.keyDoor3,
-            keyDoor4: this.keyDoor4,
-            weaponsGroup: this.weaponsGroup,
-            playerObj : this.player    
-          });
-        }
+        this.isOver();
     }
-    
+
+    isOver() {
+      if (this.player.lifes <= 0) {
+        this.scene.start("Level1",{
+          level: 'mercado',
+          keyDoor1: this.keyDoor1,
+          keyDoor2: this.keyDoor2,
+          keyDoor3: this.keyDoor3,
+          keyDoor4: this.keyDoor4,
+          weaponsGroup: this.player.weaponsGroup,
+          playerLifes : 300,
+          playerMana : this.player.mana,
+          playerBullets : null,
+          playerChips : null,
+          playerKits : null
+        });
+  
+        events.emit('resetUI');
+      }
+    }
 
     spawnEnemy(){
       this.enemy = new Enemy(this, 600, 100, "enemy", 300, this.map);

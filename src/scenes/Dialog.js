@@ -11,7 +11,6 @@ export default class Dialog extends Phaser.Scene{
         this.sceneToStart = data.sceneToStart;
         
         this.level = data.level;
-        this.weaponsGroup = data.weaponsGroup || {};
         this.keyDoor1 = data.keyDoor1;
         this.keyDoor2 = data.keyDoor2;
         this.keyDoor3 = data.keyDoor3;

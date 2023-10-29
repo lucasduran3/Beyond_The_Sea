@@ -126,7 +126,7 @@ export default class UI extends Phaser.Scene {
 
     pauseButton.setScrollFactor(0);
 
-    events.on("update", this.updateUI, this);
+    events.on("updateKeys", this.updateKeys, this);
 
     events.on("updateMana", this.updateMana, this);
 
@@ -138,16 +138,14 @@ export default class UI extends Phaser.Scene {
 
     events.on("updateBullets", this.updateBullets, this);
 
-    events.on('resetUI', this.reset, this);
+    events.on("resetUI", this.resetUI, this);
 
   }
 
   update(){
   }
 
-  updateUI(data){
-
-    this.playerHP.decrease(data.damage||0);
+  updateKeys(data){
 
     this.key1.setText(data.key1||"");
 
@@ -158,7 +156,7 @@ export default class UI extends Phaser.Scene {
     if(data.isIncrease == true && this.playerHP.value != 300 && this.nKits>0){
       this.playerHP.increment(data.ammount||0);
     }else if(data.isIncrease == false){
-      this.playerHP.decrease(data.ammout||0);
+      this.playerHP.decrease(data.ammount||0);
     }
   }
 
@@ -173,20 +171,20 @@ export default class UI extends Phaser.Scene {
   updateKitsUI(data){
     if(data.isIncrease == true){
       this.nKits+=data.ammount;
-      this.kitsUI.setText('KITS'+this.nKits);
+      this.kitsUI.setText('KITS: ' + this.nKits);
     }else if(data.isIncrease == false && this.nKits>0){
       this.nKits--;
-      this.kitsUI.setText('KITS'+this.nKits);
+      this.kitsUI.setText('KITS: ' + this.nKits);
     }
   }
 
   updateChipsUI(data){
     if(data.isIncrease == true){
       this.nChips+=data.ammount;
-      this.chipsUI.setText('CHIPS'+this.nChips);
+      this.chipsUI.setText('CHIPS: ' + this.nChips);
     }else if(data.isIncrease == false && this.nChips>0){
       this.nChips--;
-      this.chipsUI.setText('CHIPS'+this.nChips);
+      this.chipsUI.setText('CHIPS: ' + this.nChips);
     }
   }
 
@@ -200,12 +198,16 @@ export default class UI extends Phaser.Scene {
     }
   }
 
-  reset(data){
+  resetUI(){
     this.nKits = 0;
     this.nChips = 0;
+
     this.nBullets = 0;
 
-    this.kitsUI.setText('Kits'+this.nKits);
-    this.chipsUI.setText('Chips'+this.nChips);
+    this.kitsUI.setText('KITS'+this.nKits);
+    this.chipsUI.setText('CHIPS'+this.nChips);
+
+    this.playerHP.increment(300);
+    this.bullets.setText('Bullets: '+ this.nBullets);
   }
 }

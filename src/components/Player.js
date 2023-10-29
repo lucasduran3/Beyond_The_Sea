@@ -172,10 +172,11 @@ export default class Player extends Phaser.GameObjects.Sprite {
     }
   }
 
-  looseLife(amount){
-    this.lifes -= amount;
-    events.emit("update",{
-      damage : amount
+  looseLife(ammount){
+    this.lifes -= ammount;
+    events.emit("updateHP",{
+      isIncrease : false,
+      ammount : ammount
     });
   }
 
