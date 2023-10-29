@@ -11,12 +11,14 @@ export default class BarWinAnimation extends Phaser.Scene{
         this.playerX = data.playerX;
         this.playerY = data.playerY;
         this.level = data.level;
+        
         this.keyDoor1 = data.keyDoor1;
         this.keyDoor2 = data.keyDoor2;
         this.keyDoor3 = data.keyDoor3;
         this.keyDoor4 = data.keyDoor4;
         this.keyBar = data.keyBar;
         this.weaponsGroup = data.weaponsGroup;
+        this.boss1Dead = data.boss1Dead;
 
         this.playerLifes = data.playerLifes || null;
         this.playerMana = data.playerMana || null;
@@ -115,7 +117,8 @@ export default class BarWinAnimation extends Phaser.Scene{
                 playerMana : this.playerMana,
                 playerBullets : this.playerBullets,
                 playerChips : this.playerChips,
-                playerKits : this.playerKits
+                playerKits : this.playerKits,
+                boss1Dead : this.boss1Dead
             });
         }, 
             callbackScope: this, 

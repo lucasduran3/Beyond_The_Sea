@@ -14,6 +14,7 @@ export default class Level1 extends Phaser.Scene {
     this.keyDoor3 = false;
     this.keyDoor4 = false;
     this.keyBar = false;
+    this.boss1Dead = false;
 
     this.weaponsGroup = {};
 
@@ -28,6 +29,7 @@ export default class Level1 extends Phaser.Scene {
     this.keyDoor3 = data.keyDoor3 || false;
     this.keyDoor4 = data.keyDoor4 || false;
     this.keyBar = data.keyBar || false;
+    this.boss1Dead = data.boss1Dead || false;
 
     this.weaponsGroup = data.weaponsGroup || {};
 
@@ -99,11 +101,16 @@ export default class Level1 extends Phaser.Scene {
       const { x = 0, y = 0, name } = objData;
       switch (name) {
         case "key-door1": {
-          this.key_door1_sprite = this.physics.add.sprite(x, y, "key");
+          if(!this.keyDoor1){
+            this.key_door1_sprite = this.physics.add.sprite(x, y, "key");
+          }
           break;
         }
         case "key-bar" : {
-          this.keyBarSprite = this.physics.add.sprite(x, y, "key");
+          
+          if(!this.keyBar){
+            this.keyBarSprite = this.physics.add.sprite(x, y, "key");
+          }
           break;
         }
         case "revolver": {
@@ -169,12 +176,13 @@ export default class Level1 extends Phaser.Scene {
           playerMana : this.playerMana,
           playerBullets : this.player.nBullets,
           playerChips : this.player.nChips,
-          playerKits : this.player.nKits
+          playerKits : this.player.nKits,
+          boss1Dead : this.boss1Dead
         });
 
       },
-      () => this.keyDoor1 == true,
-      this
+      () => this.keyDoor1 == true &&
+            this.boss1Dead == false
     );
 
     this.physics.add.collider(
@@ -192,7 +200,8 @@ export default class Level1 extends Phaser.Scene {
           playerMana : this.playerMana,
           playerBullets : this.player.nBullets,
           playerChips : this.player.nChips,
-          playerKits : this.player.nKits
+          playerKits : this.player.nKits,
+          boss1Dead : this.boss1Dead
         });
       },
       () => this.keyBar == true,
@@ -273,6 +282,7 @@ export default class Level1 extends Phaser.Scene {
     // @ts-ignore
     const user = this.firebase.getUser();
     console.log(user.displayName || user.uid);
+    
   }
 
   update(time, delta) {
@@ -368,12 +378,14 @@ export default class Level1 extends Phaser.Scene {
         keyDoor2: this.keyDoor2,
         keyDoor3: this.keyDoor3,
         keyDoor4: this.keyDoor4,
+        keyBar : this.keyBar,
         weaponsGroup: this.player.weaponsGroup,
         playerLifes : 300,
         playerMana : this.player.mana,
-        playerBullets : 60,
+        playerBullets : null,
         playerChips : null,
-        playerKits : null
+        playerKits : null,
+        boss1Dead : this.boss1Dead
       });
 
       events.emit('resetUI');

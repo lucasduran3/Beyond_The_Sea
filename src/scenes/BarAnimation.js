@@ -12,6 +12,8 @@ export default class BarAnimation extends Phaser.Scene{
         this.keyDoor2 = data.keyDoor2;
         this.keyDoor3 = data.keyDoor3;
         this.keyDoor4 = data.keyDoor4;
+        this.boss1Dead = data.boss1Dead;
+
         this.weaponsGroup = data.weaponsGroup;
         this.playerLifes = data.playerLifes;
         this.playerMana = data.playerMana;
@@ -104,7 +106,8 @@ export default class BarAnimation extends Phaser.Scene{
                 playerMana : this.playerMana,
                 playerBullets : this.playerBullets,
                 playerChips : this.playerChips,
-                playerKits : this.playerKits
+                playerKits : this.playerKits,
+                boss1Dead : this.boss1Dead
             });
         }, 
             callbackScope: this, 

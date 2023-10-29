@@ -19,6 +19,7 @@ export default class Bar extends Phaser.Scene{
         this.keyDoor4 = data.keyDoor4;
         this.keyBar = data.keyBar;
         this.weaponsGroup = data.weaponsGroup;
+        this.boss1Dead = data.boss1Dead;
 
         this.playerLifes = data.playerLifes || null;
         this.playerMana = data.playerMana || null;
@@ -28,6 +29,7 @@ export default class Bar extends Phaser.Scene{
     }
 
     create(){
+
       this.scene.setVisible(true, "UI");
       this.cameras.main.fadeIn(200);
         this.map = this.make.tilemap({key:"map-mercado-bar"});
@@ -160,6 +162,7 @@ export default class Bar extends Phaser.Scene{
         });
 
         if(this.boss.lifes <= 0){
+          this.boss1Dead = true;
           this.scene.stop("Bar");
           this.scene.start("BarWinAnimation",{
             playerX : this.player.x,
@@ -175,7 +178,8 @@ export default class Bar extends Phaser.Scene{
             playerMana : this.playerMana,
             playerBullets : this.player.nBullets,
             playerChips : this.player.nChips,
-            playerKits : this.player.nKits
+            playerKits : this.player.nKits,
+            boss1Dead : this.boss1Dead,
           });
         }
 
@@ -195,7 +199,8 @@ export default class Bar extends Phaser.Scene{
           playerMana : this.player.mana,
           playerBullets : null,
           playerChips : null,
-          playerKits : null
+          playerKits : null,
+          boss1Dead : this.boss1Dead
         });
   
         events.emit('resetUI');
