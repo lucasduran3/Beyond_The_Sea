@@ -26,6 +26,8 @@ export default class Bar extends Phaser.Scene{
         this.playerBullets = data.playerBullets || 0;
         this.playerChips = data.playerChips || 0;
         this.playerKits = data.playerKits || 0;
+
+        this.kills = data.kills;
     }
 
     create(){
@@ -180,6 +182,7 @@ export default class Bar extends Phaser.Scene{
             playerChips : this.player.nChips,
             playerKits : this.player.nKits,
             boss1Dead : this.boss1Dead,
+            kills : this.kills
           });
         }
 
@@ -200,7 +203,8 @@ export default class Bar extends Phaser.Scene{
           playerBullets : null,
           playerChips : null,
           playerKits : null,
-          boss1Dead : this.boss1Dead
+          boss1Dead : this.boss1Dead,
+          kills : this.kills,
         });
   
         events.emit('resetUI');

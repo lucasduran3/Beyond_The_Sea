@@ -20,6 +20,8 @@ export default class BarAnimation extends Phaser.Scene{
         this.playerBullets = data.playerBullets;
         this.playerChips = data.playerChips;
         this.playerKits = data.playerKits;
+
+        this.kills = data.kills;
     }
 
     create(){
@@ -107,7 +109,8 @@ export default class BarAnimation extends Phaser.Scene{
                 playerBullets : this.playerBullets,
                 playerChips : this.playerChips,
                 playerKits : this.playerKits,
-                boss1Dead : this.boss1Dead
+                boss1Dead : this.boss1Dead,
+                kills : this.kills
             });
         }, 
             callbackScope: this, 

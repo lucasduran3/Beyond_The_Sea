@@ -26,6 +26,7 @@ export default class BarWinAnimation extends Phaser.Scene{
         this.playerChips = data.playerChips || 0;
         this.playerKits = data.playerKits || 0;
         
+        this.kills = data.kills;
     }
 
     create(){
@@ -118,7 +119,8 @@ export default class BarWinAnimation extends Phaser.Scene{
                 playerBullets : this.playerBullets,
                 playerChips : this.playerChips,
                 playerKits : this.playerKits,
-                boss1Dead : this.boss1Dead
+                boss1Dead : this.boss1Dead,
+                kills : this.kills,
             });
         }, 
             callbackScope: this, 

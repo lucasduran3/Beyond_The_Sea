@@ -140,6 +140,8 @@ export default class Enemy extends Phaser.GameObjects.Sprite{
             this.scene.enemyDropObjects(this.x, this.y);
 
             this.isDead = true;
+
+            this.scene.kills++;
         }
     }
 

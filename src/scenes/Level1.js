@@ -20,6 +20,8 @@ export default class Level1 extends Phaser.Scene {
 
     this.playerLifes = null;
     this.playerMana = null;   
+
+    this.kills = 0;
   }
 
   init(data) {
@@ -52,6 +54,7 @@ export default class Level1 extends Phaser.Scene {
     const decoL = this.map.addTilesetImage("deco", "deco");
     
 
+    // @ts-ignore
     const floorLayer = this.map.createLayer("floor", floorL, 0, 0);
     const doorLayer = this.map.createLayer("door", doorL, 0, 0);
     const barDoorLayer = this.map.createLayer("bar-door", barDoorL, 0, 0);
@@ -177,7 +180,8 @@ export default class Level1 extends Phaser.Scene {
           playerBullets : this.player.nBullets,
           playerChips : this.player.nChips,
           playerKits : this.player.nKits,
-          boss1Dead : this.boss1Dead
+          boss1Dead : this.boss1Dead,
+          kills : this.kills,
         });
 
       },
@@ -201,7 +205,8 @@ export default class Level1 extends Phaser.Scene {
           playerBullets : this.player.nBullets,
           playerChips : this.player.nChips,
           playerKits : this.player.nKits,
-          boss1Dead : this.boss1Dead
+          boss1Dead : this.boss1Dead,
+          kills : this.kills,
         });
       },
       () => this.keyBar == true,
@@ -224,6 +229,7 @@ export default class Level1 extends Phaser.Scene {
     const postFxPlugin = this.plugins.get("rexhorrifipipelineplugin");
     const effect = this.cameras.main.setPostPipeline(HorrifiPostFxPipeline);
 
+    // @ts-ignore
     // @ts-ignore
     const postFxPipeline = postFxPlugin.add(effect, {
       enable: true,
@@ -261,6 +267,7 @@ export default class Level1 extends Phaser.Scene {
     });
     
     //Wepaons tween
+    // @ts-ignore
     const revolverTween = this.tweens.add({
       targets: this.revolverSprite,
       scale: 1.2,
@@ -269,6 +276,7 @@ export default class Level1 extends Phaser.Scene {
       repeat : -1
     });
 
+    // @ts-ignore
     const rifleTween = this.tweens.add({
       targets: this.rifleSprite,
       scale: 1.2,
@@ -282,11 +290,13 @@ export default class Level1 extends Phaser.Scene {
     // @ts-ignore
     const user = this.firebase.getUser();
     console.log(user.displayName || user.uid);
+
+    this.showPopup(["golaa", "gkodkfosdf", "kdsfsdmfkldsm"]);
     
   }
 
   update(time, delta) {
-
+    console.log(this.kills);
     this.playerLifes = this.player.lifes;
     this.playerMana = this.player.mana;
 
@@ -368,6 +378,15 @@ export default class Level1 extends Phaser.Scene {
     this.scene.setVisible(true, "UI");
 
     this.isOver();
+
+    // @ts-ignore
+    const user = this.firebase.getUser();
+    // @ts-ignore
+    this.firebase.saveGameData(user.uid,{
+      kills : this.kills,
+    });
+
+
   }
 
   isOver() {
@@ -385,13 +404,15 @@ export default class Level1 extends Phaser.Scene {
         playerBullets : null,
         playerChips : null,
         playerKits : null,
-        boss1Dead : this.boss1Dead
+        boss1Dead : this.boss1Dead,
+        kills : this.kills,
       });
 
       events.emit('resetUI');
     }
   }
 
+  // @ts-ignore
   collectBullet(player, bullet) {
     bullet.destroy();
     this.player.incrementBullets();
@@ -415,6 +436,7 @@ export default class Level1 extends Phaser.Scene {
   }
 
   tweenObjects(target){
+    // @ts-ignore
     const tween = this.tweens.add({
       targets: target,
       scale: 1.2,
@@ -424,6 +446,7 @@ export default class Level1 extends Phaser.Scene {
     });
   }
 
+  // @ts-ignore
   collectObject(player, shape){
     const objectName = shape.texture.key;
     if(objectName == 'revolver'){
@@ -434,5 +457,35 @@ export default class Level1 extends Phaser.Scene {
 
     shape.destroy();
   }
+
+  showPopup(text) {
+    let c = 0;
+    let popupTextStyle = {
+        font: '24px Arial',
+        fill: '#ffffff',
+        backgroundColor: '#000000',
+        wordWrap:{width: 250, useAdvancedWrap: true}
+    };
+
+    let popupRect = this.add.rectangle(400, 300, 300, 200, 0x000000).setScrollFactor(0);
+    let popupText = this.add.text(250, 250, '', popupTextStyle).setScrollFactor(0);
+    
+    popupText.setMaxLines(5);
+
+  this.time.addEvent({
+    delay : 1000,
+    callback : function () {
+      if(c<text.length){
+        popupText.setText(text[c]);
+        c++;
+      } else {
+        popupRect.destroy();
+        popupText.destroy();
+      }
+    },
+    loop : true
+  });
+
+}
 
 }
