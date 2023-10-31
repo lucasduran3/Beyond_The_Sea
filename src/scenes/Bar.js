@@ -19,6 +19,8 @@ export default class Bar extends Phaser.Scene{
         this.keyDoor4 = data.keyDoor4;
         this.keyBar = data.keyBar;
         this.weaponsGroup = data.weaponsGroup;
+        this.powers = data.powers;
+
         this.boss1Dead = data.boss1Dead;
 
         this.playerLifes = data.playerLifes || null;
@@ -31,7 +33,7 @@ export default class Bar extends Phaser.Scene{
     }
 
     create(){
-
+      
       this.scene.setVisible(true, "UI");
       this.cameras.main.fadeIn(200);
         this.map = this.make.tilemap({key:"map-mercado-bar"});
@@ -72,6 +74,7 @@ export default class Bar extends Phaser.Scene{
           "player",
           this.enemyArr,
           this.weaponsGroup,
+          this.powers,
           this.playerLifes,
           this.playerMana
         );    
@@ -148,11 +151,12 @@ export default class Bar extends Phaser.Scene{
         barTableLayer.setCollisionByProperty({ colision: true });
         this.physics.add.collider(this.player, barTableLayer);
 
-        this.time.addEvent({ delay: 2000, callback: this.spawnEnemy, callbackScope: this, repeat : 4 });
+        this.time.addEvent({ delay: 2000, callback: this.spawnEnemy, callbackScope: this, repeat : 7 });
 
         wallLayer.setCollisionByProperty({ colision: true });
         this.physics.add.collider(wallLayer, this.player);
 
+        this.keyESC = this.input.keyboard.addKey("ESC");
     }
 
     update(time, delta){
@@ -182,9 +186,19 @@ export default class Bar extends Phaser.Scene{
             playerChips : this.player.nChips,
             playerKits : this.player.nKits,
             boss1Dead : this.boss1Dead,
-            kills : this.kills
+            kills : this.kills,
+            powers : this.powers,
           });
         }
+
+        if (this.keyESC.isDown) {
+          this.scene.pause("Bar");
+          this.scene.launch("Pause",{
+            preScene : this.scene.key,
+          });
+        }
+
+        this.scene.setVisible(true, "UI");
 
         this.isOver();
     }
@@ -205,6 +219,7 @@ export default class Bar extends Phaser.Scene{
           playerKits : null,
           boss1Dead : this.boss1Dead,
           kills : this.kills,
+          powers : this.powers,
         });
   
         events.emit('resetUI');

@@ -6,7 +6,7 @@ import {revolver} from "./weapons";
 const ROTATION_SPEED = 5 * Math.PI;
 
 export default class Player extends Phaser.GameObjects.Sprite {
-  constructor(scene, x, y, texture, enemy, weapons, lifes, mana) {
+  constructor(scene, x, y, texture, enemy, weapons, powers, lifes, mana) {
     super(scene, x, y, texture);
     scene.add.existing(this);
     scene.physics.world.enable(this);
@@ -26,6 +26,10 @@ export default class Player extends Phaser.GameObjects.Sprite {
     this.weaponsGroup = weapons;
     this.activatedWeapon = null;
 
+    this.hasWeapon = false;
+
+    this.powers = powers;
+
     this.nBullets = 0;
     this.nChips = 0;
     this.nKits = 0;
@@ -40,6 +44,13 @@ export default class Player extends Phaser.GameObjects.Sprite {
     this.anims.create({
       key:"walkWithGun",
       frames : this.anims.generateFrameNumbers("player2",{start : 0, end:7}),
+      frameRate : 16,
+      repeat : -1
+    });
+
+    this.anims.create({
+      key:"noneWithGun",
+      frames : [{key:"player2", frame : 0}],
       frameRate : 27,
       repeat : -1
     });
@@ -63,8 +74,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
         this.target = angleToPointer + Math.PI/2;
     });
-    //events.on("updatePlayerChips", this.updateChips, this);
-    //events.on("updatePlayerKits", this.updateKits, this);
+  
     this.keys = scene.input.keyboard.addKeys("W,A,S,D,H,E,F,ONE,TWO");
     this.isHKeyPressed = false;
     this.isEKeyPressed = false;
@@ -99,9 +109,13 @@ export default class Player extends Phaser.GameObjects.Sprite {
     }
 
     if (this.keys.W.isDown||this.keys.S.isDown||this.keys.A.isDown||this.keys.D.isDown){
-      this.anims.play("walk", true);
+      if(this.hasWeapon){
+        this.anims.play('walkWithGun', true);
+      } else{this.anims.play("walk", true)};
     }else{
-      this.anims.play("none", true);
+      if(this.hasWeapon){
+        this.anims.play('noneWithGun', true);
+      } else{this.anims.play("none", true)};
     }
 
     // @ts-ignore
@@ -116,7 +130,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
     }
 
     if(this.keys.H.isDown && !this.isHKeyPressed){
-      this.usePowerUp();
+      this.usePowerUp("freeze");
       this.isHKeyPressed = true;
     }
 
@@ -186,14 +200,19 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
   addWeapon(weapon){
     this.weaponsGroup[weapon.name] = weapon;
+    this.hasWeapon = true;
   }
 
   setWeapon(data){
     this.activatedWeapon = this.weaponsGroup[data.weapon];
   }
 
+  addPower(powerName){
+    this.powers.push(powerName);
+  }
+
   incrementBullets(){
-    const ammount = Phaser.Math.Between(15,32);
+    const ammount = Phaser.Math.Between(12,25);
     this.nBullets += ammount;
 
     events.emit('updateBullets',{
@@ -214,8 +233,8 @@ export default class Player extends Phaser.GameObjects.Sprite {
     this.nKits = n;
   }
 
-  usePowerUp(){
-    if(this.mana>20){
+  usePowerUp(powerName){
+    if(this.mana>20 && this.powers.find((element)=>element == "freeze")){
     this.enemy.forEach(element => {
       element.freeze();
     });
@@ -225,9 +244,8 @@ export default class Player extends Phaser.GameObjects.Sprite {
       isIncrease : false
     });
     }else{
-
+      console.log("mana no encontraodo o power vacio");
     }
-
   }
 
   incrementLife(){

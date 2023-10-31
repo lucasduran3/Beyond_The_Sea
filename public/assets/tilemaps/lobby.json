@@ -411,6 +411,30 @@
                  "width":0,
                  "x":960,
                  "y":352
+                }, 
+                {
+                 "height":0,
+                 "id":17,
+                 "name":"radio",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1078,
+                 "y":708
+                }, 
+                {
+                 "height":0,
+                 "id":21,
+                 "name":"powerFreeze",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1739.39393939394,
+                 "y":669.69696969697
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -419,7 +443,7 @@
          "y":0
         }],
  "nextlayerid":11,
- "nextobjectid":17,
+ "nextobjectid":22,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.1",

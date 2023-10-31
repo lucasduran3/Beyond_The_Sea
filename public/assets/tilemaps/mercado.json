@@ -894,6 +894,54 @@
                  "width":0,
                  "x":2896,
                  "y":3520
+                }, 
+                {
+                 "height":0,
+                 "id":12,
+                 "name":"powerFreeze",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1642.42424242424,
+                 "y":2766.66666666667
+                }, 
+                {
+                 "height":0,
+                 "id":13,
+                 "name":"enemy",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1066.66666666667,
+                 "y":3230.30303030303
+                }, 
+                {
+                 "height":0,
+                 "id":14,
+                 "name":"enemy",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1669.69696969697,
+                 "y":3175.75757575758
+                }, 
+                {
+                 "height":0,
+                 "id":15,
+                 "name":"enemy",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":2396,
+                 "y":2736
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -902,7 +950,7 @@
          "y":0
         }],
  "nextlayerid":9,
- "nextobjectid":12,
+ "nextobjectid":16,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.1",

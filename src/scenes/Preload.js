@@ -39,6 +39,8 @@ export default class Preload extends Phaser.Scene {
     this.load.image("anon-icon", "/assets/sprites/anon-icon.png");
     this.load.image("git-icon", "/assets/sprites/git-icon.png");
     this.load.image("google-icon", "/assets/sprites/google-icon.png");
+    this.load.image("radio", "/assets/sprites/radio.png");
+    this.load.image("powerFreeze", "/assets/sprites/powerFreeze.png");
 
 
 
@@ -47,6 +49,9 @@ export default class Preload extends Phaser.Scene {
     this.load.tilemapTiledJSON("map-mercado", "/assets/tilemaps/mercado.json");
     this.load.tilemapTiledJSON("map-level1", "/assets/tilemaps/level1.json");
     this.load.tilemapTiledJSON("map-mercado-bar", "/assets/tilemaps/mercado-bar.json");
+
+    //audio
+    this.load.audio('ambient', "/assets/audio/ambiente.wav");
 
     //plugins
     this.load.plugin(

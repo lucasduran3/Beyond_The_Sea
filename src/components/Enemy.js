@@ -30,7 +30,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite{
             const row = [];
             for(let x = 0; x<this.map.width; x++){
                 const tile = this.map.getTileAt(x,y);
-                row.push(tile && tile.properties.colision == true ? 1 : 0);
+                row.push(tile && tile.properties.colision ? 1 : 0);
             }
             grid.push(row);
         }

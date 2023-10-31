@@ -6,6 +6,10 @@ export default class Pause extends Phaser.Scene{
         super("Pause");
     }
 
+    init(data){
+        this.preScene = data.preScene;
+    }
+
     create(){
         const titleText = this.add.text(800,240,'PAUSE',{
             fontSize : '100px'
@@ -32,7 +36,7 @@ export default class Pause extends Phaser.Scene{
 
         resumeButton.on('pointerdown', ()=>{
             this.scene.stop("Pause");
-            this.scene.resume("Level1");
+            this.scene.resume(this.preScene);
         });
 
         const MenuButton = this.add.text(960,700,'Menu',{
@@ -55,5 +59,14 @@ export default class Pause extends Phaser.Scene{
             this.scene.stop("Pause");
             this.scene.start("MainMenu");
         });
+
+        this.keyESC = this.input.keyboard.addKey("ESC");
     }
+    
+    update(){
+    if(this.keyESC.isDown){
+        this.scene.resume(this.preScene);
+        this.scene.stop("Pause");
+    }
+}
 }

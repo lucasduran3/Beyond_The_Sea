@@ -18,10 +18,14 @@ export default class Level1 extends Phaser.Scene {
 
     this.weaponsGroup = {};
 
+    this.powers = [];
+
     this.playerLifes = null;
     this.playerMana = null;   
 
     this.kills = 0;
+
+    this.hasRadio = false;
   }
 
   init(data) {
@@ -34,6 +38,7 @@ export default class Level1 extends Phaser.Scene {
     this.boss1Dead = data.boss1Dead || false;
 
     this.weaponsGroup = data.weaponsGroup || {};
+    this.powers = data.powers || [];
 
     this.playerLifes = data.playerLifes || null;
     this.playerMana = data.playerMana || null;
@@ -45,6 +50,8 @@ export default class Level1 extends Phaser.Scene {
   create() {
     this.cameras.main.fadeIn(500);
 
+    this.ambientSound = this.sound.add('ambient');
+    this.ambientSound.play();
     this.map = this.make.tilemap({ key: "map-" + this.level });
     const floorL = this.map.addTilesetImage("floor", "floor");
     const wallL = this.map.addTilesetImage("wall", "wall");
@@ -90,6 +97,7 @@ export default class Level1 extends Phaser.Scene {
       "player",
       this.enemyArr,
       this.weaponsGroup,
+      this.powers,
       this.playerLifes,
       this.playerMana
     );
@@ -133,6 +141,20 @@ export default class Level1 extends Phaser.Scene {
           this.bulletsGroup.add(this.bulletToCollect);
           break;
         }
+        case "radio":{
+          if(!this.hasRadio){
+          this.radio = this.physics.add.sprite(x, y,"radio").setScale(0.5);
+          }
+          break;
+        }
+        case "msj1":{
+          //this.msj1Zone = this.physics.add.sprite(x,y,"drawer").setVisible(false);
+          break;
+        }
+        case "powerFreeze":{
+          this.powerFreeze = this.physics.add.sprite(x,y,"powerFreeze");
+          break;
+        }
       }
     });
 
@@ -153,74 +175,6 @@ export default class Level1 extends Phaser.Scene {
       0,
       this.map.widthInPixels,
       this.map.heightInPixels
-    );
-    wallLayer.setCollisionByProperty({ colision: true });
-    doorLayer.setCollisionByProperty({ colision: true });
-    barDoorLayer.setCollisionByProperty({colision: true});
-    lobbyDoorLayer.setCollisionByProperty({colision: true});
-    decoLayer.setCollisionByProperty({colision: true});
-
-    this.physics.add.collider(wallLayer, this.player);
-    this.physics.add.collider(wallLayer, this.enemysGroup);
-    this.physics.add.collider(decoLayer, this.player);
-    this.physics.add.collider(decoLayer, this.enemysGroup);
-    this.physics.add.collider(
-      doorLayer,
-      this.player,
-      () => {
-        this.scene.start("Level1", {
-          level: "mercado",
-          keyDoor1: this.keyDoor1,
-          keyDoor2: this.keyDoor2,
-          keyDoor3: this.keyDoor3,
-          keyDoor4: this.keyDoor4,
-          weaponsGroup: this.weaponsGroup,
-          playerLifes : this.playerLifes,
-          playerMana : this.playerMana,
-          playerBullets : this.player.nBullets,
-          playerChips : this.player.nChips,
-          playerKits : this.player.nKits,
-          boss1Dead : this.boss1Dead,
-          kills : this.kills,
-        });
-
-      },
-      () => this.keyDoor1 == true &&
-            this.boss1Dead == false
-    );
-
-    this.physics.add.collider(
-      barDoorLayer,
-      this.player,
-      () => {
-        this.scene.start("BarAnimation", {
-          keyDoor1: this.keyDoor1,
-          keyDoor2: this.keyDoor2,
-          keyDoor3: this.keyDoor3,
-          keyDoor4: this.keyDoor4,
-          keyBar : this.keyBar,
-          weaponsGroup: this.player.weaponsGroup,
-          playerLifes : this.playerLifes,
-          playerMana : this.playerMana,
-          playerBullets : this.player.nBullets,
-          playerChips : this.player.nChips,
-          playerKits : this.player.nKits,
-          boss1Dead : this.boss1Dead,
-          kills : this.kills,
-        });
-      },
-      () => this.keyBar == true,
-      this
-    );
-
-    this.physics.add.collider(
-      wallLayer,
-      this.player.bullets,
-      () => {
-        this.player.bullets.getFirstAlive().destroy();
-      },
-      null,
-      this
     );
 
     this.keyESC = this.input.keyboard.addKey("ESC");
@@ -266,7 +220,7 @@ export default class Level1 extends Phaser.Scene {
       crtHeight: 5,
     });
     
-    //Wepaons tween
+    /*----TWEENS-----*/
     // @ts-ignore
     const revolverTween = this.tweens.add({
       targets: this.revolverSprite,
@@ -287,19 +241,7 @@ export default class Level1 extends Phaser.Scene {
 
     this.objectsGroup = this.physics.add.group();
 
-    // @ts-ignore
-    const user = this.firebase.getUser();
-    console.log(user.displayName || user.uid);
-
-    this.showPopup(["golaa", "gkodkfosdf", "kdsfsdmfkldsm"]);
-    
-  }
-
-  update(time, delta) {
-    console.log(this.kills);
-    this.playerLifes = this.player.lifes;
-    this.playerMana = this.player.mana;
-
+    /*---COLLIDES - OVERLAPS---*/
     this.physics.add.overlap(
       this.objectsGroup,
       this.player,
@@ -364,6 +306,125 @@ export default class Level1 extends Phaser.Scene {
       this
     );
 
+    this.physics.add.overlap(
+      this.player,
+      this.radio,
+      ()=>{
+        this.radio.destroy();
+        this.hasRadio = true;
+        const text = [
+        "Hola?...Hay alguien ahi?", 
+        "Oh dios... que suerte haberte encontrado..", 
+        "No sé como llegaste a este lugar, pero necesito tu ayuda."
+        ];
+        this.showPopup(text);
+      },
+      ()=> this.hasRadio == false,
+      this
+    );
+
+    wallLayer.setCollisionByProperty({ colision: true });
+    doorLayer.setCollisionByProperty({ colision: true });
+    barDoorLayer.setCollisionByProperty({colision: true});
+    lobbyDoorLayer.setCollisionByProperty({colision: true});
+    decoLayer.setCollisionByProperty({colision: true});
+
+    this.physics.add.collider(wallLayer, this.player);
+    this.physics.add.collider(wallLayer, this.enemysGroup);
+    this.physics.add.collider(decoLayer, this.player);
+    this.physics.add.collider(decoLayer, this.enemysGroup);
+    this.physics.add.collider(
+      doorLayer,
+      this.player,
+      () => {
+        this.scene.start("Level1", {
+          level: "mercado",
+          keyDoor1: this.keyDoor1,
+          keyDoor2: this.keyDoor2,
+          keyDoor3: this.keyDoor3,
+          keyDoor4: this.keyDoor4,
+          weaponsGroup: this.weaponsGroup,
+          playerLifes : this.playerLifes,
+          playerMana : this.playerMana,
+          playerBullets : this.player.nBullets,
+          playerChips : this.player.nChips,
+          playerKits : this.player.nKits,
+          boss1Dead : this.boss1Dead,
+          kills : this.kills,
+          powers : this.powers,
+        });
+
+      },
+      () => this.keyDoor1 == true &&
+            this.boss1Dead == false
+    );
+
+    this.physics.add.collider(doorLayer, this.player,
+      ()=> {
+        const text = ["Necesitas una llave para abrir esta puerta"];
+        this.showPopup(text);
+      },
+      ()=>this.keyDoor1 == false, 
+      this);
+
+    this.physics.add.collider(
+      barDoorLayer,
+      this.player,
+      () => {
+        this.scene.start("BarAnimation", {
+          keyDoor1: this.keyDoor1,
+          keyDoor2: this.keyDoor2,
+          keyDoor3: this.keyDoor3,
+          keyDoor4: this.keyDoor4,
+          keyBar : this.keyBar,
+          weaponsGroup: this.player.weaponsGroup,
+          playerLifes : this.playerLifes,
+          playerMana : this.playerMana,
+          playerBullets : this.player.nBullets,
+          playerChips : this.player.nChips,
+          playerKits : this.player.nKits,
+          boss1Dead : this.boss1Dead,
+          kills : this.kills,
+          powers : this.player.powers,
+        });
+      },
+      () => this.keyBar == true,
+      this
+    );
+
+    this.physics.add.collider(
+      wallLayer,
+      this.player.bullets,
+      () => {
+        this.player.bullets.getFirstAlive().destroy();
+      },
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.player,
+      this.powerFreeze,
+      ()=>{
+        this.player.addPower("freeze");
+        this.powers.push("freeze");
+        this.powerFreeze.destroy();
+      }
+    );
+
+
+    /*---FIREBASE----*/  
+    // @ts-ignore
+    const user = this.firebase.getUser();
+    console.log(user.displayName || user.uid);
+
+  }
+
+  update(time, delta) {
+    console.log(this.kills);
+    this.playerLifes = this.player.lifes;
+    this.playerMana = this.player.mana;
+
     this.player.update(time, delta);
 
     this.enemyArr.forEach((element) => {
@@ -372,7 +433,9 @@ export default class Level1 extends Phaser.Scene {
 
     if (this.keyESC.isDown) {
       this.scene.pause("Level1");
-      this.scene.launch("Pause");
+      this.scene.launch("Pause",{
+        preScene : this.scene.key,
+      });
     }
 
     this.scene.setVisible(true, "UI");
@@ -385,8 +448,6 @@ export default class Level1 extends Phaser.Scene {
     this.firebase.saveGameData(user.uid,{
       kills : this.kills,
     });
-
-
   }
 
   isOver() {
@@ -419,7 +480,7 @@ export default class Level1 extends Phaser.Scene {
   }
 
   enemyDropObjects(x, y){
-    const n = Phaser.Math.Between(2,4);
+    const n = Phaser.Math.Between(0,3);
 
     for(let i = 0; i<n; i++){
     let randomObject = Phaser.Math.RND.pick(["revolver", "rifle"]);
@@ -432,7 +493,6 @@ export default class Level1 extends Phaser.Scene {
     this.objectsGroup.getChildren().forEach(element => {
       this.tweenObjects(element);
     });
-    
   }
 
   tweenObjects(target){
@@ -459,33 +519,34 @@ export default class Level1 extends Phaser.Scene {
   }
 
   showPopup(text) {
-    let c = 0;
+    let c = 1;
     let popupTextStyle = {
         font: '24px Arial',
         fill: '#ffffff',
         backgroundColor: '#000000',
+        padding: 20,
         wordWrap:{width: 250, useAdvancedWrap: true}
     };
 
-    let popupRect = this.add.rectangle(400, 300, 300, 200, 0x000000).setScrollFactor(0);
-    let popupText = this.add.text(250, 250, '', popupTextStyle).setScrollFactor(0);
+    // @ts-ignore
+    let popupText = this.add.text(1300, 300, text[0], popupTextStyle).setScrollFactor(0);
+    let radioimg = this.add.image(1230,350,'radio').setScrollFactor(0);
     
     popupText.setMaxLines(5);
 
-  this.time.addEvent({
-    delay : 1000,
-    callback : function () {
-      if(c<text.length){
-        popupText.setText(text[c]);
-        c++;
-      } else {
-        popupRect.destroy();
-        popupText.destroy();
-      }
-    },
-    loop : true
-  });
-
-}
+    this.time.addEvent({
+      delay : 3000,
+      callback : function () {
+        if(c<text.length){
+          popupText.setText(text[c]);
+          c++;
+        } else {
+          popupText.destroy();
+          radioimg.destroy();
+        }
+      },
+      loop : true
+    });
+  }
 
 }
