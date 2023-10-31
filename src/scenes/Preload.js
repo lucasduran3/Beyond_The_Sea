@@ -42,16 +42,17 @@ export default class Preload extends Phaser.Scene {
     this.load.image("radio", "/assets/sprites/radio.png");
     this.load.image("powerFreeze", "/assets/sprites/powerFreeze.png");
 
-
-
     //tilemaps
     this.load.tilemapTiledJSON("map-lobby", "/assets/tilemaps/lobby.json");
     this.load.tilemapTiledJSON("map-mercado", "/assets/tilemaps/mercado.json");
     this.load.tilemapTiledJSON("map-level1", "/assets/tilemaps/level1.json");
-    this.load.tilemapTiledJSON("map-mercado-bar", "/assets/tilemaps/mercado-bar.json");
+    this.load.tilemapTiledJSON(
+      "map-mercado-bar",
+      "/assets/tilemaps/mercado-bar.json"
+    );
 
     //audio
-    this.load.audio('ambient', "/assets/audio/ambiente.wav");
+    this.load.audio("ambient", "/assets/audio/ambiente.wav");
 
     //plugins
     this.load.plugin(
@@ -68,80 +69,93 @@ export default class Preload extends Phaser.Scene {
 
     //this.scene.start("SelectLang",{language : this.#language});
     //this.scene.launch("UI");
-    this.add.text(400,100,"Login",{ 
-      fontSize : 48
-  });
+    this.add.text(400, 100, "Login", {
+      fontSize: 48,
+    });
 
-
-  this.add.image(400,300, "email-icon").setOrigin(0.5).setInteractive({useHandCursor : true})
-  .on('pointerdown',()=>{
-      const email = prompt("Email");
-      const password = prompt("Password");
-      // @ts-ignore
-      this.firebase
-      .signInWithEmail(email,password)
-      .then(()=>{
-          this.scene.start("Level1");
-      })
-      .catch(()=>{
-          const crearUsuario = window.confirm(
+    this.add
+      .image(400, 300, "email-icon")
+      .setOrigin(0.5)
+      .setInteractive({ useHandCursor: true })
+      .on("pointerdown", () => {
+        const email = prompt("Email");
+        const password = prompt("Password");
+        // @ts-ignore
+        this.firebase
+          .signInWithEmail(email, password)
+          .then(() => {
+            this.scene.start("Level1");
+          })
+          .catch(() => {
+            const crearUsuario = window.confirm(
               "Email no encontrado. \n ¿Desea crear un usuario?"
-          );
-          if(crearUsuario){
+            );
+            if (crearUsuario) {
               // @ts-ignore
               this.firebase
-              .createUserWithEmail(email, password)
-              .then(()=> {
+                .createUserWithEmail(email, password)
+                .then(() => {
                   this.scene.start("Level1");
-              })
-              .catch((createUserError) => {
+                })
+                .catch((createUserError) => {
                   console.log(
-                      "🚀 ~ file: Login.js:51 ~ .catch ~ error",
-                      createUserError
+                    "🚀 ~ file: Login.js:51 ~ .catch ~ error",
+                    createUserError
                   );
-              });
-          }
+                });
+            }
+          });
       });
-  });
 
-  this.add.image(400,500, "anon-icon").setOrigin(0.5).setInteractive({useHandCursor : true})
-  .on('pointerdown',()=>{
-      // @ts-ignore
-      this.firebase
-      .signInAnonymously()
-      .then(()=>{
-          this.scene.start("SelectLang");
-      })
-      .catch((error)=>{
-          console.log("🚀 ~ file: Login.js:74 ~ .catch ~ error", error);
+    this.add
+      .image(400, 500, "anon-icon")
+      .setOrigin(0.5)
+      .setInteractive({ useHandCursor: true })
+      .on("pointerdown", () => {
+        // @ts-ignore
+        this.firebase
+          .signInAnonymously()
+          .then(() => {
+            this.scene.start("SelectLang");
+          })
+          .catch((error) => {
+            console.log("🚀 ~ file: Login.js:74 ~ .catch ~ error", error);
+          });
       });
-  });
 
-  this.add.image(400,700, "google-icon").setOrigin(0.5).setInteractive({useHandCursor : true})
-  .on('pointerdown', ()=>{
-      // @ts-ignore
-      this.firebase
-      .signInWithGoogle()
-      .then(()=>{
-          this.scene.start("SelectLang");
-      })
-      .catch((error)=>{
-          console.log("🚀 ~ file: Login.js:74 ~ .catch ~ error", error);
+    this.add
+      .image(400, 700, "google-icon")
+      .setOrigin(0.5)
+      .setInteractive({ useHandCursor: true })
+      .on("pointerdown", () => {
+        // @ts-ignore
+        this.firebase
+          .signInWithGoogle()
+          .then(() => {
+            // buscar info
+            const user = this.firebase.getUser();
+            this.firebase.loadGameData(user.uid);
+            this.scene.start("SelectLang");
+          })
+          .catch((error) => {
+            console.log("🚀 ~ file: Login.js:74 ~ .catch ~ error", error);
+          });
       });
-  });
 
-  this.add.image(400,900, "git-icon").setOrigin(0.5).setInteractive({useHandCursor : true})
-  .on('pointerdown', ()=>{
-      // @ts-ignore
-      this.firebase
-      .signInWithGithub()
-      .then(()=>{
-          this.scene.start("SelectLang");
-      })
-      .catch((error)=>{
-          console.log("🚀 ~ file: Login.js:74 ~ .catch ~ error", error);
-      })
-  })
-}
+    this.add
+      .image(400, 900, "git-icon")
+      .setOrigin(0.5)
+      .setInteractive({ useHandCursor: true })
+      .on("pointerdown", () => {
+        // @ts-ignore
+        this.firebase
+          .signInWithGithub()
+          .then(() => {
+            this.scene.start("SelectLang");
+          })
+          .catch((error) => {
+            console.log("🚀 ~ file: Login.js:74 ~ .catch ~ error", error);
+          });
+      });
   }
-
+}

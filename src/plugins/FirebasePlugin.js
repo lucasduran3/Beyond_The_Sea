@@ -3,45 +3,44 @@ import Phaser from "phaser";
 import { initializeApp } from "firebase/app";
 
 import {
-    getFirestore,
-    setDoc,
-    doc,
-    addDoc,
-    collection,
-    query,
-    orderBy,
-    limit,
-    getDocs,
-    getDoc,
+  getFirestore,
+  setDoc,
+  doc,
+  addDoc,
+  collection,
+  query,
+  orderBy,
+  limit,
+  getDocs,
+  getDoc,
 } from "firebase/firestore";
 
 import {
-    getAuth,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    signInAnonymously,
-    signInWithPopup,
-    onAuthStateChanged,
-    GoogleAuthProvider,
-    GithubAuthProvider,
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signInAnonymously,
+  signInWithPopup,
+  onAuthStateChanged,
+  GoogleAuthProvider,
+  GithubAuthProvider,
 } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDhsUWn67rsqqJxIAwGTi71T8DM3lru7FI",
-  authDomain: "beyond-the-sea.firebaseapp.com",
-  projectId: "beyond-the-sea",
-  storageBucket: "beyond-the-sea.appspot.com",
-  messagingSenderId: "376376636204",
-  appId: "1:376376636204:web:463de4d3a5cc611950f289"
+  apiKey: "AIzaSyCK2a0GVrhetGHqbaUKPlBfyQ5iUL4ovHc",
+  authDomain: "beyond-the-sea-fe750.firebaseapp.com",
+  projectId: "beyond-the-sea-fe750",
+  storageBucket: "beyond-the-sea-fe750.appspot.com",
+  messagingSenderId: "101282228333",
+  appId: "1:101282228333:web:f1452873ae56c91cbeb764",
 };
 
-export default class FirebasePlugin extends Phaser.Plugins.BasePlugin{
-    constructor(pluginManager){
+export default class FirebasePlugin extends Phaser.Plugins.BasePlugin {
+  constructor(pluginManager) {
+    super(pluginManager);
 
-        super(pluginManager);
-
-        const app = initializeApp(firebaseConfig);
-        this.db = getFirestore(app);
+    const app = initializeApp(firebaseConfig);
+    this.db = getFirestore(app);
     this.auth = getAuth(app);
     this.onLoggedInCallback = () => {};
 
@@ -130,5 +129,5 @@ export default class FirebasePlugin extends Phaser.Plugins.BasePlugin{
     });
 
     return scores;
-    }
+  }
 }

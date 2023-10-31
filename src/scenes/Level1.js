@@ -21,11 +21,10 @@ export default class Level1 extends Phaser.Scene {
     this.powers = [];
 
     this.playerLifes = null;
-    this.playerMana = null;   
-
-    this.kills = 0;
+    this.playerMana = null;
 
     this.hasRadio = false;
+    this.firebase = undefined;
   }
 
   init(data) {
@@ -39,6 +38,7 @@ export default class Level1 extends Phaser.Scene {
 
     this.weaponsGroup = data.weaponsGroup || {};
     this.powers = data.powers || [];
+    this.hasRadio = data.hasRadio || false;
 
     this.playerLifes = data.playerLifes || null;
     this.playerMana = data.playerMana || null;
@@ -49,8 +49,8 @@ export default class Level1 extends Phaser.Scene {
 
   create() {
     this.cameras.main.fadeIn(500);
-
-    this.ambientSound = this.sound.add('ambient');
+    console.log(this.weaponsGroup);
+    this.ambientSound = this.sound.add("ambient");
     this.ambientSound.play();
     this.map = this.make.tilemap({ key: "map-" + this.level });
     const floorL = this.map.addTilesetImage("floor", "floor");
@@ -59,7 +59,6 @@ export default class Level1 extends Phaser.Scene {
     const barDoorL = this.map.addTilesetImage("door", "door");
     const lobbyDoorL = this.map.addTilesetImage("door", "door");
     const decoL = this.map.addTilesetImage("deco", "deco");
-    
 
     // @ts-ignore
     const floorLayer = this.map.createLayer("floor", floorL, 0, 0);
@@ -112,14 +111,13 @@ export default class Level1 extends Phaser.Scene {
       const { x = 0, y = 0, name } = objData;
       switch (name) {
         case "key-door1": {
-          if(!this.keyDoor1){
+          if (!this.keyDoor1) {
             this.key_door1_sprite = this.physics.add.sprite(x, y, "key");
           }
           break;
         }
-        case "key-bar" : {
-          
-          if(!this.keyBar){
+        case "key-bar": {
+          if (!this.keyBar) {
             this.keyBarSprite = this.physics.add.sprite(x, y, "key");
           }
           break;
@@ -141,18 +139,18 @@ export default class Level1 extends Phaser.Scene {
           this.bulletsGroup.add(this.bulletToCollect);
           break;
         }
-        case "radio":{
-          if(!this.hasRadio){
-          this.radio = this.physics.add.sprite(x, y,"radio").setScale(0.5);
+        case "radio": {
+          if (!this.hasRadio) {
+            this.radio = this.physics.add.sprite(x, y, "radio").setScale(0.5);
           }
           break;
         }
-        case "msj1":{
+        case "msj1": {
           //this.msj1Zone = this.physics.add.sprite(x,y,"drawer").setVisible(false);
           break;
         }
-        case "powerFreeze":{
-          this.powerFreeze = this.physics.add.sprite(x,y,"powerFreeze");
+        case "powerFreeze": {
+          this.powerFreeze = this.physics.add.sprite(x, y, "powerFreeze");
           break;
         }
       }
@@ -219,24 +217,24 @@ export default class Level1 extends Phaser.Scene {
       crtWidth: 5,
       crtHeight: 5,
     });
-    
+
     /*----TWEENS-----*/
     // @ts-ignore
     const revolverTween = this.tweens.add({
       targets: this.revolverSprite,
       scale: 1.2,
-      yoyo : true,
-      duration : 500,
-      repeat : -1
+      yoyo: true,
+      duration: 500,
+      repeat: -1,
     });
 
     // @ts-ignore
     const rifleTween = this.tweens.add({
       targets: this.rifleSprite,
       scale: 1.2,
-      yoyo : true,
-      duration : 500,
-      repeat : -1
+      yoyo: true,
+      duration: 500,
+      repeat: -1,
     });
 
     this.objectsGroup = this.physics.add.group();
@@ -309,25 +307,25 @@ export default class Level1 extends Phaser.Scene {
     this.physics.add.overlap(
       this.player,
       this.radio,
-      ()=>{
+      () => {
         this.radio.destroy();
         this.hasRadio = true;
         const text = [
-        "Hola?...Hay alguien ahi?", 
-        "Oh dios... que suerte haberte encontrado..", 
-        "No sé como llegaste a este lugar, pero necesito tu ayuda."
+          "Hola?...Hay alguien ahi?",
+          "Oh dios... que suerte haberte encontrado..",
+          "No sé como llegaste a este lugar, pero necesito tu ayuda.",
         ];
         this.showPopup(text);
       },
-      ()=> this.hasRadio == false,
+      () => this.hasRadio == false,
       this
     );
 
     wallLayer.setCollisionByProperty({ colision: true });
     doorLayer.setCollisionByProperty({ colision: true });
-    barDoorLayer.setCollisionByProperty({colision: true});
-    lobbyDoorLayer.setCollisionByProperty({colision: true});
-    decoLayer.setCollisionByProperty({colision: true});
+    barDoorLayer.setCollisionByProperty({ colision: true });
+    lobbyDoorLayer.setCollisionByProperty({ colision: true });
+    decoLayer.setCollisionByProperty({ colision: true });
 
     this.physics.add.collider(wallLayer, this.player);
     this.physics.add.collider(wallLayer, this.enemysGroup);
@@ -344,28 +342,29 @@ export default class Level1 extends Phaser.Scene {
           keyDoor3: this.keyDoor3,
           keyDoor4: this.keyDoor4,
           weaponsGroup: this.weaponsGroup,
-          playerLifes : this.playerLifes,
-          playerMana : this.playerMana,
-          playerBullets : this.player.nBullets,
-          playerChips : this.player.nChips,
-          playerKits : this.player.nKits,
-          boss1Dead : this.boss1Dead,
-          kills : this.kills,
-          powers : this.powers,
+          playerLifes: this.playerLifes,
+          playerMana: this.playerMana,
+          playerBullets: this.player.nBullets,
+          playerChips: this.player.nChips,
+          playerKits: this.player.nKits,
+          boss1Dead: this.boss1Dead,
+          powers: this.powers,
+          hasRadio: this.hasRadio,
         });
-
       },
-      () => this.keyDoor1 == true &&
-            this.boss1Dead == false
+      () => this.keyDoor1 == true && this.boss1Dead == false
     );
 
-    this.physics.add.collider(doorLayer, this.player,
-      ()=> {
+    this.physics.add.collider(
+      doorLayer,
+      this.player,
+      () => {
         const text = ["Necesitas una llave para abrir esta puerta"];
         this.showPopup(text);
       },
-      ()=>this.keyDoor1 == false, 
-      this);
+      () => this.keyDoor1 == false,
+      this
+    );
 
     this.physics.add.collider(
       barDoorLayer,
@@ -376,16 +375,16 @@ export default class Level1 extends Phaser.Scene {
           keyDoor2: this.keyDoor2,
           keyDoor3: this.keyDoor3,
           keyDoor4: this.keyDoor4,
-          keyBar : this.keyBar,
+          keyBar: this.keyBar,
           weaponsGroup: this.player.weaponsGroup,
-          playerLifes : this.playerLifes,
-          playerMana : this.playerMana,
-          playerBullets : this.player.nBullets,
-          playerChips : this.player.nChips,
-          playerKits : this.player.nKits,
-          boss1Dead : this.boss1Dead,
-          kills : this.kills,
-          powers : this.player.powers,
+          playerLifes: this.playerLifes,
+          playerMana: this.playerMana,
+          playerBullets: this.player.nBullets,
+          playerChips: this.player.nChips,
+          playerKits: this.player.nKits,
+          boss1Dead: this.boss1Dead,
+          powers: this.player.powers,
+          hasRadio: this.hasRadio,
         });
       },
       () => this.keyBar == true,
@@ -402,26 +401,35 @@ export default class Level1 extends Phaser.Scene {
       this
     );
 
-    this.physics.add.overlap(
-      this.player,
-      this.powerFreeze,
-      ()=>{
-        this.player.addPower("freeze");
-        this.powers.push("freeze");
-        this.powerFreeze.destroy();
-      }
-    );
+    this.physics.add.overlap(this.player, this.powerFreeze, () => {
+      this.player.addPower("freeze");
+      this.powers.push("freeze");
+      this.powerFreeze.destroy();
+    });
 
-
-    /*---FIREBASE----*/  
+    /*---FIREBASE----*/
     // @ts-ignore
-    const user = this.firebase.getUser();
-    console.log(user.displayName || user.uid);
-
+    if (this.boss1Dead) {
+      const user = this.firebase.getUser();
+      this.firebase.saveGameData(user.uid, {
+        keyDoor1: this.keyDoor1,
+        keyDoor2: this.keyDoor2,
+        keyDoor3: this.keyDoor3,
+        keyDoor4: this.keyDoor4,
+        weaponsGroup: this.weaponsGroup,
+        playerLifes: this.playerLifes,
+        playerMana: this.playerMana,
+        playerBullets: this.player.nBullets,
+        playerChips: this.player.nChips,
+        playerKits: this.player.nKits,
+        boss1Dead: this.boss1Dead,
+        powers: this.powers,
+        hasRadio: this.hasRadio,
+      });
+    }
   }
 
   update(time, delta) {
-    console.log(this.kills);
     this.playerLifes = this.player.lifes;
     this.playerMana = this.player.mana;
 
@@ -433,8 +441,8 @@ export default class Level1 extends Phaser.Scene {
 
     if (this.keyESC.isDown) {
       this.scene.pause("Level1");
-      this.scene.launch("Pause",{
-        preScene : this.scene.key,
+      this.scene.launch("Pause", {
+        preScene: this.scene.key,
       });
     }
 
@@ -443,33 +451,29 @@ export default class Level1 extends Phaser.Scene {
     this.isOver();
 
     // @ts-ignore
-    const user = this.firebase.getUser();
-    // @ts-ignore
-    this.firebase.saveGameData(user.uid,{
-      kills : this.kills,
-    });
   }
 
   isOver() {
     if (this.player.lifes <= 0) {
-      this.scene.start("Level1",{
+      this.scene.start("Level1", {
         level: this.level,
         keyDoor1: this.keyDoor1,
         keyDoor2: this.keyDoor2,
         keyDoor3: this.keyDoor3,
         keyDoor4: this.keyDoor4,
-        keyBar : this.keyBar,
+        keyBar: this.keyBar,
         weaponsGroup: this.player.weaponsGroup,
-        playerLifes : 300,
-        playerMana : this.player.mana,
-        playerBullets : null,
-        playerChips : null,
-        playerKits : null,
-        boss1Dead : this.boss1Dead,
-        kills : this.kills,
+        playerLifes: 300,
+        playerMana: this.player.mana,
+        playerBullets: null,
+        playerChips: null,
+        playerKits: null,
+        boss1Dead: this.boss1Dead,
+        powers: this.powers,
+        hasRadio: this.hasRadio,
       });
 
-      events.emit('resetUI');
+      events.emit("resetUI");
     }
   }
 
@@ -479,39 +483,39 @@ export default class Level1 extends Phaser.Scene {
     this.player.incrementBullets();
   }
 
-  enemyDropObjects(x, y){
-    const n = Phaser.Math.Between(0,3);
+  enemyDropObjects(x, y) {
+    const n = Phaser.Math.Between(0, 3);
 
-    for(let i = 0; i<n; i++){
-    let randomObject = Phaser.Math.RND.pick(["revolver", "rifle"]);
+    for (let i = 0; i < n; i++) {
+      let randomObject = Phaser.Math.RND.pick(["revolver", "rifle"]);
 
-    this.objectsGroup.create(x, y, randomObject);
-    x+=30;
-    y+=10;
+      this.objectsGroup.create(x, y, randomObject);
+      x += 30;
+      y += 10;
     }
 
-    this.objectsGroup.getChildren().forEach(element => {
+    this.objectsGroup.getChildren().forEach((element) => {
       this.tweenObjects(element);
     });
   }
 
-  tweenObjects(target){
+  tweenObjects(target) {
     // @ts-ignore
     const tween = this.tweens.add({
       targets: target,
       scale: 1.2,
-      yoyo : true,
-      duration : 500,
-      repeat : -1
+      yoyo: true,
+      duration: 500,
+      repeat: -1,
     });
   }
 
   // @ts-ignore
-  collectObject(player, shape){
+  collectObject(player, shape) {
     const objectName = shape.texture.key;
-    if(objectName == 'revolver'){
+    if (objectName == "revolver") {
       this.player.incrementKits();
-    } else if(objectName == 'rifle'){
+    } else if (objectName == "rifle") {
       this.player.incrementChips();
     }
 
@@ -521,23 +525,26 @@ export default class Level1 extends Phaser.Scene {
   showPopup(text) {
     let c = 1;
     let popupTextStyle = {
-        font: '24px Arial',
-        fill: '#ffffff',
-        backgroundColor: '#000000',
-        padding: 20,
-        wordWrap:{width: 250, useAdvancedWrap: true}
+      font: "24px Arial",
+      fill: "#ffffff",
+      backgroundColor: "#000000",
+      padding: 20,
+      wordWrap: { width: 250, useAdvancedWrap: true },
     };
 
     // @ts-ignore
-    let popupText = this.add.text(1300, 300, text[0], popupTextStyle).setScrollFactor(0);
-    let radioimg = this.add.image(1230,350,'radio').setScrollFactor(0);
-    
+    let popupText = this.add
+      // @ts-ignore
+      .text(1300, 300, text[0], popupTextStyle)
+      .setScrollFactor(0);
+    let radioimg = this.add.image(1230, 350, "radio").setScrollFactor(0);
+
     popupText.setMaxLines(5);
 
     this.time.addEvent({
-      delay : 3000,
-      callback : function () {
-        if(c<text.length){
+      delay: 3000,
+      callback: function () {
+        if (c < text.length) {
           popupText.setText(text[c]);
           c++;
         } else {
@@ -545,8 +552,7 @@ export default class Level1 extends Phaser.Scene {
           radioimg.destroy();
         }
       },
-      loop : true
+      loop: true,
     });
   }
-
 }
