@@ -42,6 +42,7 @@ export default class Preload extends Phaser.Scene {
     this.load.image("radio", "/assets/sprites/radio.png");
     this.load.image("powerFreeze", "/assets/sprites/powerFreeze.png");
     this.load.image("mainMenuBg", "/assets/sprites/mainMenuBg.png");
+    this.load.image("bg", "/assets/sprites/bg.png");
 
     //tilemaps
     this.load.tilemapTiledJSON("map-lobby", "/assets/tilemaps/lobby.json");
@@ -54,6 +55,7 @@ export default class Preload extends Phaser.Scene {
 
     //audio
     this.load.audio("ambient", "/assets/audio/ambiente.wav");
+    this.load.audio("temaMenu", "/assets/audio/tema1.wav");
 
     //fonts
     //this.load.script('');

@@ -8,25 +8,42 @@ export default class Help extends Phaser.Scene{
     }
 
     create(){
-        const titleText = this.add.text(850,240,getPhrase('Ayuda'),{
+        this.add.image(1920/2,1080/2,'mainMenuBg').setScrollFactor(0);
+        const titleText = this.add.text(760,240,getPhrase('Ayuda'),{
+            fontFamily : 'firstFontasy',
             fontSize : '100px'
         });
 
-        titleText.setTint(0xff00ff, 0xffff00, 0x0000ff, 0xff0000);
+        this.scene.setVisible(false, "UI");
+
+        titleText.setTint(0xffaa00);
+
+
+        let colorIndex = 0;
+        const colors = ["#ff0000", "#00ff00", "#ff00ff", "#8f00aa"];
+
+        this.time.addEvent({
+            delay: 1000, 
+            loop: true, 
+            callback: () => {
+            titleText.setShadow(5, 5, colors[colorIndex], 0);
+            colorIndex = (colorIndex + 1) % colors.length;
+            },
+        });
 
         const controlsButton = this.add.text(960,500, getPhrase('Controles'),{
+            fontFamily: 'pixelifySans',
             fontSize : '50px',
             color : "#fff",
             align : 'center',
-            backgroundColor : "#2d2d2d"
-        }).setPadding(32).setOrigin(0.5).setInteractive({useHandCursor : true});
+        }).setOrigin(0.5).setInteractive({useHandCursor : true});
 
         controlsButton.on('pointerover', ()=>{
-            controlsButton.setBackgroundColor('#8d8d8d');
+            controlsButton.setShadow(5,5,"#8F00AA",1, true, true);
         });
         
         controlsButton.on('pointerout',()=>{
-            controlsButton.setBackgroundColor('#2d2d2d');
+            controlsButton.setShadow(0);
         });
 
         controlsButton.on('pointerdown', ()=>{
@@ -34,18 +51,18 @@ export default class Help extends Phaser.Scene{
         });
 
         const powerupsButton = this.add.text(960,700, getPhrase('Habilidades especiales'),{
+            fontFamily: 'pixelifySans',
             fontSize : '50px',
             color : "#fff",
             align : 'center',
-            backgroundColor : "#2d2d2d"
-        }).setPadding(32).setOrigin(0.5).setInteractive({useHandCursor : true});
+        }).setOrigin(0.5).setInteractive({useHandCursor : true});
 
         powerupsButton.on('pointerover', ()=>{
-            powerupsButton.setBackgroundColor('#8d8d8d');
+            powerupsButton.setShadow(5,5,"#8F00AA",1, true, true);
         });
         
         powerupsButton.on('pointerout',()=>{
-            powerupsButton.setBackgroundColor('#2d2d2d');
+            powerupsButton.setShadow(0);
         });
 
         powerupsButton.on('pointerdown', ()=>{
@@ -53,18 +70,18 @@ export default class Help extends Phaser.Scene{
         });
 
         const backButton = this.add.text(960,900,'Back',{
+            fontFamily: 'pixelifySans',
             fontSize : '50px',
             color : "#fff",
             align : 'center',
-            backgroundColor : "#2d2d2d"
-        }).setPadding(32).setOrigin(0.5).setInteractive({useHandCursor : true});
+        }).setOrigin(0.5).setInteractive({useHandCursor : true});
 
         backButton.on('pointerover', ()=>{
-            backButton.setBackgroundColor('#8d8d8d');
+            backButton.setShadow(5,5,"#8F00AA",1, true, true);
         });
         
         backButton.on('pointerout',()=>{
-            backButton.setBackgroundColor('#2d2d2d');
+            backButton.setShadow(0);
         });
 
         backButton.on('pointerdown', ()=>{

@@ -14,20 +14,37 @@ export default class MainMenu extends Phaser.Scene {
     this.language = language;
   }
   create() {
+    const theme = this.sound.add('temaMenu');
+    theme.play();
+    theme.setLoop(true);
+
     this.add.image(1920/2,1100/2,'mainMenuBg');
-    const titleText = this.add.text(100, 140, "Beyond\n             The\n                   Sea\n", {
-      fontSize: "100px",
+    const titleText = this.add.text(100, 100, " Beyond\n       The\n         Sea\n", {
+      fontSize: "125px",
       fontFamily : 'firstFontasy',
+      shadow : {offsetX: 5, offsetY: 5, color:'#FF4589', blur: 0, fill: true, stroke: true}
     });
-    titleText.setTint(0xff00ff, 0xffff00, 0x0000ff, 0xff0000);
+    titleText.setTint(0xdda000, 0xffff00, 0x0000ff, 0xffffa0);
+
+    let colorIndex = 0;
+    const colors = ["#ff0000", "#00ff00", "#ff00ff", "#8f00aa"];
+
+    this.time.addEvent({
+      delay: 1000, 
+      loop: true, 
+      callback: () => {
+        titleText.setShadow(5, 5, colors[colorIndex], 0);
+        colorIndex = (colorIndex + 1) % colors.length;
+      },
+    });
+
 
     const playButton = this.add
-      .text(300, 500, getPhrase("Jugar"), {
+      .text(300, 600, getPhrase("Jugar"), {
         fontFamily : 'pixelifySans',
         fontSize: "50px",
         color: "#fff",
         align: "center",
-       //backgroundColor: "#2d2d2d",
       })
       .setPadding(32)
       .setOrigin(0.5);
@@ -35,11 +52,12 @@ export default class MainMenu extends Phaser.Scene {
     playButton.setInteractive({ useHandCursor: true });
 
     playButton.on("pointerover", () => {
-      //playButton.setBackgroundColor("#8d8d8d");
+      playButton.setShadow(5,5,"#8F00AA",1, true, true);
     });
 
     playButton.on("pointerout", () => {
-      //playButton.setBackgroundColor("#2d2d2d");
+
+      playButton.setShadow();
     });
 
     playButton.on("pointerdown", () => {
@@ -48,12 +66,12 @@ export default class MainMenu extends Phaser.Scene {
     });
 
     const continueButton = this.add
-      .text(300, 700, getPhrase("Continuar"), {
+      .text(300, 750, getPhrase("Continuar"), {
         fontFamily : 'pixelifySans',
         fontSize: "50px",
         color: "#fff",
         align: "center",
-       // backgroundColor: "#2d2d2d",
+
       })
       .setPadding(32)
       .setOrigin(0.5);
@@ -61,11 +79,11 @@ export default class MainMenu extends Phaser.Scene {
     continueButton.setInteractive({ useHandCursor: true });
 
     continueButton.on("pointerover", () => {
-      //continueButton.setBackgroundColor("#8d8d8d");
+      continueButton.setShadow(5,5,"#8F00AA",1, true, true);
     });
 
     continueButton.on("pointerout", () => {
-      //continueButton.setBackgroundColor("#2d2d2d");
+      continueButton.setShadow();
     });
 
     continueButton.on("pointerdown", () => {
@@ -106,7 +124,6 @@ export default class MainMenu extends Phaser.Scene {
         fontSize: "50px",
         color: "#fff",
         align: "center",
-       // backgroundColor: "#2d2d2d",
       })
       .setPadding(32)
       .setOrigin(0.5);
@@ -114,11 +131,11 @@ export default class MainMenu extends Phaser.Scene {
     helpButton.setInteractive({ useHandCursor: true });
 
     helpButton.on("pointerover", () => {
-     // helpButton.setBackgroundColor("#8d8d8d");
+      helpButton.setShadow(5,5,"#8F00AA",1, true, true);
     });
 
     helpButton.on("pointerout", () => {
-     // helpButton.setBackgroundColor("#2d2d2d");
+      helpButton.setShadow();
     });
 
     helpButton.on("pointerdown", () => {

@@ -50,11 +50,15 @@ export default class Level1 extends Phaser.Scene {
   }
 
   create() {
-    console.log("hola");
     this.cameras.main.fadeIn(500);
 
+    //AUDIO
     this.ambientSound = this.sound.add("ambient");
+
     this.ambientSound.play();
+    this.ambientSound.setLoop(true);
+
+    //TILEMAP
     this.map = this.make.tilemap({ key: "map-" + this.level });
     const floorL = this.map.addTilesetImage("floor", "floor");
     const wallL = this.map.addTilesetImage("wall", "wall");
@@ -314,6 +318,7 @@ export default class Level1 extends Phaser.Scene {
       doorLayer,
       this.player,
       () => {
+        this.ambientSound.stop();
         this.scene.start("Level1", {
           level: "mercado",
           keyDoor1: this.keyDoor1,
@@ -411,6 +416,8 @@ export default class Level1 extends Phaser.Scene {
         hasWeapon: true,
       });
     }
+
+    this.add.image(1920/2, 1080/2, 'bg').setScrollFactor(0);
   }
 
   update(time, delta) {
