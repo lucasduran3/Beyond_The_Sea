@@ -469,7 +469,7 @@ export default class Level1 extends Phaser.Scene {
   }
 
   enemyDropObjects(x, y) {
-    const n = Phaser.Math.Between(0, 3);
+    const n = Phaser.Math.Between(1, 3);
 
     for (let i = 0; i < n; i++) {
       let randomObject = Phaser.Math.RND.pick(["revolver", "rifle"]);
