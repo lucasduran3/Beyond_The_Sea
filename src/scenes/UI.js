@@ -46,12 +46,6 @@ export default class UI extends Phaser.Scene {
       color : "#fff"
     }).setInteractive({useHandCursor : true});
 
-    this.coins = this.add.text(1600,50,"Coins:",{
-      fontSize: "40px",
-      color : "#fff"
-      }
-    );
-
     this.key1 = this.add.text(1600,200,"",{
       fontSize: "30px",
       color : "#fff"
@@ -76,13 +70,7 @@ export default class UI extends Phaser.Scene {
       }
     ).setInteractive({useHandCursor : true});   
 
-    this.rifle = this.add.text(950,50,"rifle",{
-      fontSize: "20px",
-      color : "#0ff"
-      }
-    ).setInteractive({useHandCursor : true}); 
-
-    this.power1 = this.add.text(850,100,"power1",{
+    this.power1 = this.add.text(1050,50,"power1",{
       fontSize: "20px",
       color : "#fff"
       }
@@ -92,18 +80,6 @@ export default class UI extends Phaser.Scene {
       this.power1.setFontSize("25px");
     });
 
-    this.power2 = this.add.text(950,100,"power2",{
-      fontSize: "20px",
-      color : "#fff"
-      }
-    );
-
-    this.power3 = this.add.text(1050,100,"power3",{
-      fontSize: "20px",
-      color : "#fff"
-      }
-    );
-    
     const pauseButton = this.add.text(1800,950,'Pause',{
       fontSize : '30px',
       color : "#fff",
@@ -140,9 +116,19 @@ export default class UI extends Phaser.Scene {
 
     events.on("resetUI", this.resetUI, this);
 
+    events.on("updateUI", this.updateUI, this);
+
   }
 
-  update(){
+  update(){}
+
+  updateUI(data){
+    this.nBullets = data.nBullets;
+    this.nChips = data.nChips;
+    this.nKits = data.nKits;
+    this.bullets.setText('Bullets: ' + this.nBullets);
+    this.chipsUI.setText('CHIPS'+this.nChips);
+    this.kitsUI.setText('KITS'+this.nKits);
   }
 
   updateKeys(data){

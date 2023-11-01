@@ -132,9 +132,6 @@ export default class Preload extends Phaser.Scene {
         this.firebase
           .signInWithGoogle()
           .then(() => {
-            // buscar info
-            const user = this.firebase.getUser();
-            this.firebase.loadGameData(user.uid);
             this.scene.start("SelectLang");
           })
           .catch((error) => {

@@ -21,6 +21,7 @@ export default class BarWinAnimation extends Phaser.Scene {
 
     this.powers = data.powers;
     this.hasRadio = data.hasRadio;
+    this.hasWeapon = data.hasWeapon;
 
     this.boss1Dead = data.boss1Dead;
 

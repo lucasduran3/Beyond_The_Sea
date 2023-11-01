@@ -2,7 +2,7 @@ import Phaser from "phaser";
 import Player from "../components/Player";
 import Enemy from "../components/Enemy";
 import events from "../scenes/EventCenter";
-import { revolver, rifle } from "../components/weapons";
+import { revolver} from "../components/weapons";
 import HorrifiPostFxPipeline from "phaser3-rex-plugins/plugins/horrifipipeline";
 
 export default class Level1 extends Phaser.Scene {
@@ -17,6 +17,7 @@ export default class Level1 extends Phaser.Scene {
     this.boss1Dead = false;
 
     this.weaponsGroup = {};
+    this.hasWeapon = false;
 
     this.powers = [];
 
@@ -39,6 +40,7 @@ export default class Level1 extends Phaser.Scene {
     this.weaponsGroup = data.weaponsGroup || {};
     this.powers = data.powers || [];
     this.hasRadio = data.hasRadio || false;
+    this.hasWeapon = data.hasWeapon || false;
 
     this.playerLifes = data.playerLifes || null;
     this.playerMana = data.playerMana || null;
@@ -48,8 +50,9 @@ export default class Level1 extends Phaser.Scene {
   }
 
   create() {
+    console.log("hola");
     this.cameras.main.fadeIn(500);
-    console.log(this.weaponsGroup);
+
     this.ambientSound = this.sound.add("ambient");
     this.ambientSound.play();
     this.map = this.make.tilemap({ key: "map-" + this.level });
@@ -104,6 +107,7 @@ export default class Level1 extends Phaser.Scene {
     this.player.setNBullets(this.playerBullets);
     this.player.setNChips(this.playerChips || 0);
     this.player.setNKits(this.playerKits || 0);
+    this.player.hasWeapon = this.hasWeapon;
 
     this.bulletsGroup = this.physics.add.group();
 
@@ -124,10 +128,6 @@ export default class Level1 extends Phaser.Scene {
         }
         case "revolver": {
           this.revolverSprite = this.physics.add.sprite(x, y, "revolver");
-          break;
-        }
-        case "rifle": {
-          this.rifleSprite = this.physics.add.sprite(x, y, "rifle");
           break;
         }
         case "bullet": {
@@ -227,16 +227,7 @@ export default class Level1 extends Phaser.Scene {
       duration: 500,
       repeat: -1,
     });
-
-    // @ts-ignore
-    const rifleTween = this.tweens.add({
-      targets: this.rifleSprite,
-      scale: 1.2,
-      yoyo: true,
-      duration: 500,
-      repeat: -1,
-    });
-
+    
     this.objectsGroup = this.physics.add.group();
 
     /*---COLLIDES - OVERLAPS---*/
@@ -279,18 +270,6 @@ export default class Level1 extends Phaser.Scene {
         this.weaponsGroup["revolver"] = revolver;
         this.player.addWeapon(revolver);
         this.revolverSprite.destroy();
-      },
-      null,
-      this
-    );
-
-    this.physics.add.overlap(
-      this.player,
-      this.rifleSprite,
-      () => {
-        this.weaponsGroup["rifle"] = rifle;
-        this.player.addWeapon(rifle);
-        this.rifleSprite.destroy();
       },
       null,
       this
@@ -350,6 +329,7 @@ export default class Level1 extends Phaser.Scene {
           boss1Dead: this.boss1Dead,
           powers: this.powers,
           hasRadio: this.hasRadio,
+          hasWeapon: this.player.hasWeapon,
         });
       },
       () => this.keyDoor1 == true && this.boss1Dead == false
@@ -385,6 +365,7 @@ export default class Level1 extends Phaser.Scene {
           boss1Dead: this.boss1Dead,
           powers: this.player.powers,
           hasRadio: this.hasRadio,
+          hasWeapon : this.player.hasWeapon,
         });
       },
       () => this.keyBar == true,
@@ -409,9 +390,11 @@ export default class Level1 extends Phaser.Scene {
 
     /*---FIREBASE----*/
     // @ts-ignore
-    if (this.boss1Dead) {
+    if (this.boss1Dead && this.level == "lobby") {
       const user = this.firebase.getUser();
+      
       this.firebase.saveGameData(user.uid, {
+        level : this.level,
         keyDoor1: this.keyDoor1,
         keyDoor2: this.keyDoor2,
         keyDoor3: this.keyDoor3,
@@ -425,6 +408,7 @@ export default class Level1 extends Phaser.Scene {
         boss1Dead: this.boss1Dead,
         powers: this.powers,
         hasRadio: this.hasRadio,
+        hasWeapon: true,
       });
     }
   }
@@ -471,6 +455,7 @@ export default class Level1 extends Phaser.Scene {
         boss1Dead: this.boss1Dead,
         powers: this.powers,
         hasRadio: this.hasRadio,
+        hasWeapon: this.player.hasWeapon,
       });
 
       events.emit("resetUI");

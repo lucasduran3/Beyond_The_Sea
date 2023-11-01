@@ -2,7 +2,7 @@ import Phaser from "phaser";
 import Player from "../components/Player";
 import Enemy from "../components/Enemy";
 import events from "../scenes/EventCenter";
-import { revolver, rifle } from "../components/weapons";
+import { revolver } from "../components/weapons";
 import HorrifiPostFxPipeline from "phaser3-rex-plugins/plugins/horrifipipeline";
 import ShooterBoss from "../components/ShooterBoss";
 
@@ -23,6 +23,7 @@ export default class Bar extends Phaser.Scene {
 
     this.boss1Dead = data.boss1Dead;
     this.hasRadio = data.hasRadio;
+    this.hasWeapon = data.hasWeapon;
 
     this.playerLifes = data.playerLifes || null;
     this.playerMana = data.playerMana || null;
@@ -74,12 +75,13 @@ export default class Bar extends Phaser.Scene {
       this.weaponsGroup,
       this.powers,
       this.playerLifes,
-      this.playerMana
+      this.playerMana,
     );
 
     this.player.setNBullets(this.playerBullets);
     this.player.setNChips(this.playerChips);
     this.player.setNKits(this.playerKits);
+    this.player.hasWeapon = this.hasWeapon;
 
     spawnPoint = this.map.findObject("objects", (obj) => obj.name === "boss");
 
@@ -194,6 +196,7 @@ export default class Bar extends Phaser.Scene {
         boss1Dead: this.boss1Dead,
         powers: this.powers,
         hasRadio: this.hasRadio,
+        hasWeapon: this.hasWeapon,
       });
     }
 
@@ -226,6 +229,7 @@ export default class Bar extends Phaser.Scene {
         boss1Dead: this.boss1Dead,
         hasRadio: this.hasRadio,
         powers: this.powers,
+        hasWeapon: this.hasWeapon,
       });
 
       events.emit("resetUI");

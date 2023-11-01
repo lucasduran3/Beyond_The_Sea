@@ -27,6 +27,7 @@ export default class Dialog extends Phaser.Scene {
     this.playerKits = data.playerKits;
 
     this.hasRadio = data.hasRadio;
+    this.hasWeapon = data.hasWeapon;
   }
 
   create() {
@@ -74,6 +75,7 @@ export default class Dialog extends Phaser.Scene {
         boss1Dead: this.boss1Dead,
         powers: this.powers,
         hasRadio: this.hasRadio,
+        hasWeapon: this.hasWeapon,
       });
     }
   }

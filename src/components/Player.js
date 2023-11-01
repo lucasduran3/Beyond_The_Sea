@@ -4,7 +4,6 @@ import events from "../scenes/EventCenter";
 import { revolver } from "./weapons";
 
 const ROTATION_SPEED = 5 * Math.PI;
-let hasWeapon = false;
 
 export default class Player extends Phaser.GameObjects.Sprite {
   constructor(scene, x, y, texture, enemy, weapons, powers, lifes, mana) {
@@ -27,7 +26,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
     this.weaponsGroup = weapons;
     this.activatedWeapon = null;
 
-    //this.hasWeapon = false;
+    this.hasWeapon = false;
 
     this.powers = powers;
 
@@ -120,13 +119,13 @@ export default class Player extends Phaser.GameObjects.Sprite {
       this.keys.A.isDown ||
       this.keys.D.isDown
     ) {
-      if (hasWeapon) {
+      if (this.hasWeapon) {
         this.anims.play("walkWithGun", true);
       } else {
         this.anims.play("walk", true);
       }
     } else {
-      if (hasWeapon) {
+      if (this.hasWeapon) {
         this.anims.play("noneWithGun", true);
       } else {
         this.anims.play("none", true);
@@ -140,17 +139,15 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
     if (this.keys.ONE.isDown) {
       this.setWeapon({ weapon: "revolver" });
-    } else if (this.keys.TWO.isDown) {
-      this.setWeapon({ weapon: "rifle" });
-    }
+    } 
 
-    if (this.keys.H.isDown && !this.isHKeyPressed) {
+    if (this.keys.TWO.isDown && !this.isTWOKeyPressed) {
       this.usePowerUp("freeze");
-      this.isHKeyPressed = true;
+      this.isTWOKeyPressed = true;
     }
 
-    if (this.keys.H.isUp) {
-      this.isHKeyPressed = false;
+    if (this.keys.TWO.isUp) {
+      this.isTWOKeyPressed = false;
     }
 
     if (this.keys.F.isDown && !this.isFKeyPressed) {
@@ -185,7 +182,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
         worldPointer
       );
 
-      const bullet = new Bullet(this.scene, this.x, this.y, "bullet");
+      const bullet = new Bullet(this.scene, this.x-10, this.y+10, "bullet");
       this.bullets.add(bullet);
       bullet.fire(angle, speed);
 
@@ -223,7 +220,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
   addWeapon(weapon) {
     this.weaponsGroup[weapon.name] = weapon;
-    hasWeapon = true;
+    this.hasWeapon = true;
   }
 
   setWeapon(data) {
@@ -334,5 +331,9 @@ export default class Player extends Phaser.GameObjects.Sprite {
     events.emit("updateChipsUI", {
       isIncrease: false,
     });
+  }
+
+  validateHasWeapon(value){
+    this.hasWeapon = value;
   }
 }
