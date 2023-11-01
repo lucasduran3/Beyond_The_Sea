@@ -1,0 +1,33 @@
+@font-face {
+    font-family: pixelifySans;
+    src: url('./public/assets/fonts/PixelifySans.TTF');
+}
+
+@font-face {
+    font-family: rubikPixels;
+    src: url('./public/assets/fonts/RubikPixels-Regular.TTF');
+}
+
+@font-face {
+    font-family: faceonfire;
+    src: url('./public/assets/fonts/pixelfaceonfire.TTF');
+}
+
+@font-face {
+    font-family: scriptorium;
+    src: url('./public/assets/fonts/Scriptorium.ttf');
+}
+
+@font-face {
+    font-family: bmArmy;
+    src: url('./public/assets/fonts/BMarmy.TTF');
+}
+
+@font-face {
+    font-family: firstFontasy;
+    src: url('./public/assets/fonts/FirstFontasy.TTF');
+}
+
+*{
+    font-family: 'pixelifySans';
+}

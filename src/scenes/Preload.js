@@ -41,6 +41,7 @@ export default class Preload extends Phaser.Scene {
     this.load.image("google-icon", "/assets/sprites/google-icon.png");
     this.load.image("radio", "/assets/sprites/radio.png");
     this.load.image("powerFreeze", "/assets/sprites/powerFreeze.png");
+    this.load.image("mainMenuBg", "/assets/sprites/mainMenuBg.png");
 
     //tilemaps
     this.load.tilemapTiledJSON("map-lobby", "/assets/tilemaps/lobby.json");
@@ -54,6 +55,10 @@ export default class Preload extends Phaser.Scene {
     //audio
     this.load.audio("ambient", "/assets/audio/ambiente.wav");
 
+    //fonts
+    //this.load.script('');
+  
+    
     //plugins
     this.load.plugin(
       "rexhorrifipipelineplugin",
@@ -116,7 +121,7 @@ export default class Preload extends Phaser.Scene {
         this.firebase
           .signInAnonymously()
           .then(() => {
-            this.scene.start("SelectLang");
+            this.scene.start("MainMenu");
           })
           .catch((error) => {
             console.log("🚀 ~ file: Login.js:74 ~ .catch ~ error", error);
