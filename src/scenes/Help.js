@@ -7,11 +7,17 @@ export default class Help extends Phaser.Scene{
         super("Help");
     }
 
+    init(data){
+        this.preScene = data.preScene;
+    }
+
     create(){
+        this.cameras.main.fadeIn(600);
         this.add.image(1920/2,1080/2,'mainMenuBg').setScrollFactor(0);
-        const titleText = this.add.text(760,240,getPhrase('Ayuda'),{
+
+        const titleText = this.add.text(30,100,getPhrase(' Ayuda'),{
             fontFamily : 'firstFontasy',
-            fontSize : '100px'
+            fontSize : '120px'
         });
 
         this.scene.setVisible(false, "UI");
@@ -31,53 +37,79 @@ export default class Help extends Phaser.Scene{
             },
         });
 
-        const controlsButton = this.add.text(960,500, getPhrase('Controles'),{
+        const displacement = this.add.text(220,300, getPhrase('Desplazamiento'),{
+            fontFamily: 'pixelifySans',
+            fontSize: '40px',
+            color : "#fff",
+            align: 'center',
+        }).setOrigin(0.5);
+        const disImage = this.add.image(220,500, 'keys').setScale(1.2);
+        const instruction1 = this.add.text(200,650,getPhrase('Usa estas teclas para desplazarte'),{
+            fontFamily: 'pixelifySans',
+            fontSize: '30px',
+            fontStyle: 'italic',
+            color : "#fff",
+            align: 'left',
+            wordWrap: { width: 250, useAdvancedWrap: true }
+        }).setOrigin(0.5);
+
+        const shooting = this.add.text(620,300, getPhrase('Disparar'),{
+            fontFamily: 'pixelifySans',
+            fontSize: '40px',
+            color : "#fff",
+            align: 'center',
+        }).setOrigin(0.5);
+        const shootImage = this.add.image(620,470, 'mouse');
+        const instruction2 = this.add.text(620,650,getPhrase('Click izquierdo del mouse para disparar'),{
+            fontFamily: 'pixelifySans',
+            fontSize: '30px',
+            fontStyle: 'italic',
+            color : "#fff",
+            align: 'left',
+            wordWrap: { width: 250, useAdvancedWrap: true }
+        }).setOrigin(0.5);
+
+        const powers = this.add.text(1020,300, getPhrase('Usar arma/poderes'),{
+            fontFamily: 'pixelifySans',
+            fontSize: '40px',
+            color : "#fff",
+            align: 'center',
+        }).setOrigin(0.5);
+        const powersImage = this.add.image(1020,470, 'numbers').setScale(2);
+        const instruction3 = this.add.text(1020,650,getPhrase(' Usa 1 para seleccionar el arma y 2 para activar el poder'),{
+            fontFamily: 'pixelifySans',
+            fontSize: '30px',
+            fontStyle: 'italic',
+            color : "#fff",
+            align: 'left',
+            wordWrap: { width: 250, useAdvancedWrap: true }
+        }).setOrigin(0.5);
+
+        const moreManaLife = this.add.text(1620,300, getPhrase('Aumentar vida / mana'),{
+            fontFamily: 'pixelifySans',
+            fontSize: '40px',
+            color : "#fff",
+            align: 'center',
+        }).setOrigin(0.5);
+        const moreManaImage = this.add.image(1620,470, 'keys2').setScale(2);
+        const instruction4 = this.add.text(1620, 650,getPhrase('Usa E para aumentar el mana, y F para aumentar la vida'),{
+            fontFamily: 'pixelifySans',
+            fontSize: '30px',
+            fontStyle: 'italic',
+            color : "#fff",
+            align: 'left',
+            wordWrap: { width: 250, useAdvancedWrap: true }
+        }).setOrigin(0.5);
+
+        const backButton = this.add.text(1800,950,'Back',{
             fontFamily: 'pixelifySans',
             fontSize : '50px',
-            color : "#fff",
-            align : 'center',
-        }).setOrigin(0.5).setInteractive({useHandCursor : true});
-
-        controlsButton.on('pointerover', ()=>{
-            controlsButton.setShadow(5,5,"#8F00AA",1, true, true);
-        });
-        
-        controlsButton.on('pointerout',()=>{
-            controlsButton.setShadow(0);
-        });
-
-        controlsButton.on('pointerdown', ()=>{
-            this.scene.start("Controls");
-        });
-
-        const powerupsButton = this.add.text(960,700, getPhrase('Habilidades especiales'),{
-            fontFamily: 'pixelifySans',
-            fontSize : '50px',
-            color : "#fff",
-            align : 'center',
-        }).setOrigin(0.5).setInteractive({useHandCursor : true});
-
-        powerupsButton.on('pointerover', ()=>{
-            powerupsButton.setShadow(5,5,"#8F00AA",1, true, true);
-        });
-        
-        powerupsButton.on('pointerout',()=>{
-            powerupsButton.setShadow(0);
-        });
-
-        powerupsButton.on('pointerdown', ()=>{
-            this.scene.start("PowerUp");
-        });
-
-        const backButton = this.add.text(960,900,'Back',{
-            fontFamily: 'pixelifySans',
-            fontSize : '50px',
-            color : "#fff",
+            color : "#ffaa00",
             align : 'center',
         }).setOrigin(0.5).setInteractive({useHandCursor : true});
 
         backButton.on('pointerover', ()=>{
-            backButton.setShadow(5,5,"#8F00AA",1, true, true);
+            backButton.setShadow(5,5,"#8800cc",1, true, true);
         });
         
         backButton.on('pointerout',()=>{
@@ -85,7 +117,7 @@ export default class Help extends Phaser.Scene{
         });
 
         backButton.on('pointerdown', ()=>{
-            this.scene.start("MainMenu");
+            this.scene.start(this.preScene);
         });
     }
 }

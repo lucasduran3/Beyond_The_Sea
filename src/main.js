@@ -5,9 +5,6 @@ import MainMenu from "./scenes/MainMenu";
 import Help from "./scenes/Help";
 import Pause from "./scenes/Pause";
 import UI from "./scenes/UI";
-import Controls from "./scenes/Controls";
-import PowerUp from "./scenes/PowerUp";
-import GameOver from "./scenes/GameOver";
 import GameWin from "./scenes/GameWin";
 import SelectLang from "./scenes/SelectLang";
 import Bar from "./scenes/Bar";
@@ -15,6 +12,8 @@ import BarAnimation from "./scenes/BarAnimation";
 import Dialog from "./scenes/Dialog";
 import BarWinAnimation from "./scenes/BarWinAnimation";
 import FirebasePlugin from "./plugins/FirebasePlugin";
+import MainMusic from "./scenes/MainMusic";
+import AmbientSound from "./scenes/AmbientSound";
 
 
 const config = {
@@ -50,7 +49,7 @@ const config = {
       },
     ],
   },
-  scene: [Preload, SelectLang, MainMenu, Help, Level1, BarAnimation, Bar, UI, Pause, Controls, PowerUp, GameOver, GameWin, BarWinAnimation, Dialog],
+  scene: [Preload, MainMusic, AmbientSound, SelectLang, MainMenu, Level1, BarAnimation, Bar, UI, Pause, GameWin, BarWinAnimation, Dialog, Help],
 };
 
 export default new Phaser.Game(config);

@@ -52,12 +52,6 @@ export default class Level1 extends Phaser.Scene {
   create() {
     this.cameras.main.fadeIn(500);
 
-    //AUDIO
-    this.ambientSound = this.sound.add("ambient");
-
-    this.ambientSound.play();
-    this.ambientSound.setLoop(true);
-
     //TILEMAP
     this.map = this.make.tilemap({ key: "map-" + this.level });
     const floorL = this.map.addTilesetImage("floor", "floor");
@@ -318,7 +312,6 @@ export default class Level1 extends Phaser.Scene {
       doorLayer,
       this.player,
       () => {
-        this.ambientSound.stop();
         this.scene.start("Level1", {
           level: "mercado",
           keyDoor1: this.keyDoor1,

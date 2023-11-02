@@ -55,6 +55,27 @@ export default class Pause extends Phaser.Scene{
             this.scene.resume(this.preScene);
         });
 
+        const helpButton = this.add.text(960,600,getPhrase('Ayuda'),{
+            fontFamily: 'pixelifySans',
+            fontSize : '50px',
+            color : "#fff",
+            align : 'center',
+        }).setOrigin(0.5).setInteractive({useHandCursor : true});
+
+        helpButton.on('pointerover', ()=>{
+            helpButton.setShadow(5,5,"#8F00AA",1, true, true);
+        });
+        
+        helpButton.on('pointerout',()=>{
+            helpButton.setShadow(0);
+        });
+
+        helpButton.on('pointerdown', ()=>{
+            this.scene.start("Help",{
+                preScene : this.scene.key,
+            });
+        });
+
         const MenuButton = this.add.text(960,700,'Menu',{
             fontFamily: 'pixelifySans',
             fontSize : '50px',

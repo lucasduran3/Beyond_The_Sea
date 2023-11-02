@@ -14,9 +14,8 @@ export default class MainMenu extends Phaser.Scene {
     this.language = language;
   }
   create() {
-    const theme = this.sound.add('temaMenu');
-    theme.play();
-    theme.setLoop(true);
+
+    this.cameras.main.fadeIn(800);
 
     this.add.image(1920/2,1100/2,'mainMenuBg');
     const titleText = this.add.text(100, 100, " Beyond\n       The\n         Sea\n", {
@@ -52,7 +51,7 @@ export default class MainMenu extends Phaser.Scene {
     playButton.setInteractive({ useHandCursor: true });
 
     playButton.on("pointerover", () => {
-      playButton.setShadow(5,5,"#8F00AA",1, true, true);
+      playButton.setShadow(5,5,"#328a61",1, true, true);
     });
 
     playButton.on("pointerout", () => {
@@ -61,6 +60,10 @@ export default class MainMenu extends Phaser.Scene {
     });
 
     playButton.on("pointerdown", () => {
+      this.scene.stop("MainMusic");
+      this.sound.pauseAll();
+      
+      this.scene.launch("AmbientSound");
       this.scene.launch("UI");
       this.scene.start("Level1");
     });
@@ -79,7 +82,7 @@ export default class MainMenu extends Phaser.Scene {
     continueButton.setInteractive({ useHandCursor: true });
 
     continueButton.on("pointerover", () => {
-      continueButton.setShadow(5,5,"#8F00AA",1, true, true);
+      continueButton.setShadow(5,5,"#328a61",1, true, true);
     });
 
     continueButton.on("pointerout", () => {
@@ -87,6 +90,7 @@ export default class MainMenu extends Phaser.Scene {
     });
 
     continueButton.on("pointerdown", () => {
+      this.scene.stop('MainMusic');
       
       // @ts-ignore
       const user = this.firebase.getUser();
@@ -110,7 +114,9 @@ export default class MainMenu extends Phaser.Scene {
           hasRadio: data.hasRadio,
           hasWeapon: data.hasWeapon,
         });
+        
         this.scene.launch("UI");
+        this.scene.launch("AmbientSound");
 
       })
       .catch(error => {
@@ -131,7 +137,7 @@ export default class MainMenu extends Phaser.Scene {
     helpButton.setInteractive({ useHandCursor: true });
 
     helpButton.on("pointerover", () => {
-      helpButton.setShadow(5,5,"#8F00AA",1, true, true);
+      helpButton.setShadow(5,5,"#328a61",1, true, true);
     });
 
     helpButton.on("pointerout", () => {
@@ -139,7 +145,9 @@ export default class MainMenu extends Phaser.Scene {
     });
 
     helpButton.on("pointerdown", () => {
-      this.scene.start("Help");
+      this.scene.start("Help",{
+        preScene : this.scene.key,
+      });
     });
   }
 }

@@ -43,6 +43,10 @@ export default class Preload extends Phaser.Scene {
     this.load.image("powerFreeze", "/assets/sprites/powerFreeze.png");
     this.load.image("mainMenuBg", "/assets/sprites/mainMenuBg.png");
     this.load.image("bg", "/assets/sprites/bg.png");
+    this.load.image("keys", "/assets/sprites/keys.png");
+    this.load.image("mouse", "/assets/sprites/mouse.png");
+    this.load.image("numbers", "/assets/sprites/numbers.png");
+    this.load.image("keys2", "/assets/sprites/keys2.png");
 
     //tilemaps
     this.load.tilemapTiledJSON("map-lobby", "/assets/tilemaps/lobby.json");
@@ -123,6 +127,7 @@ export default class Preload extends Phaser.Scene {
         this.firebase
           .signInAnonymously()
           .then(() => {
+            this.scene.launch('MainMusic');
             this.scene.start("MainMenu");
           })
           .catch((error) => {
