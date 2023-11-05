@@ -69,9 +69,9 @@ export default class Level1 extends Phaser.Scene {
     // @ts-ignore
     const floorLayer = this.map.createLayer("floor", floorL, 0, 0);
     const doorLvl1Layer = this.map.createLayer("door-lvl1", doorLvl1L, 0, 0);
-    const doorLvl2Layer = this.map.createLayer("door-lvl1", doorLvl1L, 0, 0);
-    const doorLvl3Layer = this.map.createLayer("door-lvl1", doorLvl1L, 0, 0);
-    const doorLvl4Layer = this.map.createLayer("door-lvl1", doorLvl1L, 0, 0);
+    const doorLvl2Layer = this.map.createLayer("door-lvl2", doorLvl1L, 0, 0);
+    const doorLvl3Layer = this.map.createLayer("door-lvl3", doorLvl1L, 0, 0);
+    const doorLvl4Layer = this.map.createLayer("door-lvl4", doorLvl1L, 0, 0);
     const barDoorLayer = this.map.createLayer("bar-door", barDoorL, 0, 0);
     const decoLayer = this.map.createLayer("deco", decoL, 0, 0);
     const wallLayer = this.map.createLayer("wall", wallL, 0, 0);

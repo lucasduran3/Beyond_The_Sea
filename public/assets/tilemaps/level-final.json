@@ -995,87 +995,6 @@
                         }]
                 }, 
                 {
-                 "id":23,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":24,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":25,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":26,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":27,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":28,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":29,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":30,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":31,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
                  "id":32,
                  "properties":[
                         {
@@ -1185,60 +1104,6 @@
                 }, 
                 {
                  "id":44,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":45,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":46,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":47,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":48,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":49,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":50,
                  "properties":[
                         {
                          "name":"colision",
@@ -1461,8 +1326,7 @@
                          "type":"bool",
                          "value":true
                         }]
-                },
-            
+                }, 
                 {
                  "id":89,
                  "properties":[
@@ -1572,87 +1436,6 @@
                         }]
                 }, 
                 {
-                 "id":101,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":102,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":103,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":104,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":105,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":106,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":107,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":108,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":109,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
                  "id":110,
                  "properties":[
                         {
@@ -1678,7 +1461,8 @@
                          "type":"bool",
                          "value":true
                         }]
-                }, 
+                },
+            
                 {
                  "id":113,
                  "properties":[
@@ -1762,60 +1546,6 @@
                 }, 
                 {
                  "id":122,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":123,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":124,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":125,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":126,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":127,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":128,
                  "properties":[
                         {
                          "name":"colision",
