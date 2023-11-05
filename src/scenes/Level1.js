@@ -14,7 +14,10 @@ export default class Level1 extends Phaser.Scene {
     this.keyDoor3 = false;
     this.keyDoor4 = false;
     this.keyBar = false;
+
     this.boss1Dead = false;
+    this.boss2Dead = false;
+    this.boss3Dead = false;
 
     this.weaponsGroup = {};
     this.hasWeapon = false;
@@ -56,16 +59,20 @@ export default class Level1 extends Phaser.Scene {
     this.map = this.make.tilemap({ key: "map-" + this.level });
     const floorL = this.map.addTilesetImage("floor", "floor");
     const wallL = this.map.addTilesetImage("wall", "wall");
-    const doorL = this.map.addTilesetImage("door", "door");
+    const doorLvl1L = this.map.addTilesetImage("door", "door");
+    const doorLvl2L = this.map.addTilesetImage("door", "door");
+    const doorLvl3L = this.map.addTilesetImage("door", "door");
+    const doorLvl4L = this.map.addTilesetImage("door", "door");
     const barDoorL = this.map.addTilesetImage("door", "door");
-    const lobbyDoorL = this.map.addTilesetImage("door", "door");
     const decoL = this.map.addTilesetImage("deco", "deco");
 
     // @ts-ignore
     const floorLayer = this.map.createLayer("floor", floorL, 0, 0);
-    const doorLayer = this.map.createLayer("door", doorL, 0, 0);
+    const doorLvl1Layer = this.map.createLayer("door-lvl1", doorLvl1L, 0, 0);
+    const doorLvl2Layer = this.map.createLayer("door-lvl1", doorLvl1L, 0, 0);
+    const doorLvl3Layer = this.map.createLayer("door-lvl1", doorLvl1L, 0, 0);
+    const doorLvl4Layer = this.map.createLayer("door-lvl1", doorLvl1L, 0, 0);
     const barDoorLayer = this.map.createLayer("bar-door", barDoorL, 0, 0);
-    const lobbyDoorLayer = this.map.createLayer("lobby-door", lobbyDoorL, 0, 0);
     const decoLayer = this.map.createLayer("deco", decoL, 0, 0);
     const wallLayer = this.map.createLayer("wall", wallL, 0, 0);
 
@@ -144,7 +151,11 @@ export default class Level1 extends Phaser.Scene {
           break;
         }
         case "msj1": {
-          //this.msj1Zone = this.physics.add.sprite(x,y,"drawer").setVisible(false);
+          this.msj1 = this.physics.add.sprite(x,y,"msj1").setVisible(false);
+          break;
+        }
+        case "msj2": {
+          this.msj2 = this.physics.add.sprite(x,y,"msj1").setVisible(false);
           break;
         }
         case "powerFreeze": {
@@ -287,10 +298,14 @@ export default class Level1 extends Phaser.Scene {
       () => {
         this.radio.destroy();
         this.hasRadio = true;
-        const text = [
+        let text = [
           "Hola?...Hay alguien ahi?",
-          "Oh dios... que suerte haberte encontrado..",
           "No sé como llegaste a este lugar, pero necesito tu ayuda.",
+          "Estoy atrapado en una de las instalaciones de este lugar,",
+          "Si algunos de esos tipos me ve... no dudaran en matarme",
+          "Ya no son humanos...",
+          "Necesito que consegas una llave para acceder a la zona en donde estoy",
+          "Tené cuidado..."
         ];
         this.showPopup(text);
       },
@@ -299,17 +314,20 @@ export default class Level1 extends Phaser.Scene {
     );
 
     wallLayer.setCollisionByProperty({ colision: true });
-    doorLayer.setCollisionByProperty({ colision: true });
+    doorLvl1Layer.setCollisionByProperty({ colision: true });
+    doorLvl2Layer.setCollisionByProperty({ colision: true });
+    doorLvl3Layer.setCollisionByProperty({ colision: true });
+    doorLvl4Layer.setCollisionByProperty({ colision: true });
     barDoorLayer.setCollisionByProperty({ colision: true });
-    lobbyDoorLayer.setCollisionByProperty({ colision: true });
     decoLayer.setCollisionByProperty({ colision: true });
 
     this.physics.add.collider(wallLayer, this.player);
     this.physics.add.collider(wallLayer, this.enemysGroup);
     this.physics.add.collider(decoLayer, this.player);
     this.physics.add.collider(decoLayer, this.enemysGroup);
+
     this.physics.add.collider(
-      doorLayer,
+      doorLvl1Layer,
       this.player,
       () => {
         this.scene.start("Level1", {
@@ -325,6 +343,8 @@ export default class Level1 extends Phaser.Scene {
           playerChips: this.player.nChips,
           playerKits: this.player.nKits,
           boss1Dead: this.boss1Dead,
+          boos2Dead : this.boss2Dead,
+          boss3Dead : this.boss3Dead,
           powers: this.powers,
           hasRadio: this.hasRadio,
           hasWeapon: this.player.hasWeapon,
@@ -334,7 +354,61 @@ export default class Level1 extends Phaser.Scene {
     );
 
     this.physics.add.collider(
-      doorLayer,
+      doorLvl2Layer,
+      this.player,
+      () => {
+        this.scene.start("Level1", {
+          level: "hospital",
+          keyDoor1: this.keyDoor1,
+          keyDoor2: this.keyDoor2,
+          keyDoor3: this.keyDoor3,
+          keyDoor4: this.keyDoor4,
+          weaponsGroup: this.weaponsGroup,
+          playerLifes: this.playerLifes,
+          playerMana: this.playerMana,
+          playerBullets: this.player.nBullets,
+          playerChips: this.player.nChips,
+          playerKits: this.player.nKits,
+          boss1Dead: this.boss1Dead,
+          boss2Dead: this.boss2Dead,
+          boss3Dead: this.boss3Dead,
+          powers: this.powers,
+          hasRadio: this.hasRadio,
+          hasWeapon: this.player.hasWeapon,
+        });
+      },
+      () => this.keyDoor2 == true && this.boss2Dead == false
+    );
+
+    this.physics.add.collider(
+      doorLvl3Layer,
+      this.player,
+      () => {
+        this.scene.start("Level1", {
+          level: "level-final",
+          keyDoor1: this.keyDoor1,
+          keyDoor2: this.keyDoor2,
+          keyDoor3: this.keyDoor3,
+          keyDoor4: this.keyDoor4,
+          weaponsGroup: this.weaponsGroup,
+          playerLifes: this.playerLifes,
+          playerMana: this.playerMana,
+          playerBullets: this.player.nBullets,
+          playerChips: this.player.nChips,
+          playerKits: this.player.nKits,
+          boss1Dead: this.boss1Dead,
+          boss2Dead: this.boss2Dead,
+          boss3Dead: this.boss3Dead,
+          powers: this.powers,
+          hasRadio: this.hasRadio,
+          hasWeapon: this.player.hasWeapon,
+        });
+      },
+      () => this.keyDoor3 == true && this.boss3Dead == false
+    );
+
+    this.physics.add.collider(
+      doorLvl1Layer,
       this.player,
       () => {
         const text = ["Necesitas una llave para abrir esta puerta"];
@@ -410,6 +484,46 @@ export default class Level1 extends Phaser.Scene {
       });
     }
 
+    /*----RADIO---MESSAGES----*/ 
+    if(this.level === 'mercado'){
+      let text = ["En donde estás?", "Ah, en el 'mercado'", "Debo advertirte...",
+      "Al fondo hay un bar que a sido ocupado por unos tipos, hace semanas...", "... y no han salido desde entonces", 
+      "Seguramente ya se murieron de hambre...",
+      "eso espero...",
+      "Hechale un vistazo al lugar, quizas encontras la llave"];
+      this.showPopup(text);   
+    }
+
+    this.physics.add.overlap(
+      this.player, 
+      this.msj1, 
+      ()=>{
+        let text = ["No sabes nada sobre este lugar no?...", "... Nanotecnologia, biotecnologia, implantes cerebrales...", 
+        "Esta era una sociedad secreta, dedicada a la investigación cientifica",
+        "Pero las cosas se descontrolaron un poco...", "Lo peor es que nadie sabe de este lugar...", 
+        "Y todos los que han entrado hasta hora no han salido... que yo sepa..."];
+        this.showPopup(text);
+      },
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.player,
+      this.msj2,
+      ()=>{
+        let text =["El cerebro detrás de todo esto es Leon Goldstein", "Un cientifico respetado en el pasado...",
+        "Trajo consigo un monton de cientificos, y voluntarios que ofrecieron su cuerpo y mente para que experimentasen con ellos...",
+        "Les fue prometido un techo, un hogar, y una vida respetable...",
+        "Pero al final eran vistos como objetos...",
+        "La mayoria de los chips que les fueron implantados eran defectuosos,",
+        "generando en ellos graves trastornos, comportamientos violentos y autodestructivos..."];
+        this.showPopup(text);
+      },
+        null,
+        this
+      );
+
     this.add.image(1920/2, 1080/2, 'bg').setScrollFactor(0);
   }
 
@@ -433,8 +547,6 @@ export default class Level1 extends Phaser.Scene {
     this.scene.setVisible(true, "UI");
 
     this.isOver();
-
-    // @ts-ignore
   }
 
   isOver() {
@@ -510,7 +622,7 @@ export default class Level1 extends Phaser.Scene {
   showPopup(text) {
     let c = 1;
     let popupTextStyle = {
-      font: "24px Arial",
+      font: "30px pixelifySans",
       fill: "#ffffff",
       backgroundColor: "#000000",
       padding: 20,
@@ -524,10 +636,10 @@ export default class Level1 extends Phaser.Scene {
       .setScrollFactor(0);
     let radioimg = this.add.image(1230, 350, "radio").setScrollFactor(0);
 
-    popupText.setMaxLines(5);
+    popupText.setMaxLines(7);
 
     this.time.addEvent({
-      delay: 3000,
+      delay: 4000,
       callback: function () {
         if (c < text.length) {
           popupText.setText(text[c]);

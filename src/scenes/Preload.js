@@ -52,10 +52,9 @@ export default class Preload extends Phaser.Scene {
     this.load.tilemapTiledJSON("map-lobby", "/assets/tilemaps/lobby.json");
     this.load.tilemapTiledJSON("map-mercado", "/assets/tilemaps/mercado.json");
     this.load.tilemapTiledJSON("map-level1", "/assets/tilemaps/level1.json");
-    this.load.tilemapTiledJSON(
-      "map-mercado-bar",
-      "/assets/tilemaps/mercado-bar.json"
-    );
+    this.load.tilemapTiledJSON("map-mercado-bar", "/assets/tilemaps/mercado-bar.json");
+    this.load.tilemapTiledJSON("map-hospital", "/assets/tilemaps/hospital.json");
+    this.load.tilemapTiledJSON("map-level-final", "/assets/tilemaps/level-final.json");
 
     //audio
     this.load.audio("ambient", "/assets/audio/ambiente.wav");
@@ -78,48 +77,15 @@ export default class Preload extends Phaser.Scene {
       this.scene.start("menu", { language: this.#language })
     );
 
-    //this.scene.start("SelectLang",{language : this.#language});
-    //this.scene.launch("UI");
-    this.add.text(400, 100, "Login", {
-      fontSize: 48,
+
+    this.add.text(800, 100, "Login", {
+      fontSize: 100,
+      fontFamily: 'pixelifySans',
+      align: 'center',
     });
 
     this.add
-      .image(400, 300, "email-icon")
-      .setOrigin(0.5)
-      .setInteractive({ useHandCursor: true })
-      .on("pointerdown", () => {
-        const email = prompt("Email");
-        const password = prompt("Password");
-        // @ts-ignore
-        this.firebase
-          .signInWithEmail(email, password)
-          .then(() => {
-            this.scene.start("Level1");
-          })
-          .catch(() => {
-            const crearUsuario = window.confirm(
-              "Email no encontrado. \n ¿Desea crear un usuario?"
-            );
-            if (crearUsuario) {
-              // @ts-ignore
-              this.firebase
-                .createUserWithEmail(email, password)
-                .then(() => {
-                  this.scene.start("Level1");
-                })
-                .catch((createUserError) => {
-                  console.log(
-                    "🚀 ~ file: Login.js:51 ~ .catch ~ error",
-                    createUserError
-                  );
-                });
-            }
-          });
-      });
-
-    this.add
-      .image(400, 500, "anon-icon")
+      .image(400, 300, "anon-icon")
       .setOrigin(0.5)
       .setInteractive({ useHandCursor: true })
       .on("pointerdown", () => {
@@ -127,7 +93,7 @@ export default class Preload extends Phaser.Scene {
         this.firebase
           .signInAnonymously()
           .then(() => {
-            this.scene.launch('MainMusic');
+            this.scene.launch("MainMusic");
             this.scene.start("MainMenu");
           })
           .catch((error) => {
@@ -136,7 +102,7 @@ export default class Preload extends Phaser.Scene {
       });
 
     this.add
-      .image(400, 700, "google-icon")
+      .image(400, 500, "google-icon")
       .setOrigin(0.5)
       .setInteractive({ useHandCursor: true })
       .on("pointerdown", () => {
@@ -152,7 +118,7 @@ export default class Preload extends Phaser.Scene {
       });
 
     this.add
-      .image(400, 900, "git-icon")
+      .image(400, 700, "git-icon")
       .setOrigin(0.5)
       .setInteractive({ useHandCursor: true })
       .on("pointerdown", () => {

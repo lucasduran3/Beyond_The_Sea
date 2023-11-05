@@ -256,8 +256,24 @@ export default class Player extends Phaser.GameObjects.Sprite {
   usePowerUp(powerName) {
     if (this.mana > 20 && this.powers.find((element) => element == "freeze")) {
       this.enemy.forEach((element) => {
-        element.freeze();
+
+        const playerPosition = new Phaser.Math.Vector2(this.x, this.y);
+        const enemyPosition = new Phaser.Math.Vector2(element.x, element.y);
+        const angle = Phaser.Math.Angle.BetweenPoints(
+          playerPosition,
+          enemyPosition
+        );
+
+        //En vez de crear una bala se debe crear otro sprite.
+        if(Phaser.Math.Distance.Between(this.x, this.y, element.x, element.y) <= 600){
+          const bullet = new Bullet(this.scene, this.x-10, this.y+10, "bullet");
+          this.bullets.add(bullet);
+          bullet.fire(angle, 700);
+          element.freeze();
+        }
+
       });
+    
       this.mana -= 20;
       events.emit("updateMana", {
         ammount: 20,

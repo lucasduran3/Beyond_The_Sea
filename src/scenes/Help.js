@@ -101,7 +101,7 @@ export default class Help extends Phaser.Scene{
             wordWrap: { width: 250, useAdvancedWrap: true }
         }).setOrigin(0.5);
 
-        const backButton = this.add.text(1800,950,'Back',{
+        const backButton = this.add.text(180,950,'Back',{
             fontFamily: 'pixelifySans',
             fontSize : '50px',
             color : "#ffaa00",

@@ -46,6 +46,7 @@ export default class SelectLang extends Phaser.Scene {
 
     ES.on("pointerdown", () => {
       this.getTranslation(ES_AR);
+      this.scene.launch("MainMusic");
       this.scene.start("MainMenu", { language: this.#language });
     });
 
@@ -71,6 +72,7 @@ export default class SelectLang extends Phaser.Scene {
 
     EN.on("pointerdown", async () => {
       await this.getTranslation(EN_US);
+      this.scene.launch("MainMusic");
       this.scene.start("MainMenu", { language: this.#language });
     });
 
@@ -96,6 +98,7 @@ export default class SelectLang extends Phaser.Scene {
 
     DE.on("pointerdown", async () => {
       await this.getTranslation(DE_DE);
+      this.scene.launch("MainMusic");
       this.scene.start("MainMenu", { language: this.#language });
     });
   }

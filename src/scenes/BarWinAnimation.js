@@ -96,16 +96,12 @@ export default class BarWinAnimation extends Phaser.Scene {
       callback: () => {
         const content = [
           "...\n",
-          getPhrase("No..."),
-          getPhrase("No lo entiendo..."),
-          getPhrase("Como podes vivir asi?"),
-          getPhrase("Sin saber quien sos?"),
-          getPhrase("Con tu identidad a la merced de ese cerdo?"),
           getPhrase("... NO! ... no puedo."),
           getPhrase(
             "No voy a dejar que una rata de laboratorio decida mi destino"
           ),
-          getPhrase("...Yo si soy mi dueño."),
+          getPhrase("Espero que estes a gusto siguiendo sus ordenes..."),
+          getPhrase("...Por dentro estas mas vacío que el")
         ];
 
         this.scene.launch("Dialog", {

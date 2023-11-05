@@ -11,7 +11,7 @@ export default class Pause extends Phaser.Scene{
     }
 
     create(){
-        const titleText = this.add.text(760,240, getPhrase('Pausa'),{
+        const titleText = this.add.text(760,240, getPhrase(' Pausa'),{
             fontFamily: 'firstFontasy',
             fontSize : '100px',
             shadow : {offsetX: 5, offsetY: 5, color:'#0000ff', blur: 0, fill: true, stroke: true}
@@ -51,8 +51,8 @@ export default class Pause extends Phaser.Scene{
         });
 
         resumeButton.on('pointerdown', ()=>{
-            this.scene.stop("Pause");
             this.scene.resume(this.preScene);
+            this.scene.stop("Pause");
         });
 
         const helpButton = this.add.text(960,600,getPhrase('Ayuda'),{
@@ -94,6 +94,8 @@ export default class Pause extends Phaser.Scene{
         MenuButton.on('pointerdown', ()=>{
             this.scene.stop("Level1");
             this.scene.stop("Pause");
+            this.sound.pauseAll();
+            this.scene.launch("MainMusic");
             this.scene.start("MainMenu");
         });
 

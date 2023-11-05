@@ -87,14 +87,13 @@ export default class BarAnimation extends Phaser.Scene {
       delay: 2500,
       callback: () => {
         const content = [
-          getPhrase("Oh... Quien te dejo entrar?!"),
+          getPhrase("Quien te dejo entrar?!"),
           getPhrase(
             "No permitiré que nadie arruine nuestro pequeño momento de felicidad..."
           ),
           getPhrase("Este es el único lugar donde podemos calmar el dolor..."),
           getPhrase("Las voces en mi cabeza..."),
           getPhrase("Pero ustedes nunca tienen suficiente de nosotros!"),
-          getPhrase("Muchachos, atrapen a esta mascota!"),
         ];
 
         this.scene.launch("Dialog", {
