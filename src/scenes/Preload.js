@@ -93,8 +93,8 @@ export default class Preload extends Phaser.Scene {
         this.firebase
           .signInAnonymously()
           .then(() => {
-            this.scene.launch("MainMusic");
-            this.scene.start("MainMenu");
+            //this.scene.launch("MainMusic");
+            this.scene.start("SelectLang");
           })
           .catch((error) => {
             console.log("🚀 ~ file: Login.js:74 ~ .catch ~ error", error);
