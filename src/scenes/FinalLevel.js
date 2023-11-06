@@ -2,13 +2,12 @@ import Phaser from "phaser";
 import Player from "../components/Player";
 import Enemy from "../components/Enemy";
 import events from "../scenes/EventCenter";
-import { revolver } from "../components/weapons";
 import HorrifiPostFxPipeline from "phaser3-rex-plugins/plugins/horrifipipeline";
-import ShooterBoss from "../components/ShooterBoss";
 
-export default class Bar extends Phaser.Scene {
+
+export default class FinalLevel extends Phaser.Scene {
   constructor() {
-    super("Bar");
+    super("FinalLevel");
   }
 
   init(data) {
@@ -37,40 +36,51 @@ export default class Bar extends Phaser.Scene {
   create() {
     this.scene.setVisible(true, "UI");
     this.cameras.main.fadeIn(200);
-    this.map = this.make.tilemap({ key: "map-mercado-bar" });
+    this.map = this.make.tilemap({ key: "map-level-final" });
     const floorL = this.map.addTilesetImage("floor", "floor");
     const wallL = this.map.addTilesetImage("wall", "wall");
-    const barTableL = this.map.addTilesetImage("bar-table", "bar-table");
     const decoL = this.map.addTilesetImage("deco", "deco");
 
     const floorLayer = this.map.createLayer("floor", floorL, 0, 0);
     const wallLayer = this.map.createLayer("wall", wallL, 0, 0);
-    const barTableLayer = this.map.createLayer("bar-table", barTableL, 0, 0);
     const decoLayer = this.map.createLayer("deco", decoL, 0, 0);
-
 
     const objectsLayer = this.map.getObjectLayer("objects");
 
-    this.enemysGroup = this.physics.add.group();
+
     objectsLayer.objects.forEach((objData) => {
       const { x = 0, y = 0, name } = objData;
       switch (name) {
-        case "enemy": {
-          this.enemy = new Enemy(this, x, y, "enemy", 300, this.map);
-          console.log(this.enemy);
-          this.enemysGroup.add(this.enemy);
+        case "drawer": {
+          this.drawer = this.physics.add.sprite(x, y, "drawer");
           break;
         }
       }
-    });
+      });
 
-    let spawnPoint = this.map.findObject(
+    this.enemysGroup = this.physics.add.group();
+
+
+    let spawnPoint = this.map.findObject("objects", (obj) => obj.name === "boss");
+    
+    this.boss = new Enemy(
+      this,
+      spawnPoint.x,
+      spawnPoint.y,
+      "enemy3",
+      400,
+      this.map,
+      4,
+    );
+
+    this.enemysGroup.add(this.boss);
+    this.enemyArr = this.enemysGroup.getChildren();
+
+    spawnPoint = this.map.findObject(
       "objects",
       (obj) => obj.name === "player"
     );
-
-    this.enemyArr = this.enemysGroup.getChildren();
-
+    
     this.player = new Player(
       this,
       spawnPoint.x,
@@ -88,18 +98,7 @@ export default class Bar extends Phaser.Scene {
     this.player.setNKits(this.playerKits);
     this.player.hasWeapon = this.hasWeapon;
 
-    spawnPoint = this.map.findObject("objects", (obj) => obj.name === "boss");
-
-    this.boss = new ShooterBoss(
-      this,
-      spawnPoint.x,
-      spawnPoint.y,
-      "enemy",
-      this.player
-    );
-    this.enemysGroup.add(this.boss);
-
-    this.boss.create();
+    this.boss.setTarget(this.player);
 
     this.bulletsGroup = this.physics.add.group();
 
@@ -156,34 +155,16 @@ export default class Bar extends Phaser.Scene {
       crtHeight: 5,
     });
 
-    barTableLayer.setCollisionByProperty({ colision: true });
-    decoLayer.setCollisionByProperty({ colision: true });
-
-    this.physics.add.collider(this.player, barTableLayer);
-    this.physics.add.collider(this.player, decoLayer);
-
-    this.time.addEvent({
-      delay: 2000,
-      callback: this.spawnEnemy,
-      callbackScope: this,
-      repeat: 7,
-    });
-
     wallLayer.setCollisionByProperty({ colision: true });
-    this.physics.add.collider(wallLayer, this.player);
+
 
     this.keyESC = this.input.keyboard.addKey("ESC");
-
     this.add.image(1920/2, 1080/2, 'bg').setScrollFactor(0);
   }
 
   update(time, delta) {
     this.player.update(time, delta);
     this.boss.update();
-
-    this.enemyArr.forEach((element) => {
-      element.update();
-    });
 
     this.winLevel();
 
@@ -197,6 +178,10 @@ export default class Bar extends Phaser.Scene {
     this.scene.setVisible(true, "UI");
 
     this.isOver();
+
+    if(this.player.y<= 900){
+
+    }
   }
 
   isOver() {
@@ -228,10 +213,12 @@ export default class Bar extends Phaser.Scene {
   winLevel(){
     if (this.boss.lifes <= 0) {
       this.boss1Dead = true;
-      this.scene.stop("Bar");
-      this.scene.start("BarWinAnimation", {
+      this.scene.stop("FinalLevel");
+      this.scene.start("GameWin", {
         playerX: this.player.x,
         playerY: this.player.y,
+        enemyX: this.boss.x,
+        enemyY: this.boss.y,
         level: "lobby",
         keyDoor1: this.keyDoor1,
         keyDoor2: true,
@@ -253,16 +240,6 @@ export default class Bar extends Phaser.Scene {
       });
 
     }
-  }
-
-  spawnEnemy() {
-    this.enemy = new Enemy(this, 600, 100, "enemy", 300, this.map);
-    this.enemy.setTarget(this.player);
-    this.enemysGroup.add(this.enemy);
-
-    this.enemy = new Enemy(this, 600, 1080, "enemy", 300, this.map);
-    this.enemy.setTarget(this.player);
-    this.enemysGroup.add(this.enemy);
   }
 
   enemyDropObjects() {}

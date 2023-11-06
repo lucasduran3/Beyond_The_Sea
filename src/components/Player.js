@@ -232,7 +232,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
   }
 
   incrementBullets() {
-    const ammount = Phaser.Math.Between(12, 25);
+    const ammount = Phaser.Math.Between(25, 40);
     this.nBullets += ammount;
 
     events.emit("updateBullets", {

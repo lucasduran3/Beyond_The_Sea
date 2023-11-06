@@ -18,6 +18,8 @@ export default class Dialog extends Phaser.Scene {
     this.keyDoor4 = data.keyDoor4;
     this.keyBar = data.keyBar;
     this.boss1Dead = data.boss1Dead;
+    this.boss2Dead = data.boss2Dead;
+    this.boss3Dead = data.boss3Dead;
 
     this.weaponsGroup = data.weaponsGroup;
     this.playerLifes = data.playerLifes;
@@ -73,6 +75,8 @@ export default class Dialog extends Phaser.Scene {
         playerKits: this.playerKits,
         playerChips: this.playerChips,
         boss1Dead: this.boss1Dead,
+        boss2Dead: this.boss2Dead,
+        boss3Dead: this.boss3Dead,
         powers: this.powers,
         hasRadio: this.hasRadio,
         hasWeapon: this.hasWeapon,

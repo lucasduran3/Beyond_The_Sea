@@ -13,6 +13,8 @@ export default class BarAnimation extends Phaser.Scene {
     this.keyDoor3 = data.keyDoor3;
     this.keyDoor4 = data.keyDoor4;
     this.boss1Dead = data.boss1Dead;
+    this.boss2Dead = data.boss2Dead;
+    this.boss3Dead = data.boss3Dead;
 
     this.weaponsGroup = data.weaponsGroup;
     this.hasRadio = data.hasRadio;
@@ -97,6 +99,7 @@ export default class BarAnimation extends Phaser.Scene {
         ];
 
         this.scene.launch("Dialog", {
+          startOrResume : "start",
           content: content,
           sceneToStop: "BarAnimation",
           sceneToStart: "Bar",
@@ -111,6 +114,8 @@ export default class BarAnimation extends Phaser.Scene {
           playerChips: this.playerChips,
           playerKits: this.playerKits,
           boss1Dead: this.boss1Dead,
+          boss2Dead: this.boss2Dead,
+          boss3Dead: this.boss3Dead,
           powers: this.powers,
           hasRadio: this.hasRadio,
           hasWeapon: this.hasWeapon,
@@ -121,6 +126,8 @@ export default class BarAnimation extends Phaser.Scene {
     });
 
     this.scene.setVisible(false, "UI");
+
+    this.add.image(1920/2, 1080/2, 'bg').setScrollFactor(0);
   }
 
   update() {}

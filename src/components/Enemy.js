@@ -2,7 +2,7 @@ import Phaser from "phaser";
 import EasyStar from "easystarjs";
 
 export default class Enemy extends Phaser.GameObjects.Sprite{
-    constructor(scene,x,y,texture,speed,map){
+    constructor(scene,x,y,texture,speed,map,damage){
         super(scene,x,y,texture);
         scene.add.existing(this);
         scene.physics.world.enable(this);
@@ -11,7 +11,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite{
         this.speed = speed;
         this.target;
         this.map = map;
-        this.damage = 1;
+        this.damage = damage;
         this.lifes = 10;
         this.c = 0;
         this.isMoving = true;
@@ -40,6 +40,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite{
         this.easystar.setAcceptableTiles([0]);
         this.easystar.enableDiagonals();
 
+        if(texture == "enemy"){
         this.anims.create({
             key:"walk",
             frames : this.anims.generateFrameNumbers("enemy",{start : 14, end:25}),
@@ -58,6 +59,26 @@ export default class Enemy extends Phaser.GameObjects.Sprite{
             frameRate : 40,
             repeat : 1
           });
+        } else if(texture == "enemy3"){
+            this.anims.create({
+                key:"walk",
+                frames : this.anims.generateFrameNumbers("enemy3",{start : 8, end:13}),
+                frameRate : 10,
+                repeat : 1
+              });
+          
+              this.anims.create({
+                key:"none",
+                frames : [{key:"enemy3", frame:0}],
+              });
+    
+              this.anims.create({
+                key:"hit",
+                frames : this.anims.generateFrameNumbers("enemy3",{start : 0, end:6}),
+                frameRate : 20,
+                repeat : 1
+              });
+        }
     }
 
     update(){

@@ -14,6 +14,8 @@ import BarWinAnimation from "./scenes/BarWinAnimation";
 import FirebasePlugin from "./plugins/FirebasePlugin";
 import MainMusic from "./scenes/MainMusic";
 import AmbientSound from "./scenes/AmbientSound";
+import FinalLevel from "./scenes/FinalLevel";
+import FinalLevelAnimation from "./scenes/FinalLevelAnimation";
 
 
 const config = {
@@ -49,7 +51,7 @@ const config = {
       },
     ],
   },
-  scene: [Preload, MainMusic, AmbientSound, SelectLang, MainMenu, Level1, BarAnimation, Bar, UI, Pause, GameWin, BarWinAnimation, Dialog, Help],
+  scene: [Preload, MainMusic, AmbientSound, SelectLang, MainMenu, Level1, BarAnimation, Bar, FinalLevel, UI, Pause, GameWin, BarWinAnimation, FinalLevelAnimation, Dialog, Help],
 };
 
 export default new Phaser.Game(config);

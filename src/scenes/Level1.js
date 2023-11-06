@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import Player from "../components/Player";
 import Enemy from "../components/Enemy";
+import ShooterBoss from "../components/ShooterBoss";
 import events from "../scenes/EventCenter";
 import { revolver} from "../components/weapons";
 import HorrifiPostFxPipeline from "phaser3-rex-plugins/plugins/horrifipipeline";
@@ -62,7 +63,7 @@ export default class Level1 extends Phaser.Scene {
     const doorLvl1L = this.map.addTilesetImage("door", "door");
     const doorLvl2L = this.map.addTilesetImage("door", "door");
     const doorLvl3L = this.map.addTilesetImage("door", "door");
-    const doorLvl4L = this.map.addTilesetImage("door", "door");
+    const doorLobbyL = this.map.addTilesetImage("door", "door");
     const barDoorL = this.map.addTilesetImage("door", "door");
     const decoL = this.map.addTilesetImage("deco", "deco");
 
@@ -71,8 +72,8 @@ export default class Level1 extends Phaser.Scene {
     const doorLvl1Layer = this.map.createLayer("door-lvl1", doorLvl1L, 0, 0);
     const doorLvl2Layer = this.map.createLayer("door-lvl2", doorLvl1L, 0, 0);
     const doorLvl3Layer = this.map.createLayer("door-lvl3", doorLvl1L, 0, 0);
-    const doorLvl4Layer = this.map.createLayer("door-lvl4", doorLvl1L, 0, 0);
     const barDoorLayer = this.map.createLayer("bar-door", barDoorL, 0, 0);
+    const doorLobbyLayer = this.map.createLayer("door-lobby", doorLobbyL, 0, 0);
     const decoLayer = this.map.createLayer("deco", decoL, 0, 0);
     const wallLayer = this.map.createLayer("wall", wallL, 0, 0);
 
@@ -125,6 +126,11 @@ export default class Level1 extends Phaser.Scene {
           }
           break;
         }
+        case "key-lvl3":{
+          if (!this.keyDoor3) {
+            this.key_door3_sprite = this.physics.add.sprite(x, y, "key");
+          }
+        }
         case "key-bar": {
           if (!this.keyBar) {
             this.keyBarSprite = this.physics.add.sprite(x, y, "key");
@@ -160,6 +166,16 @@ export default class Level1 extends Phaser.Scene {
         }
         case "powerFreeze": {
           this.powerFreeze = this.physics.add.sprite(x, y, "powerFreeze");
+          break;
+        }
+        case "drawer":{
+          this.drawer = this.physics.add.sprite(x,y, "drawer");
+          break;
+        }
+        case "shooter-enemy":{
+          this.shooterEnemy = new ShooterBoss (this,x,y,"enemy2",this.player);
+          this.shooterEnemy.create();
+          this.enemysGroup.add(this.shooterEnemy);
           break;
         }
       }
@@ -226,16 +242,6 @@ export default class Level1 extends Phaser.Scene {
       crtWidth: 5,
       crtHeight: 5,
     });
-
-    /*----TWEENS-----*/
-    // @ts-ignore
-    const revolverTween = this.tweens.add({
-      targets: this.revolverSprite,
-      scale: 1.2,
-      yoyo: true,
-      duration: 500,
-      repeat: -1,
-    });
     
     this.objectsGroup = this.physics.add.group();
 
@@ -255,6 +261,18 @@ export default class Level1 extends Phaser.Scene {
         this.key_door1_sprite.destroy();
         this.keyDoor1 = true;
         events.emit("updateKeys", { key1: "Key 1" });
+      },
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.player,
+      this.key_door3_sprite,
+      () => {
+        this.key_door3_sprite.destroy();
+        this.keyDoor3 = true;
+        events.emit("updateKeys", { key3: "Key 3" });
       },
       null,
       this
@@ -317,8 +335,8 @@ export default class Level1 extends Phaser.Scene {
     doorLvl1Layer.setCollisionByProperty({ colision: true });
     doorLvl2Layer.setCollisionByProperty({ colision: true });
     doorLvl3Layer.setCollisionByProperty({ colision: true });
-    doorLvl4Layer.setCollisionByProperty({ colision: true });
     barDoorLayer.setCollisionByProperty({ colision: true });
+    doorLobbyLayer.setCollisionByProperty({ colision: true });
     decoLayer.setCollisionByProperty({ colision: true });
 
     this.physics.add.collider(wallLayer, this.player);
@@ -377,14 +395,14 @@ export default class Level1 extends Phaser.Scene {
           hasWeapon: this.player.hasWeapon,
         });
       },
-      () => this.keyDoor2 == true && this.boss2Dead == false
+      () => this.keyDoor2 == true && this.keyDoor3 == false
     );
 
     this.physics.add.collider(
       doorLvl3Layer,
       this.player,
       () => {
-        this.scene.start("Level1", {
+        this.scene.start("FinalLevelAnimation", {
           level: "level-final",
           keyDoor1: this.keyDoor1,
           keyDoor2: this.keyDoor2,
@@ -408,17 +426,6 @@ export default class Level1 extends Phaser.Scene {
     );
 
     this.physics.add.collider(
-      doorLvl1Layer,
-      this.player,
-      () => {
-        const text = ["Necesitas una llave para abrir esta puerta"];
-        this.showPopup(text);
-      },
-      () => this.keyDoor1 == false,
-      this
-    );
-
-    this.physics.add.collider(
       barDoorLayer,
       this.player,
       () => {
@@ -435,12 +442,43 @@ export default class Level1 extends Phaser.Scene {
           playerChips: this.player.nChips,
           playerKits: this.player.nKits,
           boss1Dead: this.boss1Dead,
+          boss2Dead: this.boss2Dead,
+          boss3Dead: this.boss3Dead,
           powers: this.player.powers,
           hasRadio: this.hasRadio,
           hasWeapon : this.player.hasWeapon,
         });
       },
       () => this.keyBar == true,
+      this
+    );
+
+    this.physics.add.collider(
+      doorLobbyLayer,
+      this.player,
+      () => {
+        this.scene.start("Level1", {
+          level : "lobby",
+          keyDoor1: this.keyDoor1,
+          keyDoor2: this.keyDoor2,
+          keyDoor3: this.keyDoor3,
+          keyDoor4: this.keyDoor4,
+          keyBar: this.keyBar,
+          weaponsGroup: this.player.weaponsGroup,
+          playerLifes: this.playerLifes,
+          playerMana: this.playerMana,
+          playerBullets: this.player.nBullets,
+          playerChips: this.player.nChips,
+          playerKits: this.player.nKits,
+          boss1Dead: this.boss1Dead,
+          boss2Dead: this.boss2Dead,
+          boss3Dead: this.boss3Dead,
+          powers: this.player.powers,
+          hasRadio: this.hasRadio,
+          hasWeapon : this.player.hasWeapon,
+        });
+      },
+      null,
       this
     );
 
@@ -460,6 +498,98 @@ export default class Level1 extends Phaser.Scene {
       this.powerFreeze.destroy();
     });
 
+        /*------NO KEY MESSAGES------*/ 
+    this.physics.add.collider(
+      doorLvl1Layer,
+      this.player,
+      () => {
+        const text = ["Necesitas una llave para abrir esta puerta"];
+        this.showPopup(text);
+      },
+      () => this.keyDoor1 == false,
+      this
+    );
+
+    this.physics.add.collider(
+      doorLvl2Layer,
+      this.player,
+      () => {
+        const text = ["Necesitas una llave para abrir esta puerta"];
+        this.showPopup(text);
+      },
+      () => this.keyDoor2 == false,
+      this
+    );
+
+    this.physics.add.collider(
+      doorLvl3Layer,
+      this.player,
+      () => {
+        const text = ["Necesitas una llave para abrir esta puerta"];
+        this.showPopup(text);
+      },
+      () => this.keyDoor3 == false,
+      this
+    );
+
+    this.physics.add.collider(
+      barDoorLayer,
+      this.player,
+      () => {
+        const text = ["Necesitas una llave para abrir esta puerta"];
+        this.showPopup(text);
+      },
+      () => this.keyBar == false,
+      this
+    );
+
+
+    /*------NO KEY MESSAGES------*/ 
+    this.physics.add.collider(
+      doorLvl1Layer,
+      this.player,
+      () => {
+        const text = ["Necesitas una llave para abrir esta puerta"];
+        this.showPopup(text);
+      },
+      () => this.keyDoor1 == false,
+      this
+    );
+
+    this.physics.add.collider(
+      doorLvl2Layer,
+      this.player,
+      () => {
+        const text = ["Necesitas una llave para abrir esta puerta"];
+        this.showPopup(text);
+      },
+      () => this.keyDoor2 == false,
+      this
+    );
+
+    this.physics.add.collider(
+      doorLvl3Layer,
+      this.player,
+      () => {
+        const text = ["Necesitas una llave para abrir esta puerta"];
+        this.showPopup(text);
+      },
+      () => this.keyDoor3 == false,
+      this
+    );
+
+    this.physics.add.collider(
+      barDoorLayer,
+      this.player,
+      () => {
+        const text = ["Necesitas una llave para abrir esta puerta"];
+        this.showPopup(text);
+      },
+      () => this.keyBar == false,
+      this
+    );
+
+
     /*---FIREBASE----*/
     // @ts-ignore
     if (this.boss1Dead && this.level == "lobby") {
@@ -478,6 +608,8 @@ export default class Level1 extends Phaser.Scene {
         playerChips: this.player.nChips,
         playerKits: this.player.nKits,
         boss1Dead: this.boss1Dead,
+        boss2Dead: this.boss2Dead,
+        boss3Dead: this.boss3Dead,
         powers: this.powers,
         hasRadio: this.hasRadio,
         hasWeapon: true,
@@ -525,6 +657,11 @@ export default class Level1 extends Phaser.Scene {
       );
 
     this.add.image(1920/2, 1080/2, 'bg').setScrollFactor(0);
+
+    /*----TWEENS-----*/
+    // @ts-ignore 
+    //const objectsForTween = [this.revolverSprite, this.bulletsGroup, this.radio, this.key_door1_sprite];
+    //this.tweenObjects(objectsForTween);
   }
 
   update(time, delta) {
@@ -565,6 +702,8 @@ export default class Level1 extends Phaser.Scene {
         playerChips: null,
         playerKits: null,
         boss1Dead: this.boss1Dead,
+        boss2Dead: this.boss2Dead,
+        boss3Dead: this.boss3Dead,
         powers: this.powers,
         hasRadio: this.hasRadio,
         hasWeapon: this.player.hasWeapon,
@@ -592,20 +731,23 @@ export default class Level1 extends Phaser.Scene {
     }
 
     this.objectsGroup.getChildren().forEach((element) => {
-      this.tweenObjects(element);
+      //this.tweenObjects(element);
     });
   }
 
-  tweenObjects(target) {
+  /*tweenObjects(targets) {
     // @ts-ignore
-    const tween = this.tweens.add({
-      targets: target,
-      scale: 1.2,
-      yoyo: true,
-      duration: 500,
-      repeat: -1,
+    targets.forEach(element => {
+      const tween = this.tweens.add({
+        targets: element,
+        scale: 1.2,
+        yoyo: true,
+        duration: 500,
+        repeat: -1,
+      });
     });
-  }
+    
+  }*/
 
   // @ts-ignore
   collectObject(player, shape) {

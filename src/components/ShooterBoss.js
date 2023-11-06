@@ -23,17 +23,21 @@ export default class ShooterBoss extends Phaser.GameObjects.Sprite{
 
     update(){
         this.rotation = Phaser.Math.Angle.Between(this.x, this.y, this.target.x, this.target.y) + Math.PI / 2;
+
         this.shootAtPlayer();
 
     }
 
     shootBullet(){
+        
         // @ts-ignore
+        if(Phaser.Math.Distance.Between(this.x, this.y, this.target.x, this.target.y) <2000){
         const bullet = new Bullet(this.scene, this.x, this.y, "bullet");
         this.bullets.add(bullet);
 
         const angle = Phaser.Math.Angle.Between(this.x, this.y, this.target.x, this.target.y);
         bullet.fire(angle,500); 
+        }
     }
 
     looseLife(){
@@ -69,4 +73,6 @@ export default class ShooterBoss extends Phaser.GameObjects.Sprite{
             callbackScope: this
         });
     }
+
+    setTarget(){}
 }

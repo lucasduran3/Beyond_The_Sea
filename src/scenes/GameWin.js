@@ -1,58 +1,145 @@
 import Phaser1 from "phaser";
+import HorrifiPostFxPipeline from "phaser3-rex-plugins/plugins/horrifipipeline";
+import { getPhrase } from "../services/translation";
 
 export default class GameWin extends Phaser.Scene{
     constructor(){
         super("GameWin");
     }
+    init(data) {
+        this.playerX = data.playerX;
+        this.playerY = data.playerY;
 
-    create(){
-        const titleText = this.add.text(700,240,'GAME WIN',{
-            fontSize : '100px'
+        this.enemyX = data.enemyX;
+        this.enemyY = data.enemyY;
+        this.level = data.level;
+    
+        this.keyDoor1 = data.keyDoor1;
+        this.keyDoor2 = data.keyDoor2;
+        this.keyDoor3 = data.keyDoor3;
+        this.keyDoor4 = data.keyDoor4;
+        this.keyBar = data.keyBar;
+        this.weaponsGroup = data.weaponsGroup;
+    
+        this.powers = data.powers;
+        this.hasRadio = data.hasRadio;
+        this.hasWeapon = data.hasWeapon;
+    
+        this.boss1Dead = data.boss1Dead;
+        this.boss2Dead = data.boss2Dead;
+        this.boss3Dead = data.boss3Dead;
+    
+        this.playerLifes = data.playerLifes || null;
+        this.playerMana = data.playerMana || null;
+        this.playerBullets = data.playerBullets || 0;
+        this.playerChips = data.playerChips || 0;
+        this.playerKits = data.playerKits || 0;
+      }
+    
+      create() {
+        this.cameras.main.fadeIn(500);
+        this.map = this.make.tilemap({ key: "map-level-final" });
+        const floorL = this.map.addTilesetImage("floor", "floor");
+        const wallL = this.map.addTilesetImage("wall", "wall");
+        const decoL = this.map.addTilesetImage("deco", "deco");
+    
+        const floorLayer = this.map.createLayer("floor", floorL, 0, 0);
+        const wallLayer = this.map.createLayer("wall", wallL, 0, 0);
+        const decoLayer = this.map.createLayer("deco", decoL, 0, 0);
+    
+        this.boss = this.physics.add.sprite(this.enemyX, this.enemyY, "enemy3");
+    
+        this.player = this.physics.add
+          .sprite(this.playerX, this.playerY, "player")
+          .setAngle(-90);
+    
+        const postFxPlugin = this.plugins.get("rexhorrifipipelineplugin");
+        const effect = this.cameras.main.setPostPipeline(HorrifiPostFxPipeline);
+    
+        // @ts-ignore
+        const postFxPipeline = postFxPlugin.add(effect, {
+          enable: true,
+    
+          // Bloom
+          bloomRadius: 10,
+          bloomIntensity: 0,
+          bloomThreshold: 1,
+          bloomTexelWidth: 0.5,
+    
+          // Chromatic abberation
+          chromaticEnable: true,
+          chabIntensity: 0.2,
+    
+          // Vignette
+          vignetteStrength: 1,
+          vignetteIntensity: 0.82,
+    
+          // Noise
+          noiseEnable: true,
+          noiseStrength: 0.1,
+          seed: 0.63,
+    
+          // VHS
+          vhsEnable: true,
+          vhsStrength: 0.22,
+    
+          // Scanlines
+          scanlinesEnable: false,
+          scanStrength: 0.1,
+    
+          //CRT
+          crtWidth: 5,
+          crtHeight: 5,
         });
-
+        this.cameras.main.centerOn(this.player.x, this.player.y);
+    
+        this.cameras.main.pan(this.enemyX, this.enemyY, 2000);
+    
+        this.time.addEvent({
+          delay: 2500,
+          callback: () => {
+            const content = [
+              "...\n",
+              getPhrase("... NO! ... no puedo."),
+              getPhrase(
+                "No voy a dejar que una rata de laboratorio decida mi destino"
+              ),
+              getPhrase("Espero que estes a gusto siguiendo sus ordenes..."),
+              getPhrase("...Por dentro estas mas vacío que el")
+            ];
+    
+            this.scene.launch("Dialog", {
+              content: content,
+              sceneToStart: "Level1",
+              sceneToStop: "BarWinAnimation",
+              level: this.level,
+              keyDoor1: this.keyDoor1,
+              keyDoor2: this.keyDoor2,
+              keyDoor3: this.keyDoor3,
+              keyDoor4: this.keyDoor4,
+              keyBar: this.keyBar,
+              weaponsGroup: this.weaponsGroup,
+              playerLifes: this.playerLifes,
+              playerMana: this.playerMana,
+              playerBullets: this.playerBullets,
+              playerChips: this.playerChips,
+              playerKits: this.playerKits,
+              boss1Dead: this.boss1Dead,
+              boss2Dead: this.boss2Dead,
+              boss3Dead: this.boss3Dead,
+              powers: this.powers,
+              hasRadio: this.hasRadio,
+              hasWeapon : this.hasWeapon,
+            });
+          },
+          callbackScope: this,
+          repeat: 0,
+        });
+    
         this.scene.setVisible(false, "UI");
 
-        titleText.setTint(0xff00ff, 0xffff00, 0x0000ff, 0xff0000);
-
-        const restartButton = this.add.text(960,500,'Restart',{
-            fontSize : '50px',
-            color : "#fff",
-            align : 'center',
-            backgroundColor : "#2d2d2d"
-        }).setPadding(32).setOrigin(0.5).setInteractive({useHandCursor : true});
-
-        restartButton.on('pointerover', ()=>{
-            restartButton.setBackgroundColor('#8d8d8d');
-        });
-        
-        restartButton.on('pointerout',()=>{
-            restartButton.setBackgroundColor('#2d2d2d');
-        });
-
-        restartButton.on('pointerdown', ()=>{
-            this.scene.stop("Pause");
-            this.scene.start("Level1");
-        });
-
-        const MenuButton = this.add.text(960,700,'Menu',{
-            fontSize : '50px',
-            color : "#fff",
-            align : 'center',
-            backgroundColor : "#2d2d2d"
-        }).setPadding(32).setOrigin(0.5).setInteractive({useHandCursor : true});
-
-        MenuButton.on('pointerover', ()=>{
-            MenuButton.setBackgroundColor('#8d8d8d');
-        });
-        
-        MenuButton.on('pointerout',()=>{
-            MenuButton.setBackgroundColor('#2d2d2d');
-        });
-
-        MenuButton.on('pointerdown', ()=>{
-            this.scene.stop("Level1");
-            this.scene.stop("Pause");
-            this.scene.start("MainMenu");
-        });
-    }
+        this.add.image(1920/2, 1080/2, 'bg').setScrollFactor(0);
+      }
+    
+      update() {}
 }
