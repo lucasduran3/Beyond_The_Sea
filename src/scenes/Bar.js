@@ -2,7 +2,6 @@ import Phaser from "phaser";
 import Player from "../components/Player";
 import Enemy from "../components/Enemy";
 import events from "../scenes/EventCenter";
-import { revolver } from "../components/weapons";
 import HorrifiPostFxPipeline from "phaser3-rex-plugins/plugins/horrifipipeline";
 import ShooterBoss from "../components/ShooterBoss";
 
@@ -48,7 +47,6 @@ export default class Bar extends Phaser.Scene {
     const barTableLayer = this.map.createLayer("bar-table", barTableL, 0, 0);
     const decoLayer = this.map.createLayer("deco", decoL, 0, 0);
 
-
     const objectsLayer = this.map.getObjectLayer("objects");
 
     this.enemysGroup = this.physics.add.group();
@@ -56,7 +54,7 @@ export default class Bar extends Phaser.Scene {
       const { x = 0, y = 0, name } = objData;
       switch (name) {
         case "enemy": {
-          this.enemy = new Enemy(this, x, y, "enemy", 300, this.map);
+          this.enemy = new Enemy(this, x, y, "enemy", 300, this.map, 1);
           console.log(this.enemy);
           this.enemysGroup.add(this.enemy);
           break;
@@ -80,8 +78,8 @@ export default class Bar extends Phaser.Scene {
       this.weaponsGroup,
       this.powers,
       this.playerLifes,
-      this.playerMana,
-    );
+      this.playerMana
+    ).setDepth(10);
 
     this.player.setNBullets(this.playerBullets);
     this.player.setNChips(this.playerChips);
@@ -96,7 +94,7 @@ export default class Bar extends Phaser.Scene {
       spawnPoint.y,
       "enemy2",
       this.player
-    );
+    ).setDepth(10);
     this.enemysGroup.add(this.boss);
 
     this.boss.create();
@@ -174,7 +172,8 @@ export default class Bar extends Phaser.Scene {
 
     this.keyESC = this.input.keyboard.addKey("ESC");
 
-    this.add.image(1920/2, 1080/2, 'bg').setScrollFactor(0);
+    /*---TRANSPARENT BACKGROUND-----*/
+    this.add.image(1920 / 2, 1080 / 2, "bg").setScrollFactor(0);
   }
 
   update(time, delta) {
@@ -225,8 +224,9 @@ export default class Bar extends Phaser.Scene {
     }
   }
 
-  winLevel(){
+  winLevel() {
     if (this.boss.lifes <= 0) {
+      events.emit("updateKey3");
       this.boss1Dead = true;
       this.scene.stop("Bar");
       this.scene.start("BarWinAnimation", {
@@ -251,7 +251,6 @@ export default class Bar extends Phaser.Scene {
         hasRadio: this.hasRadio,
         hasWeapon: this.hasWeapon,
       });
-
     }
   }
 

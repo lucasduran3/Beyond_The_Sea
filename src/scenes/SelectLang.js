@@ -20,24 +20,18 @@ export default class SelectLang extends Phaser.Scene {
 
   create() {
     const titleText = this.add.text(400, 140, " Select Language", {
-      fontFamily:'firstFontasy',
+      fontFamily: "firstFontasy",
       fontSize: "100px",
     });
-    titleText.setTint(0xff00ff, 0xffff00, 0x0000ff, 0xff0000);
+    titleText.setTint(0x00ffff, 0x00ff80, 0x0000ff, 0xaa00ff);
 
-    const ES = this.add
-      .image(960, 400, "spain")
-      .setOrigin(0.5);
+    const ES = this.add.image(960, 450, "spain").setOrigin(0.5);
 
     ES.setInteractive({ useHandCursor: true });
 
-    ES.on("pointerover", () => {
-      
-    });
+    ES.on("pointerover", () => {});
 
-    ES.on("pointerout", () => {
-     
-    });
+    ES.on("pointerout", () => {});
 
     ES.on("pointerdown", () => {
       this.getTranslation(ES_AR);
@@ -45,19 +39,13 @@ export default class SelectLang extends Phaser.Scene {
       this.scene.start("MainMenu", { language: this.#language });
     });
 
-    const EN = this.add
-      .image(960, 600, "usa")
-      .setOrigin(0.5);
+    const EN = this.add.image(960, 650, "usa").setOrigin(0.5);
 
     EN.setInteractive({ useHandCursor: true });
 
-    EN.on("pointerover", () => {
+    EN.on("pointerover", () => {});
 
-    });
-
-    EN.on("pointerout", () => {
-
-    });
+    EN.on("pointerout", () => {});
 
     EN.on("pointerdown", async () => {
       await this.getTranslation(EN_US);
@@ -65,19 +53,13 @@ export default class SelectLang extends Phaser.Scene {
       this.scene.start("MainMenu", { language: this.#language });
     });
 
-    const DE = this.add
-      .image(960, 800, "german")
-      .setOrigin(0.5);
+    const DE = this.add.image(960, 850, "german").setOrigin(0.5);
 
     DE.setInteractive({ useHandCursor: true });
 
-    DE.on("pointerover", () => {
+    DE.on("pointerover", () => {});
 
-    });
-
-    DE.on("pointerout", () => {
-
-    });
+    DE.on("pointerout", () => {});
 
     DE.on("pointerdown", async () => {
       await this.getTranslation(DE_DE);

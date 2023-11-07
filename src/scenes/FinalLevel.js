@@ -4,7 +4,6 @@ import Enemy from "../components/Enemy";
 import events from "../scenes/EventCenter";
 import HorrifiPostFxPipeline from "phaser3-rex-plugins/plugins/horrifipipeline";
 
-
 export default class FinalLevel extends Phaser.Scene {
   constructor() {
     super("FinalLevel");
@@ -47,22 +46,13 @@ export default class FinalLevel extends Phaser.Scene {
 
     const objectsLayer = this.map.getObjectLayer("objects");
 
-
-    objectsLayer.objects.forEach((objData) => {
-      const { x = 0, y = 0, name } = objData;
-      switch (name) {
-        case "drawer": {
-          this.drawer = this.physics.add.sprite(x, y, "drawer");
-          break;
-        }
-      }
-      });
-
     this.enemysGroup = this.physics.add.group();
 
+    let spawnPoint = this.map.findObject(
+      "objects",
+      (obj) => obj.name === "boss"
+    );
 
-    let spawnPoint = this.map.findObject("objects", (obj) => obj.name === "boss");
-    
     this.boss = new Enemy(
       this,
       spawnPoint.x,
@@ -70,17 +60,14 @@ export default class FinalLevel extends Phaser.Scene {
       "enemy3",
       400,
       this.map,
-      4,
-    );
+      4
+    ).setDepth(10);
 
     this.enemysGroup.add(this.boss);
     this.enemyArr = this.enemysGroup.getChildren();
 
-    spawnPoint = this.map.findObject(
-      "objects",
-      (obj) => obj.name === "player"
-    );
-    
+    spawnPoint = this.map.findObject("objects", (obj) => obj.name === "player");
+
     this.player = new Player(
       this,
       spawnPoint.x,
@@ -90,8 +77,8 @@ export default class FinalLevel extends Phaser.Scene {
       this.weaponsGroup,
       this.powers,
       this.playerLifes,
-      this.playerMana,
-    );
+      this.playerMana
+    ).setDepth(10);
 
     this.player.setNBullets(this.playerBullets);
     this.player.setNChips(this.playerChips);
@@ -155,11 +142,42 @@ export default class FinalLevel extends Phaser.Scene {
       crtHeight: 5,
     });
 
-    wallLayer.setCollisionByProperty({ colision: true });
-
-
     this.keyESC = this.input.keyboard.addKey("ESC");
-    this.add.image(1920/2, 1080/2, 'bg').setScrollFactor(0);
+
+    /*---TRANSPARENT BACKGROUND-----*/
+    this.add.image(1920 / 2, 1080 / 2, "bg").setScrollFactor(0);
+
+    /*--OBJECTS--*/
+    objectsLayer.objects.forEach((objData) => {
+      const { x = 0, y = 0, name } = objData;
+      switch (name) {
+        case "drawer": {
+          this.drawer = this.physics.add.sprite(x, y, "drawer");
+          break;
+        }
+
+        case "bullet": {
+          this.bulletToCollect = this.physics.add.sprite(x, y, "bullet2");
+          this.bulletsGroup.add(this.bulletToCollect);
+          break;
+        }
+      }
+    });
+
+    this.physics.add.overlap(
+      this.player,
+      this.bulletsGroup,
+      this.collectBullet,
+      null,
+      this
+    );
+
+    wallLayer.setCollisionByProperty({ colision: true });
+    decoLayer.setCollisionByProperty({ colision: true });
+    this.physics.add.collider(this.player, wallLayer);
+    this.physics.add.collider(this.boss, wallLayer);
+    this.physics.add.collider(this.player, decoLayer);
+    this.physics.add.collider(this.boss, decoLayer);
   }
 
   update(time, delta) {
@@ -179,8 +197,7 @@ export default class FinalLevel extends Phaser.Scene {
 
     this.isOver();
 
-    if(this.player.y<= 900){
-
+    if (this.player.y <= 900) {
     }
   }
 
@@ -206,11 +223,11 @@ export default class FinalLevel extends Phaser.Scene {
         hasWeapon: this.hasWeapon,
       });
 
-      events.emit("resetUI");
+      events.emit("resetUI", { bullets: this.playerBullets });
     }
   }
 
-  winLevel(){
+  winLevel() {
     if (this.boss.lifes <= 0) {
       this.boss1Dead = true;
       this.scene.stop("FinalLevel");
@@ -238,8 +255,12 @@ export default class FinalLevel extends Phaser.Scene {
         hasRadio: this.hasRadio,
         hasWeapon: this.hasWeapon,
       });
-
     }
+  }
+
+  collectBullet(player, bullet) {
+    bullet.destroy();
+    this.player.incrementBullets();
   }
 
   enemyDropObjects() {}

@@ -39,14 +39,20 @@ export default class BarWinAnimation extends Phaser.Scene {
   create() {
     this.anims.create({
       key: "moveHead",
-      frames: this.anims.generateFrameNumbers("enemy2-death",{start:0, end: 7}),
+      frames: this.anims.generateFrameNumbers("enemy2-death", {
+        start: 0,
+        end: 7,
+      }),
       frameRate: 8,
-      repeat: -1
+      repeat: -1,
     });
 
     this.anims.create({
       key: "death",
-      frames: this.anims.generateFrameNumbers("enemy2-death",{start:9, end: 18}),
+      frames: this.anims.generateFrameNumbers("enemy2-death", {
+        start: 9,
+        end: 18,
+      }),
       frameRate: 6,
       repeat: 0,
     });
@@ -56,18 +62,24 @@ export default class BarWinAnimation extends Phaser.Scene {
     const floorL = this.map.addTilesetImage("floor", "floor");
     const wallL = this.map.addTilesetImage("wall", "wall");
     const barTableL = this.map.addTilesetImage("bar-table", "bar-table");
+    const decoL = this.map.addTilesetImage("deco", "deco");
 
     const floorLayer = this.map.createLayer("floor", floorL, 0, 0);
     const wallLayer = this.map.createLayer("wall", wallL, 0, 0);
     const barTableLayer = this.map.createLayer("bar-table", barTableL, 0, 0);
+    const decoLayer = this.map.createLayer("deco", decoL, 0, 0);
 
-    this.boss = this.physics.add.sprite(270, 662, "enemy").setAngle(90);
+    this.boss = this.physics.add
+      .sprite(270, 662, "enemy")
+      .setAngle(90)
+      .setDepth(10);
 
     this.boss.anims.play("moveHead", true);
 
     this.player = this.physics.add
       .sprite(this.playerX, this.playerY, "player")
-      .setAngle(-90);
+      .setAngle(-90)
+      .setDepth(10);
 
     const postFxPlugin = this.plugins.get("rexhorrifipipelineplugin");
     const effect = this.cameras.main.setPostPipeline(HorrifiPostFxPipeline);
@@ -111,18 +123,16 @@ export default class BarWinAnimation extends Phaser.Scene {
 
     this.cameras.main.pan(270, 662, 2000);
 
-
-
     this.scene.setVisible(false, "UI");
 
-    this.add.image(1920/2, 1080/2, 'bg').setScrollFactor(0);
+    this.add.image(1920 / 2, 1080 / 2, "bg").setScrollFactor(0);
 
-    if(this.startAnimation){
-      this.boss.anims.play('death', true);
+    if (this.startAnimation) {
+      this.boss.anims.play("death", true);
       this.time.addEvent({
         delay: 5500,
-        callback: ()=>{
-          this.scene.start("Level1",{
+        callback: () => {
+          this.scene.start("Level1", {
             level: this.level,
             keyDoor1: this.keyDoor1,
             keyDoor2: this.keyDoor2,
@@ -142,7 +152,7 @@ export default class BarWinAnimation extends Phaser.Scene {
             hasRadio: this.hasRadio,
             hasWeapon: this.hasWeapon,
           });
-        }
+        },
       });
     } else {
       this.time.addEvent({
@@ -155,9 +165,9 @@ export default class BarWinAnimation extends Phaser.Scene {
               "No voy a dejar que una rata de laboratorio decida mi destino"
             ),
             getPhrase("Espero que estes a gusto siguiendo sus ordenes..."),
-            getPhrase("...Por dentro estas mas vacío que el")
+            getPhrase("...Por dentro estas mas vacío que el"),
           ];
-  
+
           this.scene.launch("Dialog", {
             startOrResume: "start",
             playerX: this.playerX,
@@ -182,7 +192,7 @@ export default class BarWinAnimation extends Phaser.Scene {
             boss3Dead: this.boss3Dead,
             powers: this.powers,
             hasRadio: this.hasRadio,
-            hasWeapon : this.hasWeapon,
+            hasWeapon: this.hasWeapon,
           });
         },
         callbackScope: this,

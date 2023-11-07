@@ -41,10 +41,12 @@ export default class FinalLevelAnimation extends Phaser.Scene {
     const wallLayer = this.map.createLayer("wall", wallL, 0, 0);
     const decoLayer = this.map.createLayer("deco", decoL, 0, 0);
 
+    this.boss = this.physics.add
+      .sprite(1244, 144, "enemy3")
+      .setAngle(180)
+      .setDepth(10);
 
-    this.boss = this.physics.add.sprite(1244, 144, "enemy3").setAngle(180);
-
-    this.player = this.physics.add.sprite(1212, 1782, "player");
+    this.player = this.physics.add.sprite(1212, 1782, "player").setDepth(10);
 
     const postFxPlugin = this.plugins.get("rexhorrifipipelineplugin");
     const effect = this.cameras.main.setPostPipeline(HorrifiPostFxPipeline);
@@ -129,7 +131,7 @@ export default class FinalLevelAnimation extends Phaser.Scene {
 
     this.scene.setVisible(false, "UI");
 
-    this.add.image(1920/2, 1080/2, 'bg').setScrollFactor(0);
+    this.add.image(1920 / 2, 1080 / 2, "bg").setScrollFactor(0);
   }
 
   update() {}

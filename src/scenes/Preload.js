@@ -34,11 +34,15 @@ export default class Preload extends Phaser.Scene {
       frameHeight: 192,
     });
     this.load.image("bullet", "/assets/sprites/bullet.png");
+    this.load.image("bullet2", "/assets/sprites/bullet2.png");
     this.load.image("wall", "/assets/sprites/wall.png");
     this.load.image("floor", "/assets/sprites/floor.png");
     this.load.image("sofa", "/assets/sprites/sofa.png");
     this.load.image("door", "/assets/sprites/door.png");
     this.load.image("key", "/assets/sprites/key.png");
+    this.load.image("key2", "/assets/sprites/key2.png");
+    this.load.image("key3", "/assets/sprites/key3.png");
+    this.load.image("key4", "/assets/sprites/key4.png");
     this.load.image("revolver", "/assets/sprites/revolver.png");
     this.load.image("bulletToCollect", "/assets/sprites/bulletToCollect.png");
     this.load.image("bar-table", "/assets/sprites/bar-table.png");
@@ -46,10 +50,9 @@ export default class Preload extends Phaser.Scene {
     this.load.image("drawer", "/assets/sprites/drawer.png");
     this.load.image("drawerBg", "/assets/sprites/drawerBg.png");
     this.load.image("deco", "/assets/sprites/deco.png");
-    this.load.image("email-icon", "/assets/sprites/email-icon.png");
-    this.load.image("anon-icon", "/assets/sprites/anon-icon.png");
-    this.load.image("git-icon", "/assets/sprites/git-icon.png");
-    this.load.image("google-icon", "/assets/sprites/google-icon.png");
+    this.load.image("anon-icon", "/assets/sprites/anon-icon.jpeg");
+    this.load.image("git-icon", "/assets/sprites/git-icon.jpeg");
+    this.load.image("google-icon", "/assets/sprites/google-icon.jpeg");
     this.load.image("radio", "/assets/sprites/radio.png");
     this.load.image("powerFreeze", "/assets/sprites/powerFreeze.png");
     this.load.image("mainMenuBg", "/assets/sprites/mainMenuBg.png");
@@ -78,19 +81,30 @@ export default class Preload extends Phaser.Scene {
     this.load.tilemapTiledJSON("map-lobby", "/assets/tilemaps/lobby.json");
     this.load.tilemapTiledJSON("map-mercado", "/assets/tilemaps/mercado.json");
     this.load.tilemapTiledJSON("map-level1", "/assets/tilemaps/level1.json");
-    this.load.tilemapTiledJSON("map-mercado-bar", "/assets/tilemaps/mercado-bar.json");
-    this.load.tilemapTiledJSON("map-hospital", "/assets/tilemaps/hospital.json");
-    this.load.tilemapTiledJSON("map-level-final", "/assets/tilemaps/level-final.json");
+    this.load.tilemapTiledJSON(
+      "map-mercado-bar",
+      "/assets/tilemaps/mercado-bar.json"
+    );
+    this.load.tilemapTiledJSON(
+      "map-hospital",
+      "/assets/tilemaps/hospital.json"
+    );
+    this.load.tilemapTiledJSON(
+      "map-level-final",
+      "/assets/tilemaps/level-final.json"
+    );
 
     //audio
     this.load.audio("ambient", "/assets/audio/ambiente.wav");
     this.load.audio("temaMenu", "/assets/audio/tema1.wav");
-    this.load.audio("introMusic", "/assets/audio/introMusic.wav");
+    this.load.audio("shootSound", "/assets/audio/shootSound.mp3");
+    this.load.audio("freezeSound", "/assets/audio/freezeSound.wav");
+    this.load.audio("rechargeSound", "/assets/audio/rechargeSound.wav");
+    this.load.audio("radioSound", "/assets/audio/radioSound.wav");
 
     //fonts
     //this.load.script('');
-  
-    
+
     //plugins
     this.load.plugin(
       "rexhorrifipipelineplugin",
@@ -104,16 +118,15 @@ export default class Preload extends Phaser.Scene {
       this.scene.start("menu", { language: this.#language })
     );
 
-
-    const titleText = this.add.text(800, 140, " Login", {
+    const titleText = this.add.text(750, 140, " Login", {
       fontSize: 100,
-      fontFamily: 'firstFontasy',
-      align: 'center',
+      fontFamily: "firstFontasy",
+      align: "center",
     });
-    titleText.setTint(0xff00ff, 0xffff00, 0x0000ff, 0xff0000);
+    titleText.setTint(0x00ffff, 0x00ff80, 0x0000ff, 0xaa00ff);
 
     this.add
-      .image(400, 300, "anon-icon")
+      .image(956, 450, "anon-icon")
       .setOrigin(0.5)
       .setInteractive({ useHandCursor: true })
       .on("pointerdown", () => {
@@ -130,7 +143,7 @@ export default class Preload extends Phaser.Scene {
       });
 
     this.add
-      .image(400, 500, "google-icon")
+      .image(956, 650, "google-icon")
       .setOrigin(0.5)
       .setInteractive({ useHandCursor: true })
       .on("pointerdown", () => {
@@ -146,7 +159,7 @@ export default class Preload extends Phaser.Scene {
       });
 
     this.add
-      .image(400, 700, "git-icon")
+      .image(956, 850, "git-icon")
       .setOrigin(0.5)
       .setInteractive({ useHandCursor: true })
       .on("pointerdown", () => {

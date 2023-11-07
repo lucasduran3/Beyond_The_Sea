@@ -1,6 +1,6 @@
 module.exports = {
-    revolver : {
-        name : "revolver",
-        speed : 500
-    },
-}
+  revolver: {
+    name: "revolver",
+    speed: 500,
+  },
+};

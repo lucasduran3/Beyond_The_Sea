@@ -171,6 +171,8 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
   fireBullet(pointer) {
     if (this.activatedWeapon != null && this.nBullets > 0) {
+      const shootSound = this.scene.sound.add("shootSound");
+      shootSound.play();
       const speed = this.activatedWeapon.speed;
       const worldPointer = this.scene.cameras.main.getWorldPoint(
         pointer.x,
@@ -267,7 +269,10 @@ export default class Player extends Phaser.GameObjects.Sprite {
           enemyPosition
         );
 
-        //En vez de crear una bala se debe crear otro sprite.
+        const freezeSound = this.scene.sound.add("freezeSound");
+        freezeSound.play();
+        freezeSound.setVoume(0.5);
+
         if(Phaser.Math.Distance.Between(this.x, this.y, element.x, element.y) <= 600){
           element.freeze();
         }

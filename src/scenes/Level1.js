@@ -3,7 +3,7 @@ import Player from "../components/Player";
 import Enemy from "../components/Enemy";
 import ShooterBoss from "../components/ShooterBoss";
 import events from "../scenes/EventCenter";
-import { revolver} from "../components/weapons";
+import { revolver } from "../components/weapons";
 import HorrifiPostFxPipeline from "phaser3-rex-plugins/plugins/horrifipipeline";
 
 export default class Level1 extends Phaser.Scene {
@@ -84,7 +84,7 @@ export default class Level1 extends Phaser.Scene {
       const { x = 0, y = 0, name } = objData;
       switch (name) {
         case "enemy": {
-          this.enemy = new Enemy(this, x, y, "enemy", 300, this.map,1);
+          this.enemy = new Enemy(this, x, y, "enemy", 300, this.map, 1);
           this.enemysGroup.add(this.enemy);
           break;
         }
@@ -108,7 +108,7 @@ export default class Level1 extends Phaser.Scene {
       this.powers,
       this.playerLifes,
       this.playerMana
-    );
+    ).setDepth(10);
 
     this.player.setNBullets(this.playerBullets);
     this.player.setNChips(this.playerChips || 0);
@@ -118,73 +118,6 @@ export default class Level1 extends Phaser.Scene {
     this.bulletsGroup = this.physics.add.group();
 
     this.keysGroup = this.physics.add.group();
-
-    objectsLayer.objects.forEach((objData) => {
-      const { x = 0, y = 0, name } = objData;
-      switch (name) {
-        case "key-door1": {
-          if (!this.keyDoor1) {
-            this.key_door1_sprite = this.physics.add.sprite(x, y, "key");
-            this.keysGroup.add(this.key_door1_sprite);
-          }
-          break;
-        }
-        case "key-lvl3":{
-          if (!this.keyDoor3) {
-            this.key_door3_sprite = this.physics.add.sprite(x, y, "key2");
-            this.keysGroup.add(this.key_door3_sprite);
-          }
-        }
-        case "key-bar": {
-          if (!this.keyBar) {
-            this.keyBarSprite = this.physics.add.sprite(x, y, "key3");
-            this.keysGroup.add(this.keyBarSprite);
-          }
-          break;
-        }
-        case "revolver": {
-          this.revolverSprite = this.physics.add.sprite(x, y, "revolver");
-          break;
-        }
-        case "bullet": {
-          this.bulletToCollect = this.physics.add.sprite(
-            x,
-            y,
-            "bullet"
-          );
-          this.bulletsGroup.add(this.bulletToCollect);
-          break;
-        }
-        case "radio": {
-          if (!this.hasRadio) {
-            this.radio = this.physics.add.sprite(x, y, "radio");
-          }
-          break;
-        }
-        case "msj1": {
-          this.msj1 = this.physics.add.sprite(x,y,"msj1").setVisible(false);
-          break;
-        }
-        case "msj2": {
-          this.msj2 = this.physics.add.sprite(x,y,"msj1").setVisible(false);
-          break;
-        }
-        case "powerFreeze": {
-          this.powerFreeze = this.physics.add.sprite(x, y, "powerFreeze");
-          break;
-        }
-        case "drawer":{
-          this.drawer = this.physics.add.sprite(x,y, "drawer");
-          break;
-        }
-        case "shooter-enemy":{
-          this.shooterEnemy = new ShooterBoss (this,x,y,"enemy2",this.player);
-          this.shooterEnemy.create();
-          this.enemysGroup.add(this.shooterEnemy);
-          break;
-        }
-      }
-    });
 
     this.enemyArr.forEach((element) => {
       // @ts-ignore
@@ -247,7 +180,158 @@ export default class Level1 extends Phaser.Scene {
       crtWidth: 5,
       crtHeight: 5,
     });
-    
+
+    /*---FIREBASE----*/
+    // @ts-ignore
+    if (this.boss1Dead && this.level == "lobby") {
+      const user = this.firebase.getUser();
+
+      this.firebase.saveGameData(user.uid, {
+        level: this.level,
+        keyDoor1: this.keyDoor1,
+        keyDoor2: this.keyDoor2,
+        keyDoor3: this.keyDoor3,
+        keyDoor4: this.keyDoor4,
+        weaponsGroup: this.weaponsGroup,
+        playerLifes: this.playerLifes,
+        playerMana: this.playerMana,
+        playerBullets: this.player.nBullets,
+        playerChips: this.player.nChips,
+        playerKits: this.player.nKits,
+        boss1Dead: this.boss1Dead,
+        boss2Dead: this.boss2Dead,
+        boss3Dead: this.boss3Dead,
+        powers: this.powers,
+        hasRadio: this.hasRadio,
+        hasWeapon: true,
+      });
+    }
+
+    /*----RADIO---MESSAGES----*/
+    if (this.level === "mercado") {
+      let text = [
+        "En donde estás?",
+        "Ah, en el 'mercado'",
+        "Debo advertirte...",
+        "Al fondo hay un bar que a sido ocupado por unos tipos, hace semanas...",
+        "... y no han salido desde entonces",
+        "Seguramente ya se murieron de hambre...",
+        "eso espero...",
+        "Hechale un vistazo al lugar, quizas encontras la llave",
+      ];
+      this.showPopup(text);
+    }
+
+    this.physics.add.overlap(
+      this.player,
+      this.msj1,
+      () => {
+        let text = [
+          "No sabes nada sobre este lugar no?...",
+          "... Nanotecnologia, biotecnologia, implantes cerebrales...",
+          "Esta era una sociedad secreta, dedicada a la investigación cientifica",
+          "Pero las cosas se descontrolaron un poco...",
+          "Lo peor es que nadie sabe de este lugar...",
+          "Y todos los que han entrado hasta hora no han salido... que yo sepa...",
+        ];
+        this.showPopup(text);
+      },
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.player,
+      this.msj2,
+      () => {
+        let text = [
+          "El cerebro detrás de todo esto es Leon Goldstein",
+          "Un cientifico respetado en el pasado...",
+          "Trajo consigo un monton de cientificos, y voluntarios que ofrecieron su cuerpo y mente para que experimentasen con ellos...",
+          "Les fue prometido un techo, un hogar, y una vida respetable...",
+          "Pero al final eran vistos como objetos...",
+          "La mayoria de los chips que les fueron implantados eran defectuosos,",
+          "generando en ellos graves trastornos, comportamientos violentos y autodestructivos...",
+        ];
+        this.showPopup(text);
+      },
+      null,
+      this
+    );
+
+    /*----TRANSPARENT BACKGROUND----*/
+    this.add.image(1920 / 2, 1080 / 2, "bg").setScrollFactor(0);
+
+    /*------OBJECTS-----*/
+    objectsLayer.objects.forEach((objData) => {
+      const { x = 0, y = 0, name } = objData;
+      switch (name) {
+        case "key-door1": {
+          if (!this.keyDoor1) {
+            this.key_door1_sprite = this.physics.add.sprite(x, y, "key");
+            this.keysGroup.add(this.key_door1_sprite);
+          }
+          break;
+        }
+        case "key-lvl3": {
+          if (!this.keyDoor3) {
+            this.key_door3_sprite = this.physics.add.sprite(x, y, "key3");
+            this.keysGroup.add(this.key_door3_sprite);
+          }
+        }
+        case "key-bar": {
+          if (!this.keyBar) {
+            this.keyBarSprite = this.physics.add.sprite(x, y, "key2");
+            this.keysGroup.add(this.keyBarSprite);
+          }
+          break;
+        }
+        case "revolver": {
+          this.revolverSprite = this.physics.add.sprite(x, y, "revolver");
+          break;
+        }
+        case "bullet": {
+          this.bulletToCollect = this.physics.add.sprite(x, y, "bullet2");
+          this.bulletsGroup.add(this.bulletToCollect);
+          break;
+        }
+        case "radio": {
+          if (!this.hasRadio) {
+            this.radio = this.physics.add.sprite(x, y, "radio");
+          }
+          break;
+        }
+        case "msj1": {
+          this.msj1 = this.physics.add.sprite(x, y, "msj1").setVisible(false);
+          break;
+        }
+        case "msj2": {
+          this.msj2 = this.physics.add.sprite(x, y, "msj1").setVisible(false);
+          break;
+        }
+        case "powerFreeze": {
+          this.powerFreeze = this.physics.add.sprite(x, y, "powerFreeze");
+          break;
+        }
+        case "drawer": {
+          this.drawer = this.physics.add.sprite(x, y, "drawer");
+          break;
+        }
+        case "shooter-enemy": {
+          this.shooterEnemy = new ShooterBoss(
+            this,
+            x,
+            y,
+            "enemy2",
+            this.player
+          );
+          this.shooterEnemy.create();
+          this.enemysGroup.add(this.shooterEnemy);
+          break;
+        }
+      }
+    });
+
     this.objectsGroup = this.physics.add.group();
 
     /*---COLLIDES - OVERLAPS---*/
@@ -265,7 +349,7 @@ export default class Level1 extends Phaser.Scene {
       () => {
         this.key_door1_sprite.destroy();
         this.keyDoor1 = true;
-        events.emit("updateKeys", { key1: "Key 1" });
+        events.emit("updateKey1");
       },
       null,
       this
@@ -277,7 +361,7 @@ export default class Level1 extends Phaser.Scene {
       () => {
         this.key_door3_sprite.destroy();
         this.keyDoor3 = true;
-        events.emit("updateKeys", { key3: "Key 3" });
+        events.emit("updateKey4");
       },
       null,
       this
@@ -289,7 +373,7 @@ export default class Level1 extends Phaser.Scene {
       () => {
         this.keyBarSprite.destroy();
         this.keyBar = true;
-        events.emit("updateKeys", { keyBar: "Key Bar" });
+        events.emit("updateKeyBar");
       },
       null,
       this
@@ -302,6 +386,8 @@ export default class Level1 extends Phaser.Scene {
         this.weaponsGroup["revolver"] = revolver;
         this.player.addWeapon(revolver);
         this.revolverSprite.destroy();
+        const rechargeSound = this.sound.add("rechargeSound");
+        rechargeSound.play();
       },
       null,
       this
@@ -328,7 +414,7 @@ export default class Level1 extends Phaser.Scene {
           "Si algunos de esos tipos me ve... no dudaran en matarme",
           "Ya no son humanos...",
           "Necesito que consegas una llave para acceder a la zona en donde estoy",
-          "Tené cuidado..."
+          "Tené cuidado...",
         ];
         this.showPopup(text);
       },
@@ -366,8 +452,8 @@ export default class Level1 extends Phaser.Scene {
           playerChips: this.player.nChips,
           playerKits: this.player.nKits,
           boss1Dead: this.boss1Dead,
-          boos2Dead : this.boss2Dead,
-          boss3Dead : this.boss3Dead,
+          boos2Dead: this.boss2Dead,
+          boss3Dead: this.boss3Dead,
           powers: this.powers,
           hasRadio: this.hasRadio,
           hasWeapon: this.player.hasWeapon,
@@ -451,7 +537,7 @@ export default class Level1 extends Phaser.Scene {
           boss3Dead: this.boss3Dead,
           powers: this.player.powers,
           hasRadio: this.hasRadio,
-          hasWeapon : this.player.hasWeapon,
+          hasWeapon: this.player.hasWeapon,
         });
       },
       () => this.keyBar == true,
@@ -463,7 +549,7 @@ export default class Level1 extends Phaser.Scene {
       this.player,
       () => {
         this.scene.start("Level1", {
-          level : "lobby",
+          level: "lobby",
           keyDoor1: this.keyDoor1,
           keyDoor2: this.keyDoor2,
           keyDoor3: this.keyDoor3,
@@ -480,10 +566,10 @@ export default class Level1 extends Phaser.Scene {
           boss3Dead: this.boss3Dead,
           powers: this.player.powers,
           hasRadio: this.hasRadio,
-          hasWeapon : this.player.hasWeapon,
+          hasWeapon: this.player.hasWeapon,
         });
       },
-      null,
+      () => this.keyDoor3 == true,
       this
     );
 
@@ -503,7 +589,7 @@ export default class Level1 extends Phaser.Scene {
       this.powerFreeze.destroy();
     });
 
-        /*------NO KEY MESSAGES------*/ 
+    /*------NO KEY MESSAGES------*/
     this.physics.add.collider(
       doorLvl1Layer,
       this.player,
@@ -548,8 +634,7 @@ export default class Level1 extends Phaser.Scene {
       this
     );
 
-
-    /*------NO KEY MESSAGES------*/ 
+    /*------NO KEY MESSAGES------*/
     this.physics.add.collider(
       doorLvl1Layer,
       this.player,
@@ -594,87 +679,29 @@ export default class Level1 extends Phaser.Scene {
       this
     );
 
-
-    /*---FIREBASE----*/
-    // @ts-ignore
-    if (this.boss1Dead && this.level == "lobby") {
-      const user = this.firebase.getUser();
-      
-      this.firebase.saveGameData(user.uid, {
-        level : this.level,
-        keyDoor1: this.keyDoor1,
-        keyDoor2: this.keyDoor2,
-        keyDoor3: this.keyDoor3,
-        keyDoor4: this.keyDoor4,
-        weaponsGroup: this.weaponsGroup,
-        playerLifes: this.playerLifes,
-        playerMana: this.playerMana,
-        playerBullets: this.player.nBullets,
-        playerChips: this.player.nChips,
-        playerKits: this.player.nKits,
-        boss1Dead: this.boss1Dead,
-        boss2Dead: this.boss2Dead,
-        boss3Dead: this.boss3Dead,
-        powers: this.powers,
-        hasRadio: this.hasRadio,
-        hasWeapon: true,
-      });
-    }
-
-    /*----RADIO---MESSAGES----*/ 
-    if(this.level === 'mercado'){
-      let text = ["En donde estás?", "Ah, en el 'mercado'", "Debo advertirte...",
-      "Al fondo hay un bar que a sido ocupado por unos tipos, hace semanas...", "... y no han salido desde entonces", 
-      "Seguramente ya se murieron de hambre...",
-      "eso espero...",
-      "Hechale un vistazo al lugar, quizas encontras la llave"];
-      this.showPopup(text);   
-    }
-
-    this.physics.add.overlap(
-      this.player, 
-      this.msj1, 
-      ()=>{
-        let text = ["No sabes nada sobre este lugar no?...", "... Nanotecnologia, biotecnologia, implantes cerebrales...", 
-        "Esta era una sociedad secreta, dedicada a la investigación cientifica",
-        "Pero las cosas se descontrolaron un poco...", "Lo peor es que nadie sabe de este lugar...", 
-        "Y todos los que han entrado hasta hora no han salido... que yo sepa..."];
+    this.physics.add.collider(
+      doorLobbyLayer,
+      this.player,
+      () => {
+        const text = ["Sigue buscando...Necesitas una llave"];
         this.showPopup(text);
       },
-      null,
+      () => this.keyBar == false,
       this
     );
-
-    this.physics.add.overlap(
-      this.player,
-      this.msj2,
-      ()=>{
-        let text =["El cerebro detrás de todo esto es Leon Goldstein", "Un cientifico respetado en el pasado...",
-        "Trajo consigo un monton de cientificos, y voluntarios que ofrecieron su cuerpo y mente para que experimentasen con ellos...",
-        "Les fue prometido un techo, un hogar, y una vida respetable...",
-        "Pero al final eran vistos como objetos...",
-        "La mayoria de los chips que les fueron implantados eran defectuosos,",
-        "generando en ellos graves trastornos, comportamientos violentos y autodestructivos..."];
-        this.showPopup(text);
-      },
-        null,
-        this
-      );
-
-    this.add.image(1920/2, 1080/2, 'bg').setScrollFactor(0);
 
     /*----TWEENS-----*/
-      this.bulletsGroup.getChildren().forEach(element => {
-        this.tweenObjects(element);
-      });
+    this.bulletsGroup.getChildren().forEach((element) => {
+      this.tweenObjects(element);
+    });
 
-      this.keysGroup.getChildren().forEach(element => {
-        this.tweenObjects(element);
-      });
+    this.keysGroup.getChildren().forEach((element) => {
+      this.tweenObjects(element);
+    });
 
-      this.tweenObjects(this.revolverSprite);
-      this.tweenObjects(this.radio);
-      if(this.powerFreeze != null)this.tweenObjects(this.powerFreeze);
+    this.tweenObjects(this.revolverSprite);
+    this.tweenObjects(this.radio);
+    if (this.powerFreeze != null) this.tweenObjects(this.powerFreeze);
   }
 
   update(time, delta) {
@@ -722,7 +749,7 @@ export default class Level1 extends Phaser.Scene {
         hasWeapon: this.player.hasWeapon,
       });
 
-      events.emit("resetUI",{bullets: this.playerBullets});
+      events.emit("resetUI", { bullets: this.playerBullets });
     }
   }
 
@@ -750,14 +777,13 @@ export default class Level1 extends Phaser.Scene {
 
   tweenObjects(target) {
     // @ts-ignore
-      const tween = this.tweens.add({
-        targets: target,
-        scale: 1.2,
-        yoyo: true,
-        duration: 500,
-        repeat: -1,
-      });
-    
+    const tween = this.tweens.add({
+      targets: target,
+      scale: 1.2,
+      yoyo: true,
+      duration: 500,
+      repeat: -1,
+    });
   }
 
   // @ts-ignore
@@ -773,6 +799,8 @@ export default class Level1 extends Phaser.Scene {
   }
 
   showPopup(text) {
+    const radioSound = this.sound.add("radioSound");
+    radioSound.play();
     let c = 1;
     let popupTextStyle = {
       font: "30px pixelifySans",
@@ -786,8 +814,12 @@ export default class Level1 extends Phaser.Scene {
     let popupText = this.add
       // @ts-ignore
       .text(1300, 300, text[0], popupTextStyle)
-      .setScrollFactor(0);
-    let radioimg = this.add.image(1230, 350, "radioPopup").setScrollFactor(0);
+      .setScrollFactor(0)
+      .setDepth(5);
+    let radioimg = this.add
+      .image(1230, 350, "radioPopup")
+      .setScrollFactor(0)
+      .setDepth(5);
 
     popupText.setMaxLines(7);
 

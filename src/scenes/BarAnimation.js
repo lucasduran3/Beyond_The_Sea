@@ -34,14 +34,22 @@ export default class BarAnimation extends Phaser.Scene {
     const floorL = this.map.addTilesetImage("floor", "floor");
     const wallL = this.map.addTilesetImage("wall", "wall");
     const barTableL = this.map.addTilesetImage("bar-table", "bar-table");
+    const decoL = this.map.addTilesetImage("deco", "deco");
 
     const floorLayer = this.map.createLayer("floor", floorL, 0, 0);
     const wallLayer = this.map.createLayer("wall", wallL, 0, 0);
     const barTableLayer = this.map.createLayer("bar-table", barTableL, 0, 0);
+    const decoLayer = this.map.createLayer("deco", decoL, 0, 0);
 
-    this.boss = this.physics.add.sprite(270, 662, "enemy").setAngle(90);
+    this.boss = this.physics.add
+      .sprite(270, 662, "enemy2")
+      .setAngle(90)
+      .setDepth(10);
 
-    this.player = this.physics.add.sprite(1348, 708, "player").setAngle(-90);
+    this.player = this.physics.add
+      .sprite(1348, 708, "player")
+      .setAngle(-90)
+      .setDepth(10);
 
     const postFxPlugin = this.plugins.get("rexhorrifipipelineplugin");
     const effect = this.cameras.main.setPostPipeline(HorrifiPostFxPipeline);
@@ -99,7 +107,7 @@ export default class BarAnimation extends Phaser.Scene {
         ];
 
         this.scene.launch("Dialog", {
-          startOrResume : "start",
+          startOrResume: "start",
           content: content,
           sceneToStop: "BarAnimation",
           sceneToStart: "Bar",
@@ -127,7 +135,7 @@ export default class BarAnimation extends Phaser.Scene {
 
     this.scene.setVisible(false, "UI");
 
-    this.add.image(1920/2, 1080/2, 'bg').setScrollFactor(0);
+    this.add.image(1920 / 2, 1080 / 2, "bg").setScrollFactor(0);
   }
 
   update() {}
