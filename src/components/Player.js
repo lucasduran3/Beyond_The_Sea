@@ -139,7 +139,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
     if (this.keys.ONE.isDown) {
       this.setWeapon({ weapon: "revolver" });
-    } 
+    }
 
     if (this.keys.TWO.isDown && !this.isTWOKeyPressed) {
       this.usePowerUp("freeze");
@@ -184,7 +184,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
         worldPointer
       );
 
-      const bullet = new Bullet(this.scene, this.x-10, this.y+10, "bullet");
+      const bullet = new Bullet(this.scene, this.x - 10, this.y + 10, "bullet");
       this.bullets.add(bullet);
       bullet.fire(angle, speed);
 
@@ -261,7 +261,6 @@ export default class Player extends Phaser.GameObjects.Sprite {
   usePowerUp(powerName) {
     if (this.mana > 20 && this.powers.find((element) => element == "freeze")) {
       this.enemy.forEach((element) => {
-
         const playerPosition = new Phaser.Math.Vector2(this.x, this.y);
         const enemyPosition = new Phaser.Math.Vector2(element.x, element.y);
         const angle = Phaser.Math.Angle.BetweenPoints(
@@ -271,14 +270,16 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
         const freezeSound = this.scene.sound.add("freezeSound");
         freezeSound.play();
-        freezeSound.setVoume(0.5);
+        freezeSound.setVolume(0.5);
 
-        if(Phaser.Math.Distance.Between(this.x, this.y, element.x, element.y) <= 600){
+        if (
+          Phaser.Math.Distance.Between(this.x, this.y, element.x, element.y) <=
+          600
+        ) {
           element.freeze();
         }
-
       });
-    
+
       this.mana -= 20;
       events.emit("updateMana", {
         ammount: 20,
@@ -354,7 +355,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
     });
   }
 
-  validateHasWeapon(value){
+  validateHasWeapon(value) {
     this.hasWeapon = value;
   }
 }

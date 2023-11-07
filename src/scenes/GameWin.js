@@ -47,9 +47,25 @@ export default class GameWin extends Phaser.Scene {
     const wallLayer = this.map.createLayer("wall", wallL, 0, 0);
     const decoLayer = this.map.createLayer("deco", decoL, 0, 0);
 
+    this.anims.create({
+      key: "none",
+      frames: [{ key: "enemy3", frame: 7 }],
+    });
+
+    this.anims.create({
+      key: "hit",
+      frames: this.anims.generateFrameNumbers("enemy3", { start: 0, end: 6 }),
+      frameRate: 20,
+      repeat: 1,
+    });
+
     this.boss = this.physics.add
       .sprite(this.enemyX, this.enemyY, "enemy3")
+      .setAngle(180)
       .setDepth(10);
+
+    this.boss.anims.play("none", true);
+    this.player = this.physics.add.sprite(1212, 1782, "player").setDepth(10);
 
     this.player = this.physics.add
       .sprite(this.playerX, this.playerY, "player")
@@ -103,12 +119,10 @@ export default class GameWin extends Phaser.Scene {
       callback: () => {
         const content = [
           "...\n",
-          getPhrase("... NO! ... no puedo."),
-          getPhrase(
-            "No voy a dejar que una rata de laboratorio decida mi destino"
-          ),
-          getPhrase("Espero que estes a gusto siguiendo sus ordenes..."),
-          getPhrase("...Por dentro estas mas vacío que el"),
+          getPhrase("NO!."),
+          getPhrase("Construi todo esto con mis propias manos"),
+          getPhrase("Todo echado a perder por un fallo..."),
+          getPhrase("Nunca serás realmente libre..."),
         ];
 
         this.scene.launch("Dialog", {
@@ -129,7 +143,7 @@ export default class GameWin extends Phaser.Scene {
           playerKits: this.playerKits,
           boss1Dead: this.boss1Dead,
           boss2Dead: this.boss2Dead,
-          boss3Dead: this.boss3Dead,
+          boss3Dead: true,
           powers: this.powers,
           hasRadio: this.hasRadio,
           hasWeapon: this.hasWeapon,

@@ -11,7 +11,7 @@ export default class Level1 extends Phaser.Scene {
     super("Level1");
     this.level = "lobby";
     this.keyDoor1 = false;
-    this.keyDoor2 = false;
+    this.keyDoor2 = true;
     this.keyDoor3 = false;
     this.keyDoor4 = false;
     this.keyBar = false;
@@ -35,7 +35,7 @@ export default class Level1 extends Phaser.Scene {
   init(data) {
     this.level = data.level || "lobby";
     this.keyDoor1 = data.keyDoor1 || false;
-    this.keyDoor2 = data.keyDoor2 || false;
+    this.keyDoor2 = data.keyDoor2 || true;
     this.keyDoor3 = data.keyDoor3 || false;
     this.keyDoor4 = data.keyDoor4 || false;
     this.keyBar = data.keyBar || false;
@@ -222,10 +222,19 @@ export default class Level1 extends Phaser.Scene {
       this.showPopup(text);
     }
 
+    if (this.level === "hospital") {
+      let text = [
+        "El hospital es el ultimo lugar donde queres estar en este momento",
+        "Asi que junta la llave y sali de ahí cuanto antes.",
+      ];
+      this.showPopup(text);
+    }
+
     this.physics.add.overlap(
       this.player,
       this.msj1,
       () => {
+        console.log("hola");
         let text = [
           "No sabes nada sobre este lugar no?...",
           "... Nanotecnologia, biotecnologia, implantes cerebrales...",
@@ -245,11 +254,10 @@ export default class Level1 extends Phaser.Scene {
       this.msj2,
       () => {
         let text = [
-          "El cerebro detrás de todo esto es Leon Goldstein",
           "Un cientifico respetado en el pasado...",
-          "Trajo consigo un monton de cientificos, y voluntarios que ofrecieron su cuerpo y mente para que experimentasen con ellos...",
+          "Trajo consigo a un equipo de investigacion, y voluntarios...",
+          "que ofrecieron su cuerpo y mente para que experimentasen con ellos",
           "Les fue prometido un techo, un hogar, y una vida respetable...",
-          "Pero al final eran vistos como objetos...",
           "La mayoria de los chips que les fueron implantados eran defectuosos,",
           "generando en ellos graves trastornos, comportamientos violentos y autodestructivos...",
         ];
@@ -301,12 +309,21 @@ export default class Level1 extends Phaser.Scene {
           }
           break;
         }
+        case "radio2": {
+          this.radio2 = this.physics.add.sprite(x, y, "radio");
+        }
         case "msj1": {
-          this.msj1 = this.physics.add.sprite(x, y, "msj1").setVisible(false);
+          this.msj1 = this.physics.add
+            .sprite(x, y, "msj1")
+            .setVisible(false)
+            .setScale(5);
           break;
         }
         case "msj2": {
-          this.msj2 = this.physics.add.sprite(x, y, "msj1").setVisible(false);
+          this.msj2 = this.physics.add
+            .sprite(x, y, "msj1")
+            .setVisible(false)
+            .setScale(5);
           break;
         }
         case "powerFreeze": {
@@ -410,15 +427,29 @@ export default class Level1 extends Phaser.Scene {
         let text = [
           "Hola?...Hay alguien ahi?",
           "No sé como llegaste a este lugar, pero necesito tu ayuda.",
-          "Estoy atrapado en una de las instalaciones de este lugar,",
-          "Si algunos de esos tipos me ve... no dudaran en matarme",
-          "Ya no son humanos...",
-          "Necesito que consegas una llave para acceder a la zona en donde estoy",
-          "Tené cuidado...",
+          "Estoy encerrado,",
+          "Necesito que consigas una llave para acceder a la zona en donde estoy",
+          "Cuid-...",
         ];
         this.showPopup(text);
       },
       () => this.hasRadio == false,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.player,
+      this.radio2,
+      () => {
+        this.radio2.destroy();
+        let text = [
+          "No dejes que entre en tu cabeza",
+          "El responsable de este infierno es Leon.",
+          "AHG..",
+        ];
+        this.showPopup(text);
+      },
+      null,
       this
     );
 
@@ -824,7 +855,7 @@ export default class Level1 extends Phaser.Scene {
     popupText.setMaxLines(7);
 
     this.time.addEvent({
-      delay: 4000,
+      delay: 3000,
       callback: function () {
         if (c < text.length) {
           popupText.setText(text[c]);

@@ -102,8 +102,6 @@ export default class BarAnimation extends Phaser.Scene {
             "No permitiré que nadie arruine nuestro pequeño momento de felicidad..."
           ),
           getPhrase("Este es el único lugar donde podemos calmar el dolor..."),
-          getPhrase("Las voces en mi cabeza..."),
-          getPhrase("Pero ustedes nunca tienen suficiente de nosotros!"),
         ];
 
         this.scene.launch("Dialog", {

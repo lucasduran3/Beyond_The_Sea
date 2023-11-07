@@ -2595,18 +2595,6 @@
                 }, 
                 {
                  "height":0,
-                 "id":7,
-                 "name":"enemy",
-                 "point":true,
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":7384,
-                 "y":4736
-                }, 
-                {
-                 "height":0,
                  "id":9,
                  "name":"shooter-enemy",
                  "point":true,
@@ -2628,18 +2616,6 @@
                  "width":0,
                  "x":3992,
                  "y":6612
-                }, 
-                {
-                 "height":0,
-                 "id":13,
-                 "name":"enemy",
-                 "point":true,
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":2736,
-                 "y":7656
                 }, 
                 {
                  "height":0,
@@ -2688,18 +2664,6 @@
                  "width":0,
                  "x":3480,
                  "y":7556
-                }, 
-                {
-                 "height":0,
-                 "id":22,
-                 "name":"enemy",
-                 "point":true,
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":4968,
-                 "y":4648
                 }, 
                 {
                  "height":0,
@@ -2988,6 +2952,42 @@
                  "width":0,
                  "x":8572,
                  "y":6570
+                }, 
+                {
+                 "height":0,
+                 "id":48,
+                 "name":"msj1",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":5434,
+                 "y":4928
+                }, 
+                {
+                 "height":0,
+                 "id":49,
+                 "name":"msj2",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":2644,
+                 "y":4826
+                }, 
+                {
+                 "height":0,
+                 "id":50,
+                 "name":"radio2",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":2596,
+                 "y":1548
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -2996,10 +2996,10 @@
          "y":0
         }],
  "nextlayerid":14,
- "nextobjectid":48,
+ "nextobjectid":51,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.10.1",
+ "tiledversion":"1.8.5",
  "tileheight":32,
  "tilesets":[
         {
@@ -4319,6 +4319,6 @@
         }],
  "tilewidth":32,
  "type":"map",
- "version":"1.10",
+ "version":"1.8",
  "width":291
 }

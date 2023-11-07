@@ -543,18 +543,6 @@
                 }, 
                 {
                  "height":0,
-                 "id":16,
-                 "name":"msj1",
-                 "point":true,
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":1924,
-                 "y":482.666666666667
-                }, 
-                {
-                 "height":0,
                  "id":17,
                  "name":"bullet",
                  "point":true,
@@ -600,6 +588,18 @@
                  "width":0,
                  "x":1281.81818181818,
                  "y":572.727272727273
+                }, 
+                {
+                 "height":0,
+                 "id":21,
+                 "name":"key-lvl2",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1131.0501911657,
+                 "y":707.420483201822
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -608,10 +608,10 @@
          "y":0
         }],
  "nextlayerid":15,
- "nextobjectid":21,
+ "nextobjectid":22,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.10.1",
+ "tiledversion":"1.8.5",
  "tileheight":32,
  "tilesets":[
         {
@@ -1981,6 +1981,6 @@
         }],
  "tilewidth":32,
  "type":"map",
- "version":"1.10",
+ "version":"1.8",
  "width":78
 }

@@ -159,7 +159,6 @@ export default class BarWinAnimation extends Phaser.Scene {
         delay: 2500,
         callback: () => {
           const content = [
-            "...\n",
             getPhrase("... NO! ... no puedo."),
             getPhrase(
               "No voy a dejar que una rata de laboratorio decida mi destino"

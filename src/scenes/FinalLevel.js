@@ -204,7 +204,7 @@ export default class FinalLevel extends Phaser.Scene {
   isOver() {
     if (this.player.lifes <= 0) {
       this.scene.start("Level1", {
-        level: "mercado",
+        level: "lobby",
         keyDoor1: this.keyDoor1,
         keyDoor2: this.keyDoor2,
         keyDoor3: this.keyDoor3,

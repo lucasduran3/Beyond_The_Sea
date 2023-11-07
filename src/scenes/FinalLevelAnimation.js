@@ -41,11 +41,34 @@ export default class FinalLevelAnimation extends Phaser.Scene {
     const wallLayer = this.map.createLayer("wall", wallL, 0, 0);
     const decoLayer = this.map.createLayer("deco", decoL, 0, 0);
 
+    this.anims.create({
+      key: "walk",
+      frames: this.anims.generateFrameNumbers("enemy3", {
+        start: 8,
+        end: 13,
+      }),
+      frameRate: 10,
+      repeat: 1,
+    });
+
+    this.anims.create({
+      key: "none",
+      frames: [{ key: "enemy3", frame: 7 }],
+    });
+
+    this.anims.create({
+      key: "hit",
+      frames: this.anims.generateFrameNumbers("enemy3", { start: 0, end: 6 }),
+      frameRate: 20,
+      repeat: 1,
+    });
+
     this.boss = this.physics.add
       .sprite(1244, 144, "enemy3")
       .setAngle(180)
       .setDepth(10);
 
+    this.boss.anims.play("none", true);
     this.player = this.physics.add.sprite(1212, 1782, "player").setDepth(10);
 
     const postFxPlugin = this.plugins.get("rexhorrifipipelineplugin");
@@ -90,17 +113,18 @@ export default class FinalLevelAnimation extends Phaser.Scene {
 
     this.cameras.main.pan(1244, 144, 2000);
 
+    let text = ["Mierda...", "..."];
+    this.showPopup(text);
+
     this.time.addEvent({
       delay: 2500,
       callback: () => {
         const content = [
-          getPhrase("Quien te dejo entrar?!"),
-          getPhrase(
-            "No permitiré que nadie arruine nuestro pequeño momento de felicidad..."
-          ),
-          getPhrase("Este es el único lugar donde podemos calmar el dolor..."),
-          getPhrase("Las voces en mi cabeza..."),
-          getPhrase("Pero ustedes nunca tienen suficiente de nosotros!"),
+          getPhrase("Que se siente ser un esclavo?"),
+          getPhrase("Incapaz de cuestionar mis ordenes"),
+          getPhrase("HM?"),
+          getPhrase("El chip de tu cerebro ha causado estragos en tu memoria"),
+          getPhrase("Parece que todavia necesitas algunos retoques"),
         ];
 
         this.scene.launch("Dialog", {
@@ -135,4 +159,44 @@ export default class FinalLevelAnimation extends Phaser.Scene {
   }
 
   update() {}
+
+  showPopup(text) {
+    const radioSound = this.sound.add("radioSound");
+    radioSound.play();
+    let c = 1;
+    let popupTextStyle = {
+      font: "30px pixelifySans",
+      fill: "#ffffff",
+      backgroundColor: "#000000",
+      padding: 20,
+      wordWrap: { width: 250, useAdvancedWrap: true },
+    };
+
+    // @ts-ignore
+    let popupText = this.add
+      // @ts-ignore
+      .text(1300, 300, text[0], popupTextStyle)
+      .setScrollFactor(0)
+      .setDepth(5);
+    let radioimg = this.add
+      .image(1230, 350, "radioPopup")
+      .setScrollFactor(0)
+      .setDepth(5);
+
+    popupText.setMaxLines(7);
+
+    this.time.addEvent({
+      delay: 3000,
+      callback: function () {
+        if (c < text.length) {
+          popupText.setText(text[c]);
+          c++;
+        } else {
+          popupText.destroy();
+          radioimg.destroy();
+        }
+      },
+      loop: true,
+    });
+  }
 }

@@ -80,7 +80,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 
       this.anims.create({
         key: "hit",
-        frames: this.anims.generateFrameNumbers("enemy3", { start: 0, end: 6 }),
+        frames: this.anims.generateFrameNumbers("enemy3", { start: 0, end: 7 }),
         frameRate: 20,
         repeat: 1,
       });
