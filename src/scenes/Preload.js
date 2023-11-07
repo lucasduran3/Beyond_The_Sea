@@ -25,6 +25,10 @@ export default class Preload extends Phaser.Scene {
       frameWidth: 192,
       frameHeight: 192,
     });
+    this.load.spritesheet("enemy2-death", "/assets/sprites/enemy2-death.png", {
+      frameWidth: 192,
+      frameHeight: 192,
+    });
     this.load.spritesheet("enemy3", "/assets/sprites/enemy3.png", {
       frameWidth: 192,
       frameHeight: 192,
@@ -36,7 +40,6 @@ export default class Preload extends Phaser.Scene {
     this.load.image("door", "/assets/sprites/door.png");
     this.load.image("key", "/assets/sprites/key.png");
     this.load.image("revolver", "/assets/sprites/revolver.png");
-    this.load.image("rifle", "/assets/sprites/rifle.png");
     this.load.image("bulletToCollect", "/assets/sprites/bulletToCollect.png");
     this.load.image("bar-table", "/assets/sprites/bar-table.png");
     this.load.image("arrow", "/assets/sprites/arrow.png");
@@ -55,6 +58,21 @@ export default class Preload extends Phaser.Scene {
     this.load.image("mouse", "/assets/sprites/mouse.png");
     this.load.image("numbers", "/assets/sprites/numbers.png");
     this.load.image("keys2", "/assets/sprites/keys2.png");
+    this.load.image("intro1", "/assets/sprites/intro1.png");
+    this.load.image("intro2", "/assets/sprites/intro2.png");
+    this.load.image("intro3", "/assets/sprites/intro3.png");
+    this.load.image("kit", "/assets/sprites/kit.png");
+    this.load.image("chip", "/assets/sprites/chip.png");
+    this.load.image("kitUI", "/assets/sprites/kitUI.png");
+    this.load.image("chipUI", "/assets/sprites/chipUI.png");
+    this.load.image("revolverUI", "/assets/sprites/revolverUI.png");
+    this.load.image("powerFreezeUI", "/assets/sprites/powerFreezeUI.png");
+    this.load.image("pauseButton", "/assets/sprites/pauseButton.png");
+    this.load.image("pauseButton", "/assets/sprites/pauseButton.png");
+    this.load.image("spain", "/assets/sprites/spain.png");
+    this.load.image("usa", "/assets/sprites/usa.png");
+    this.load.image("german", "/assets/sprites/german.png");
+    this.load.image("radioPopup", "/assets/sprites/radioPopup.png");
 
     //tilemaps
     this.load.tilemapTiledJSON("map-lobby", "/assets/tilemaps/lobby.json");
@@ -67,6 +85,7 @@ export default class Preload extends Phaser.Scene {
     //audio
     this.load.audio("ambient", "/assets/audio/ambiente.wav");
     this.load.audio("temaMenu", "/assets/audio/tema1.wav");
+    this.load.audio("introMusic", "/assets/audio/introMusic.wav");
 
     //fonts
     //this.load.script('');
@@ -86,11 +105,12 @@ export default class Preload extends Phaser.Scene {
     );
 
 
-    this.add.text(800, 100, "Login", {
+    const titleText = this.add.text(800, 140, " Login", {
       fontSize: 100,
-      fontFamily: 'pixelifySans',
+      fontFamily: 'firstFontasy',
       align: 'center',
     });
+    titleText.setTint(0xff00ff, 0xffff00, 0x0000ff, 0xff0000);
 
     this.add
       .image(400, 300, "anon-icon")

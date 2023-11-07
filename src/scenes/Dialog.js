@@ -30,6 +30,8 @@ export default class Dialog extends Phaser.Scene {
 
     this.hasRadio = data.hasRadio;
     this.hasWeapon = data.hasWeapon;
+    this.playerX = data.playerX;
+    this.playerY = data.playerY;
   }
 
   create() {
@@ -60,6 +62,33 @@ export default class Dialog extends Phaser.Scene {
       this.c++;
     } else {
       this.scene.stop("Dialog");
+      if(this.sceneToStop == "BarWinAnimation"){
+        this.scene.launch("BarWinAnimation",{
+          startAnimation: true,
+          playerX: this.playerX,
+          playerY: this.playerY,
+          level: this.level,
+          keyDoor1: this.keyDoor1,
+          keyDoor2: this.keyDoor2,
+          keyDoor3: this.keyDoor3,
+          keyDoor4: this.keyDoor4,
+          keyBar: this.keyBar,
+          weaponsGroup: this.weaponsGroup,
+          playerLifes: this.playerLifes,
+          playerMana: this.playerMana,
+          playerBullets: this.playerBullets,
+          playerKits: this.playerKits,
+          playerChips: this.playerChips,
+          boss1Dead: this.boss1Dead,
+          boss2Dead: this.boss2Dead,
+          boss3Dead: this.boss3Dead,
+          powers: this.powers,
+          hasRadio: this.hasRadio,
+          hasWeapon: this.hasWeapon,
+        });
+      }else{
+
+      
       this.scene.stop(this.sceneToStop);
       this.scene.start(this.sceneToStart, {
         level: this.level,
@@ -81,6 +110,7 @@ export default class Dialog extends Phaser.Scene {
         hasRadio: this.hasRadio,
         hasWeapon: this.hasWeapon,
       });
+      }
     }
   }
 }

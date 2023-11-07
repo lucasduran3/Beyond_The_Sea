@@ -19,29 +19,24 @@ export default class SelectLang extends Phaser.Scene {
   }
 
   create() {
-    const titleText = this.add.text(550, 140, "SELECT LAGUAJE", {
+    const titleText = this.add.text(400, 140, " Select Language", {
+      fontFamily:'firstFontasy',
       fontSize: "100px",
     });
     titleText.setTint(0xff00ff, 0xffff00, 0x0000ff, 0xff0000);
 
     const ES = this.add
-      .text(960, 400, "ES", {
-        fontSize: "50px",
-        color: "#fff",
-        align: "center",
-        backgroundColor: "#2d2d2d",
-      })
-      .setPadding(32)
+      .image(960, 400, "spain")
       .setOrigin(0.5);
 
     ES.setInteractive({ useHandCursor: true });
 
     ES.on("pointerover", () => {
-      ES.setBackgroundColor("#8d8d8d");
+      
     });
 
     ES.on("pointerout", () => {
-      ES.setBackgroundColor("#2d2d2d");
+     
     });
 
     ES.on("pointerdown", () => {
@@ -51,23 +46,17 @@ export default class SelectLang extends Phaser.Scene {
     });
 
     const EN = this.add
-      .text(960, 600, "EN", {
-        fontSize: "50px",
-        color: "#fff",
-        align: "center",
-        backgroundColor: "#2d2d2d",
-      })
-      .setPadding(32)
+      .image(960, 600, "usa")
       .setOrigin(0.5);
 
     EN.setInteractive({ useHandCursor: true });
 
     EN.on("pointerover", () => {
-      EN.setBackgroundColor("#8d8d8d");
+
     });
 
     EN.on("pointerout", () => {
-      EN.setBackgroundColor("#2d2d2d");
+
     });
 
     EN.on("pointerdown", async () => {
@@ -77,23 +66,17 @@ export default class SelectLang extends Phaser.Scene {
     });
 
     const DE = this.add
-      .text(960, 800, "DE", {
-        fontSize: "50px",
-        color: "#fff",
-        align: "center",
-        backgroundColor: "#2d2d2d",
-      })
-      .setPadding(32)
+      .image(960, 800, "german")
       .setOrigin(0.5);
 
     DE.setInteractive({ useHandCursor: true });
 
     DE.on("pointerover", () => {
-      DE.setBackgroundColor("#8d8d8d");
+
     });
 
     DE.on("pointerout", () => {
-      DE.setBackgroundColor("#2d2d2d");
+
     });
 
     DE.on("pointerdown", async () => {

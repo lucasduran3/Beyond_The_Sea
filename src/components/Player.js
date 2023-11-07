@@ -205,6 +205,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
   shootAtEnemy() {
     if (this.enemy != null) {
+      console.log("pierde");
       this.enemy.forEach(
         (element) => {
           this.scene.physics.add.overlap(element, this.bullets, () => {
@@ -221,6 +222,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
   addWeapon(weapon) {
     this.weaponsGroup[weapon.name] = weapon;
     this.hasWeapon = true;
+    events.emit("updateWeapon");
   }
 
   setWeapon(data) {
@@ -229,6 +231,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
   addPower(powerName) {
     this.powers.push(powerName);
+    events.emit("updatePower");
   }
 
   incrementBullets() {
@@ -266,9 +269,6 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
         //En vez de crear una bala se debe crear otro sprite.
         if(Phaser.Math.Distance.Between(this.x, this.y, element.x, element.y) <= 600){
-          const bullet = new Bullet(this.scene, this.x-10, this.y+10, "bullet");
-          this.bullets.add(bullet);
-          bullet.fire(angle, 700);
           element.freeze();
         }
 

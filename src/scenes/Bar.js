@@ -94,7 +94,7 @@ export default class Bar extends Phaser.Scene {
       this,
       spawnPoint.x,
       spawnPoint.y,
-      "enemy",
+      "enemy2",
       this.player
     );
     this.enemysGroup.add(this.boss);

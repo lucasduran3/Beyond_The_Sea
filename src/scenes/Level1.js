@@ -84,7 +84,7 @@ export default class Level1 extends Phaser.Scene {
       const { x = 0, y = 0, name } = objData;
       switch (name) {
         case "enemy": {
-          this.enemy = new Enemy(this, x, y, "enemy", 300, this.map);
+          this.enemy = new Enemy(this, x, y, "enemy", 300, this.map,1);
           this.enemysGroup.add(this.enemy);
           break;
         }
@@ -117,23 +117,28 @@ export default class Level1 extends Phaser.Scene {
 
     this.bulletsGroup = this.physics.add.group();
 
+    this.keysGroup = this.physics.add.group();
+
     objectsLayer.objects.forEach((objData) => {
       const { x = 0, y = 0, name } = objData;
       switch (name) {
         case "key-door1": {
           if (!this.keyDoor1) {
             this.key_door1_sprite = this.physics.add.sprite(x, y, "key");
+            this.keysGroup.add(this.key_door1_sprite);
           }
           break;
         }
         case "key-lvl3":{
           if (!this.keyDoor3) {
-            this.key_door3_sprite = this.physics.add.sprite(x, y, "key");
+            this.key_door3_sprite = this.physics.add.sprite(x, y, "key2");
+            this.keysGroup.add(this.key_door3_sprite);
           }
         }
         case "key-bar": {
           if (!this.keyBar) {
-            this.keyBarSprite = this.physics.add.sprite(x, y, "key");
+            this.keyBarSprite = this.physics.add.sprite(x, y, "key3");
+            this.keysGroup.add(this.keyBarSprite);
           }
           break;
         }
@@ -145,14 +150,14 @@ export default class Level1 extends Phaser.Scene {
           this.bulletToCollect = this.physics.add.sprite(
             x,
             y,
-            "bulletToCollect"
+            "bullet"
           );
           this.bulletsGroup.add(this.bulletToCollect);
           break;
         }
         case "radio": {
           if (!this.hasRadio) {
-            this.radio = this.physics.add.sprite(x, y, "radio").setScale(0.5);
+            this.radio = this.physics.add.sprite(x, y, "radio");
           }
           break;
         }
@@ -659,9 +664,17 @@ export default class Level1 extends Phaser.Scene {
     this.add.image(1920/2, 1080/2, 'bg').setScrollFactor(0);
 
     /*----TWEENS-----*/
-    // @ts-ignore 
-    //const objectsForTween = [this.revolverSprite, this.bulletsGroup, this.radio, this.key_door1_sprite];
-    //this.tweenObjects(objectsForTween);
+      this.bulletsGroup.getChildren().forEach(element => {
+        this.tweenObjects(element);
+      });
+
+      this.keysGroup.getChildren().forEach(element => {
+        this.tweenObjects(element);
+      });
+
+      this.tweenObjects(this.revolverSprite);
+      this.tweenObjects(this.radio);
+      if(this.powerFreeze != null)this.tweenObjects(this.powerFreeze);
   }
 
   update(time, delta) {
@@ -698,7 +711,7 @@ export default class Level1 extends Phaser.Scene {
         weaponsGroup: this.player.weaponsGroup,
         playerLifes: 300,
         playerMana: this.player.mana,
-        playerBullets: null,
+        playerBullets: this.playerBullets,
         playerChips: null,
         playerKits: null,
         boss1Dead: this.boss1Dead,
@@ -709,7 +722,7 @@ export default class Level1 extends Phaser.Scene {
         hasWeapon: this.player.hasWeapon,
       });
 
-      events.emit("resetUI");
+      events.emit("resetUI",{bullets: this.playerBullets});
     }
   }
 
@@ -723,7 +736,7 @@ export default class Level1 extends Phaser.Scene {
     const n = Phaser.Math.Between(1, 3);
 
     for (let i = 0; i < n; i++) {
-      let randomObject = Phaser.Math.RND.pick(["revolver", "rifle"]);
+      let randomObject = Phaser.Math.RND.pick(["kit", "chip"]);
 
       this.objectsGroup.create(x, y, randomObject);
       x += 30;
@@ -731,30 +744,28 @@ export default class Level1 extends Phaser.Scene {
     }
 
     this.objectsGroup.getChildren().forEach((element) => {
-      //this.tweenObjects(element);
+      this.tweenObjects(element);
     });
   }
 
-  /*tweenObjects(targets) {
+  tweenObjects(target) {
     // @ts-ignore
-    targets.forEach(element => {
       const tween = this.tweens.add({
-        targets: element,
+        targets: target,
         scale: 1.2,
         yoyo: true,
         duration: 500,
         repeat: -1,
       });
-    });
     
-  }*/
+  }
 
   // @ts-ignore
   collectObject(player, shape) {
     const objectName = shape.texture.key;
-    if (objectName == "revolver") {
+    if (objectName == "kit") {
       this.player.incrementKits();
-    } else if (objectName == "rifle") {
+    } else if (objectName == "chip") {
       this.player.incrementChips();
     }
 
@@ -776,7 +787,7 @@ export default class Level1 extends Phaser.Scene {
       // @ts-ignore
       .text(1300, 300, text[0], popupTextStyle)
       .setScrollFactor(0);
-    let radioimg = this.add.image(1230, 350, "radio").setScrollFactor(0);
+    let radioimg = this.add.image(1230, 350, "radioPopup").setScrollFactor(0);
 
     popupText.setMaxLines(7);
 
