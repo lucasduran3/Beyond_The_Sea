@@ -2,7 +2,7 @@ import Phaser from "phaser";
 import Bullet from "./Bullet";
 
 export default class ShooterBoss extends Phaser.GameObjects.Sprite {
-  constructor(scene, x, y, texture, target) {
+  constructor(scene, x, y, texture) {
     super(scene, x, y, texture);
     scene.add.existing(this);
     scene.physics.world.enable(this);
@@ -10,11 +10,13 @@ export default class ShooterBoss extends Phaser.GameObjects.Sprite {
     // @ts-ignore
     this.body.setCollideWorldBounds(true);
 
-    this.target = target;
+    this.target;
 
     this.bullets = this.scene.physics.add.group();
 
     this.lifes = 15;
+
+    this.isDead = false;
   }
 
   create() {
@@ -32,6 +34,7 @@ export default class ShooterBoss extends Phaser.GameObjects.Sprite {
       Math.PI / 2;
 
     this.shootAtPlayer();
+    this.enemyDeath();
   }
 
   shootBullet() {
@@ -43,7 +46,7 @@ export default class ShooterBoss extends Phaser.GameObjects.Sprite {
         this.target.x,
         this.target.y
       ) < 2000
-    ) {
+    && this.active) {
       const bullet = new Bullet(this.scene, this.x, this.y, "bullet");
       this.bullets.add(bullet);
 
@@ -99,5 +102,17 @@ export default class ShooterBoss extends Phaser.GameObjects.Sprite {
     });
   }
 
-  setTarget() {}
+  setTarget(target) {
+    this.target = target;
+  }
+
+  enemyDeath() {
+    if (this.lifes <= 0 && this.isDead == false) {
+      // @ts-ignore
+      this.body.destroy();
+      this.setVisible(false);
+      this.active = false;
+      this.isDead = true;
+    }
+  }
 }

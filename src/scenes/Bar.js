@@ -93,11 +93,11 @@ export default class Bar extends Phaser.Scene {
       spawnPoint.x,
       spawnPoint.y,
       "enemy2",
-      this.player
     ).setDepth(10);
     this.enemysGroup.add(this.boss);
 
     this.boss.create();
+    this.boss.setTarget(this.player);
 
     this.bulletsGroup = this.physics.add.group();
 

@@ -113,7 +113,7 @@ export default class FinalLevelAnimation extends Phaser.Scene {
 
     this.cameras.main.pan(1244, 144, 2000);
 
-    let text = [getPhrase("Mierda.."), "..."];
+    let text = [getPhrase("Que se siente ser un esclavo?"), "..."];
     this.showPopup(text);
 
     this.time.addEvent({
@@ -123,7 +123,11 @@ export default class FinalLevelAnimation extends Phaser.Scene {
           getPhrase("Que se siente ser un esclavo?"),
           getPhrase("Incapaz de cuestionar mis ordenes"),
           getPhrase("HM?"),
-          getPhrase("El chip de tu cerebro ha causado estragos en tu memoria"),
+          getPhrase("Te he guiado hasta aca a proposito..."),
+          getPhrase("No pretendia que me rescates..."),
+          getPhrase("Yo soy Leon... Por si no lo recordas"),
+          getPhrase("Y vos sos mi fiel sirviente."),
+          getPhrase("Pero el chip de tu cerebro ha causado estragos en tu memoria"),
           getPhrase("Parece que todavia necesitas algunos retoques"),
         ];
 

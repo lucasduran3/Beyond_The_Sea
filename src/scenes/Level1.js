@@ -89,6 +89,17 @@ export default class Level1 extends Phaser.Scene {
           this.enemysGroup.add(this.enemy);
           break;
         }
+        case "shooter-enemy": {
+          this.shooterEnemy = new ShooterBoss(
+            this,
+            x,
+            y,
+            "enemy2"
+          );
+          this.shooterEnemy.create();
+          this.enemysGroup.add(this.shooterEnemy);
+          break;
+        }
       }
     });
 
@@ -236,7 +247,9 @@ export default class Level1 extends Phaser.Scene {
           break;
         }
         case "revolver": {
-          this.revolverSprite = this.physics.add.sprite(x, y, "revolver");
+          if(!this.hasWeapon){
+            this.revolverSprite = this.physics.add.sprite(x, y, "revolver");
+          }
           break;
         }
         case "bullet": {
@@ -267,18 +280,6 @@ export default class Level1 extends Phaser.Scene {
         }
         case "drawer": {
           this.drawer = this.physics.add.sprite(x, y, "drawer");
-          break;
-        }
-        case "shooter-enemy": {
-          this.shooterEnemy = new ShooterBoss(
-            this,
-            x,
-            y,
-            "enemy2",
-            this.player
-          );
-          this.shooterEnemy.create();
-          this.enemysGroup.add(this.shooterEnemy);
           break;
         }
       }
