@@ -12,7 +12,7 @@ export default class Level1 extends Phaser.Scene {
     super("Level1");
     this.level = "lobby";
     this.keyDoor1 = false;
-    this.keyDoor2 = true;
+    this.keyDoor2 = false;
     this.keyDoor3 = false;
     this.keyDoor4 = false;
     this.keyBar = false;
@@ -36,7 +36,7 @@ export default class Level1 extends Phaser.Scene {
   init(data) {
     this.level = data.level || "lobby";
     this.keyDoor1 = data.keyDoor1 || false;
-    this.keyDoor2 = data.keyDoor2 || true;
+    this.keyDoor2 = data.keyDoor2 || false;
     this.keyDoor3 = data.keyDoor3 || false;
     this.keyDoor4 = data.keyDoor4 || false;
     this.keyBar = data.keyBar || false;
