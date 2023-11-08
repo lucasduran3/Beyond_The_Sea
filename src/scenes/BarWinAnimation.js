@@ -57,6 +57,9 @@ export default class BarWinAnimation extends Phaser.Scene {
       repeat: 0,
     });
 
+    const shootSound = this.sound.add('shootSound');
+    shootSound.play();
+    
     this.cameras.main.fadeIn(500);
     this.map = this.make.tilemap({ key: "map-mercado-bar" });
     const floorL = this.map.addTilesetImage("floor", "floor");

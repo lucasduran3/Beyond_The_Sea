@@ -89,7 +89,7 @@ export default class Help extends Phaser.Scene {
       .text(
         1020,
         650,
-        getPhrase(" Usa 1 para seleccionar el arma y 2 para activar el poder"),
+        getPhrase("Usa 1 para seleccionar el arma y 2 para activar el poder"),
         {
           fontFamily: "pixelifySans",
           fontSize: "30px",
@@ -127,7 +127,8 @@ export default class Help extends Phaser.Scene {
       .setOrigin(0.5);
 
     const backButton = this.add
-      .text(180, 950, "Back", {
+      .text(180, 950, getPhrase
+        ("Back"), {
         fontFamily: "pixelifySans",
         fontSize: "50px",
         color: "#ffaa00",

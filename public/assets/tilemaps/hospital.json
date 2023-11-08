@@ -2955,30 +2955,6 @@
                 }, 
                 {
                  "height":0,
-                 "id":48,
-                 "name":"msj1",
-                 "point":true,
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":5434,
-                 "y":4928
-                }, 
-                {
-                 "height":0,
-                 "id":49,
-                 "name":"msj2",
-                 "point":true,
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":2644,
-                 "y":4826
-                }, 
-                {
-                 "height":0,
                  "id":50,
                  "name":"radio2",
                  "point":true,
@@ -2988,6 +2964,30 @@
                  "width":0,
                  "x":2596,
                  "y":1548
+                }, 
+                {
+                 "height":0,
+                 "id":52,
+                 "name":"msj1",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":5484,
+                 "y":4960
+                }, 
+                {
+                 "height":0,
+                 "id":54,
+                 "name":"msj2",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":2264,
+                 "y":4884
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -2996,10 +2996,10 @@
          "y":0
         }],
  "nextlayerid":14,
- "nextobjectid":51,
+ "nextobjectid":56,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.8.5",
+ "tiledversion":"1.10.1",
  "tileheight":32,
  "tilesets":[
         {
@@ -4319,6 +4319,6 @@
         }],
  "tilewidth":32,
  "type":"map",
- "version":"1.8",
+ "version":"1.10",
  "width":291
 }

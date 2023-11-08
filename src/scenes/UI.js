@@ -70,12 +70,10 @@ export default class UI extends Phaser.Scene {
 
     const pauseButton = this.add
       .image(1800, 950, "pauseButton")
-      .setInteractive({ useHandCursor: true })
       .setScale(0.8);
 
     pauseButton.on("pointerdown", () => {
-      this.scene.pause("Level1");
-      this.scene.launch("Pause");
+      
     });
 
     pauseButton.setScrollFactor(0);

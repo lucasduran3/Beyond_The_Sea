@@ -5,6 +5,7 @@ import ShooterBoss from "../components/ShooterBoss";
 import events from "../scenes/EventCenter";
 import { revolver } from "../components/weapons";
 import HorrifiPostFxPipeline from "phaser3-rex-plugins/plugins/horrifipipeline";
+import { getPhrase } from "../services/translation";
 
 export default class Level1 extends Phaser.Scene {
   constructor() {
@@ -183,7 +184,7 @@ export default class Level1 extends Phaser.Scene {
 
     /*---FIREBASE----*/
     // @ts-ignore
-    if (this.boss1Dead && this.level == "lobby") {
+    if (this.boss1Dead || this.keyDoor2 || this.boss2Dead && this.level == "lobby") {
       const user = this.firebase.getUser();
 
       this.firebase.saveGameData(user.uid, {
@@ -206,66 +207,6 @@ export default class Level1 extends Phaser.Scene {
         hasWeapon: true,
       });
     }
-
-    /*----RADIO---MESSAGES----*/
-    if (this.level === "mercado") {
-      let text = [
-        "En donde estás?",
-        "Ah, en el 'mercado'",
-        "Debo advertirte...",
-        "Al fondo hay un bar que a sido ocupado por unos tipos, hace semanas...",
-        "... y no han salido desde entonces",
-        "Seguramente ya se murieron de hambre...",
-        "eso espero...",
-        "Hechale un vistazo al lugar, quizas encontras la llave",
-      ];
-      this.showPopup(text);
-    }
-
-    if (this.level === "hospital") {
-      let text = [
-        "El hospital es el ultimo lugar donde queres estar en este momento",
-        "Asi que junta la llave y sali de ahí cuanto antes.",
-      ];
-      this.showPopup(text);
-    }
-
-    this.physics.add.overlap(
-      this.player,
-      this.msj1,
-      () => {
-        console.log("hola");
-        let text = [
-          "No sabes nada sobre este lugar no?...",
-          "... Nanotecnologia, biotecnologia, implantes cerebrales...",
-          "Esta era una sociedad secreta, dedicada a la investigación cientifica",
-          "Pero las cosas se descontrolaron un poco...",
-          "Lo peor es que nadie sabe de este lugar...",
-          "Y todos los que han entrado hasta hora no han salido... que yo sepa...",
-        ];
-        this.showPopup(text);
-      },
-      null,
-      this
-    );
-
-    this.physics.add.overlap(
-      this.player,
-      this.msj2,
-      () => {
-        let text = [
-          "Un cientifico respetado en el pasado...",
-          "Trajo consigo a un equipo de investigacion, y voluntarios...",
-          "que ofrecieron su cuerpo y mente para que experimentasen con ellos",
-          "Les fue prometido un techo, un hogar, y una vida respetable...",
-          "La mayoria de los chips que les fueron implantados eran defectuosos,",
-          "generando en ellos graves trastornos, comportamientos violentos y autodestructivos...",
-        ];
-        this.showPopup(text);
-      },
-      null,
-      this
-    );
 
     /*----TRANSPARENT BACKGROUND----*/
     this.add.image(1920 / 2, 1080 / 2, "bg").setScrollFactor(0);
@@ -313,17 +254,11 @@ export default class Level1 extends Phaser.Scene {
           this.radio2 = this.physics.add.sprite(x, y, "radio");
         }
         case "msj1": {
-          this.msj1 = this.physics.add
-            .sprite(x, y, "msj1")
-            .setVisible(false)
-            .setScale(5);
+          this.msj1 = this.physics.add.sprite(x, y, "msj1").setScale(5);
           break;
         }
         case "msj2": {
-          this.msj2 = this.physics.add
-            .sprite(x, y, "msj1")
-            .setVisible(false)
-            .setScale(5);
+          this.msj2 = this.physics.add.sprite(x, y, "msj1").setScale(5);
           break;
         }
         case "powerFreeze": {
@@ -425,11 +360,15 @@ export default class Level1 extends Phaser.Scene {
         this.radio.destroy();
         this.hasRadio = true;
         let text = [
-          "Hola?...Hay alguien ahi?",
-          "No sé como llegaste a este lugar, pero necesito tu ayuda.",
-          "Estoy encerrado,",
-          "Necesito que consigas una llave para acceder a la zona en donde estoy",
-          "Cuid-...",
+          getPhrase("Hola?...Hay alguien ahi?"),
+          getPhrase(
+            "No sé como llegaste a este lugar, pero necesito tu ayuda."
+          ),
+          getPhrase("Estoy encerrado,"),
+          getPhrase(
+            "Necesito que consigas una llave para acceder a la zona en donde estoy"
+          ),
+          getPhrase("Cuid-..."),
         ];
         this.showPopup(text);
       },
@@ -443,8 +382,8 @@ export default class Level1 extends Phaser.Scene {
       () => {
         this.radio2.destroy();
         let text = [
-          "No dejes que entre en tu cabeza",
-          "El responsable de este infierno es Leon.",
+          getPhrase("No dejes que entre en tu cabeza"),
+          getPhrase("El responsable de este infierno es Leon."),
           "AHG..",
         ];
         this.showPopup(text);
@@ -625,7 +564,7 @@ export default class Level1 extends Phaser.Scene {
       doorLvl1Layer,
       this.player,
       () => {
-        const text = ["Necesitas una llave para abrir esta puerta"];
+        const text = [getPhrase("Necesitas una llave para abrir esta puerta")];
         this.showPopup(text);
       },
       () => this.keyDoor1 == false,
@@ -636,7 +575,7 @@ export default class Level1 extends Phaser.Scene {
       doorLvl2Layer,
       this.player,
       () => {
-        const text = ["Necesitas una llave para abrir esta puerta"];
+        const text = [getPhrase("Necesitas una llave para abrir esta puerta")];
         this.showPopup(text);
       },
       () => this.keyDoor2 == false,
@@ -647,7 +586,7 @@ export default class Level1 extends Phaser.Scene {
       doorLvl3Layer,
       this.player,
       () => {
-        const text = ["Necesitas una llave para abrir esta puerta"];
+        const text = [getPhrase("Necesitas una llave para abrir esta puerta")];
         this.showPopup(text);
       },
       () => this.keyDoor3 == false,
@@ -658,7 +597,7 @@ export default class Level1 extends Phaser.Scene {
       barDoorLayer,
       this.player,
       () => {
-        const text = ["Necesitas una llave para abrir esta puerta"];
+        const text = [getPhrase("Necesitas una llave para abrir esta puerta")];
         this.showPopup(text);
       },
       () => this.keyBar == false,
@@ -670,7 +609,7 @@ export default class Level1 extends Phaser.Scene {
       doorLvl1Layer,
       this.player,
       () => {
-        const text = ["Necesitas una llave para abrir esta puerta"];
+        const text = [getPhrase("Necesitas una llave para abrir esta puerta")];
         this.showPopup(text);
       },
       () => this.keyDoor1 == false,
@@ -681,7 +620,7 @@ export default class Level1 extends Phaser.Scene {
       doorLvl2Layer,
       this.player,
       () => {
-        const text = ["Necesitas una llave para abrir esta puerta"];
+        const text = [getPhrase("Necesitas una llave para abrir esta puerta")];
         this.showPopup(text);
       },
       () => this.keyDoor2 == false,
@@ -692,7 +631,7 @@ export default class Level1 extends Phaser.Scene {
       doorLvl3Layer,
       this.player,
       () => {
-        const text = ["Necesitas una llave para abrir esta puerta"];
+        const text = [getPhrase("Necesitas una llave para abrir esta puerta")];
         this.showPopup(text);
       },
       () => this.keyDoor3 == false,
@@ -703,7 +642,7 @@ export default class Level1 extends Phaser.Scene {
       barDoorLayer,
       this.player,
       () => {
-        const text = ["Necesitas una llave para abrir esta puerta"];
+        const text = [getPhrase("Necesitas una llave para abrir esta puerta")];
         this.showPopup(text);
       },
       () => this.keyBar == false,
@@ -714,10 +653,92 @@ export default class Level1 extends Phaser.Scene {
       doorLobbyLayer,
       this.player,
       () => {
-        const text = ["Sigue buscando...Necesitas una llave"];
+        const text = [getPhrase("Sigue buscando...Necesitas una llave")];
         this.showPopup(text);
       },
       () => this.keyBar == false,
+      this
+    );
+
+    /*----RADIO---MESSAGES----*/
+    if (this.level === "mercado") {
+      let text = [
+        getPhrase("En donde estás?"),
+        getPhrase("Ah, en el 'mercado'"),
+        getPhrase("Debo advertirte..."),
+        getPhrase(
+          "Al fondo hay un bar que a sido ocupado por unos tipos, hace semanas..."
+        ),
+        getPhrase("... y no han salido desde entonces"),
+        getPhrase("Seguramente ya se murieron de hambre..."),
+        getPhrase("eso espero..."),
+        getPhrase("Hechale un vistazo al lugar, quizas encontras la llave"),
+      ];
+      this.showPopup(text);
+    }
+
+    if (this.level === "hospital") {
+      let text = [
+        getPhrase(
+          "El hospital es el ultimo lugar donde queres estar en este momento"
+        ),
+        getPhrase("Asi que junta la llave y sali de ahí cuanto antes."),
+      ];
+      this.showPopup(text);
+    }
+
+    console.log(this.msj1, this.msj2);
+    this.physics.add.overlap(
+      this.player,
+      this.msj1,
+      () => {
+        this.msj1.destroy();
+        let text = [
+          getPhrase("No sabes nada sobre este lugar no?..."),
+          getPhrase(
+            "... Nanotecnologia, biotecnologia, implantes cerebrales..."
+          ),
+          getPhrase(
+            "Esta era una sociedad secreta, dedicada a la investigación cientifica"
+          ),
+          getPhrase("Pero las cosas se descontrolaron un poco..."),
+          getPhrase("Lo peor es que nadie sabe de este lugar..."),
+          getPhrase(
+            "Y todos los que han entrado hasta hora no han salido... que yo sepa..."
+          ),
+        ];
+        this.showPopup(text);
+      },
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.player,
+      this.msj2,
+      () => {
+        this.msj2.destroy();
+        let text = [
+          getPhrase("Un cientifico respetado en el pasado..."),
+          getPhrase(
+            "Trajo consigo a un equipo de investigacion, y voluntarios..."
+          ),
+          getPhrase(
+            "que ofrecieron su cuerpo y mente para que experimentasen con ellos"
+          ),
+          getPhrase(
+            "Les fue prometido un techo, un hogar, y una vida respetable..."
+          ),
+          getPhrase(
+            "La mayoria de los chips que les fueron implantados eran defectuosos,"
+          ),
+          getPhrase(
+            "generando en ellos graves trastornos, comportamientos violentos y autodestructivos..."
+          ),
+        ];
+        this.showPopup(text);
+      },
+      null,
       this
     );
 

@@ -113,7 +113,7 @@ export default class FinalLevelAnimation extends Phaser.Scene {
 
     this.cameras.main.pan(1244, 144, 2000);
 
-    let text = ["Mierda...", "..."];
+    let text = [getPhrase("Mierda.."), "..."];
     this.showPopup(text);
 
     this.time.addEvent({
