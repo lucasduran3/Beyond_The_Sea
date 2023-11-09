@@ -109,9 +109,6 @@ export default class Preload extends Phaser.Scene {
     this.load.audio("boss2Music", "/assets/audio/boss2Music.wav");
     this.load.audio("levelMusic", "/assets/audio/temalvl.wav");
 
-    //fonts
-    //this.load.script('');
-
     //plugins
     this.load.plugin(
       "rexhorrifipipelineplugin",
