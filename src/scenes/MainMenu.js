@@ -1,87 +1,189 @@
 import Phaser from "phaser";
+import events from "./EventCenter";
 
 import { getPhrase } from "../services/translation";
 
+export default class MainMenu extends Phaser.Scene {
+  constructor() {
+    super("MainMenu");
+  }
 
-export default class MainMenu extends Phaser.Scene{
-    constructor(){
-        super("MainMenu");
-    }
+  language;
 
-    language;
+  init(language) {
+    this.language = language;
+  }
+  create() {
+    this.cameras.main.fadeIn(800);
 
-    init(language){
-        this.language = language
-    }
-    create(){
-        const titleText = this.add.text(550,140, 'BEYOND THE SEA',{
-            fontSize : '100px'
-        });
-        titleText.setTint(0xff00ff, 0xffff00, 0x0000ff, 0xff0000);
+    this.add.image(1920 / 2, 1100 / 2, "mainMenuBg");
+    const titleText = this.add.text(
+      100,
+      100,
+      " Beyond\n       The\n         Sea\n",
+      {
+        fontSize: "125px",
+        fontFamily: "firstFontasy",
+        shadow: {
+          offsetX: 5,
+          offsetY: 5,
+          color: "#FF4589",
+          blur: 0,
+          fill: true,
+          stroke: true,
+        },
+      }
+    );
+    titleText.setTint(0xdda000, 0xffff00, 0x0000ff, 0xffffa0);
 
-        const playButton = this.add.text(960,500, getPhrase('Jugar'),{
-            fontSize : '50px',
-            color : '#fff',
-            align : "center",
-            backgroundColor : '#2d2d2d'
-        }).setPadding(32).setOrigin(0.5);
+    let colorIndex = 0;
+    const colors = ["#ff0000", "#00ff00", "#ff00ff", "#8f00aa"];
 
-        playButton.setInteractive({useHandCursor : true});
+    this.time.addEvent({
+      delay: 1000,
+      loop: true,
+      callback: () => {
+        titleText.setShadow(5, 5, colors[colorIndex], 0);
+        colorIndex = (colorIndex + 1) % colors.length;
+      },
+    });
 
-        playButton.on('pointerover',()=>{
-            playButton.setBackgroundColor('#8d8d8d');
-        });
+    const playButton = this.add
+      .text(300, 580, getPhrase("Jugar"), {
+        fontFamily: "pixelifySans",
+        fontSize: "50px",
+        color: "#fff",
+        align: "center",
+      })
+      .setPadding(32)
+      .setOrigin(0.5);
 
-        playButton.on('pointerout', ()=>{
-            playButton.setBackgroundColor('#2d2d2d');
-        });
+    playButton.setInteractive({ useHandCursor: true });
 
-        playButton.on('pointerdown', ()=>{
-            this.scene.start("Level1");
-            this.scene.launch("UI");
-        });
+    playButton.on("pointerover", () => {
+      playButton.setShadow(5, 5, "#328a61", 1, true, true);
+    });
 
-        const continueButton = this.add.text(960,700, getPhrase('Continuar'),{
-            fontSize : '50px',
-            color : '#fff',
-            align : "center",
-            backgroundColor : '#2d2d2d'
-        }).setPadding(32).setOrigin(0.5);
+    playButton.on("pointerout", () => {
+      playButton.setShadow();
+    });
 
-        continueButton.setInteractive({useHandCursor : true});
+    playButton.on("pointerdown", () => {
+      this.scene.start("Intro");
+      /*this.scene.stop("MainMusic");
+      this.sound.stopAll();
+      this.scene.launch("AmbientSound");
+      this.scene.start("Level1");
+      this.scene.launch("UI");*/
 
-        continueButton.on('pointerover',()=>{
-            continueButton.setBackgroundColor('#8d8d8d');
-        });
+    });
 
-        continueButton.on('pointerout', ()=>{
-            continueButton.setBackgroundColor('#2d2d2d');
-        });
+    const continueButton = this.add
+      .text(300, 700, getPhrase("Continuar"), {
+        fontFamily: "pixelifySans",
+        fontSize: "50px",
+        color: "#fff",
+        align: "center",
+      })
+      .setPadding(32)
+      .setOrigin(0.5);
 
-        continueButton.on('pointerdown', ()=>{
-            this.scene.start("Level1");
-            this.scene.launch("UI");
-        });
+    continueButton.setInteractive({ useHandCursor: true });
 
-        const helpButton = this.add.text(960,900, getPhrase('Ayuda'),{
-            fontSize : '50px',
-            color : '#fff',
-            align : "center",
-            backgroundColor : '#2d2d2d'
-        }).setPadding(32).setOrigin(0.5);
+    continueButton.on("pointerover", () => {
+      continueButton.setShadow(5, 5, "#328a61", 1, true, true);
+    });
 
-        helpButton.setInteractive({useHandCursor : true});
+    continueButton.on("pointerout", () => {
+      continueButton.setShadow();
+    });
 
-        helpButton.on('pointerover',()=>{
-            helpButton.setBackgroundColor('#8d8d8d');
-        });
+    continueButton.on("pointerdown", () => {
+      this.scene.stop("MainMusic");
 
-        helpButton.on('pointerout', ()=>{
-            helpButton.setBackgroundColor('#2d2d2d');
-        });
+      // @ts-ignore
+      const user = this.firebase.getUser();
+      // @ts-ignore
+      const data = this.firebase
+        .loadGameData(user.uid)
+        .then((data) => {
+          console.log(data);
+          this.scene.start("Level1", {
+            level: data.level,
+            keyDoor1: data.keyDoor1,
+            keyDoor2: data.keyDoor2,
+            keyDoor3: data.keyDoor3,
+            keyDoor4: data.keyDoor4,
+            weaponsGroup: data.weaponsGroup,
+            playerLifes: data.playerLifes,
+            playerMana: data.playerMana,
+            playerBullets: data.playerBullets,
+            playerChips: data.playerChips,
+            playerKits: data.playerKits,
+            boss1Dead: data.boss1Dead,
+            powers: data.powers,
+            hasRadio: data.hasRadio,
+            hasWeapon: data.hasWeapon,
+          });
 
-        helpButton.on('pointerdown', ()=>{
-            this.scene.start("Help");
+          this.scene.launch("UI");
+          this.scene.launch("AmbientSound");
         })
-    }
+        .catch((error) => {
+          console.error("Error en la carga de datos: ", error);
+        });
+    });
+
+    const helpButton = this.add
+      .text(300, 820, getPhrase("Ayuda"), {
+        fontFamily: "pixelifySans",
+        fontSize: "50px",
+        color: "#fff",
+        align: "center",
+      })
+      .setPadding(32)
+      .setOrigin(0.5);
+
+    helpButton.setInteractive({ useHandCursor: true });
+
+    helpButton.on("pointerover", () => {
+      helpButton.setShadow(5, 5, "#328a61", 1, true, true);
+    });
+
+    helpButton.on("pointerout", () => {
+      helpButton.setShadow();
+    });
+
+    helpButton.on("pointerdown", () => {
+      this.scene.start("Help", {
+        preScene: this.scene.key,
+      });
+    });
+
+    const creditsButton = this.add
+    .text(300, 940, getPhrase("Créditos"), {
+      fontFamily: "pixelifySans",
+      fontSize: "50px",
+      color: "#fff",
+      align: "center",
+    })
+    .setPadding(32)
+    .setOrigin(0.5);
+
+  creditsButton.setInteractive({ useHandCursor: true });
+
+  creditsButton.on("pointerover", () => {
+    creditsButton.setShadow(5, 5, "#328a61", 1, true, true);
+  });
+
+  creditsButton.on("pointerout", () => {
+    creditsButton.setShadow();
+  });
+
+  creditsButton.on("pointerdown", () => {
+    this.scene.start("Credits", {
+      preScene: this.scene.key,
+    });
+  });
+  }
 }

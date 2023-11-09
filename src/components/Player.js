@@ -1,13 +1,12 @@
 import Phaser from "phaser";
 import Bullet from "./Bullet";
 import events from "../scenes/EventCenter";
-import {revolver} from "./weapons";
+import { revolver } from "./weapons";
 
 const ROTATION_SPEED = 5 * Math.PI;
-let nBullets = 0;
 
 export default class Player extends Phaser.GameObjects.Sprite {
-  constructor(scene, x, y, texture, enemy, weapons, lifes, mana) {
+  constructor(scene, x, y, texture, enemy, weapons, powers, lifes, mana) {
     super(scene, x, y, texture);
     scene.add.existing(this);
     scene.physics.world.enable(this);
@@ -26,46 +25,69 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
     this.weaponsGroup = weapons;
     this.activatedWeapon = null;
-    
+
+    this.hasWeapon = false;
+
+    this.powers = powers;
+
+    this.nBullets = 0;
+    this.nChips = 0;
+    this.nKits = 0;
+
     this.anims.create({
-      key:"walk",
-      frames : this.anims.generateFrameNumbers("player",{start : 0, end:10}),
-      frameRate : 27,
-      repeat : -1
+      key: "walk",
+      frames: this.anims.generateFrameNumbers("player", { start: 0, end: 10 }),
+      frameRate: 27,
+      repeat: -1,
     });
 
     this.anims.create({
-      key:"shoot",
-      frames : [{key:"player", frame:11}]
+      key: "walkWithGun",
+      frames: this.anims.generateFrameNumbers("player2", { start: 0, end: 7 }),
+      frameRate: 16,
+      repeat: -1,
     });
 
     this.anims.create({
-      key:"none",
-      frames : [{key:"player", frame:0}],
+      key: "noneWithGun",
+      frames: [{ key: "player2", frame: 0 }],
+      frameRate: 27,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "none",
+      frames: [{ key: "player", frame: 0 }],
     });
 
     // @ts-ignore
-    this.body.setCircle(45,45,70);
+    this.body.setCircle(45, 45, 70);
+
     this.scene.input.on("pointerdown", (pointer) => {
       this.fireBullet(pointer);
     });
 
     this.scene.input.on("pointermove", (pointer) => {
-      // crear un vector que este en el centro de la scene
-      const zeroPoint = new Phaser.Math.Vector2(
-        this.scene.cameras.main.centerX,
-        this.scene.cameras.main.centerY
+      const worldPointer = this.scene.cameras.main.getWorldPoint(
+        pointer.x,
+        pointer.y
       );
-      this.target =
-        Phaser.Math.Angle.BetweenPoints(zeroPoint, pointer) + Math.PI / 2;
+      const playerPosition = new Phaser.Math.Vector2(this.x, this.y);
+      const angleToPointer = Phaser.Math.Angle.BetweenPoints(
+        playerPosition,
+        worldPointer
+      );
+
+      this.target = angleToPointer + Math.PI / 2;
     });
 
-    this.keys = scene.input.keyboard.addKeys("W,A,S,D");
+    this.keys = scene.input.keyboard.addKeys("W,A,S,D,H,E,F,ONE,TWO");
+    this.isHKeyPressed = false;
+    this.isEKeyPressed = false;
+    this.isFKeyPressed = false;
 
     // @ts-ignore
     this.body.setCollideWorldBounds(true);
-    events.on("usePowerUp", this.usePowerUp, this);
-    
   }
 
   update(time, delta) {
@@ -91,10 +113,23 @@ export default class Player extends Phaser.GameObjects.Sprite {
       this.velocityX = 0;
     }
 
-    if (this.keys.W.isDown||this.keys.S.isDown||this.keys.A.isDown||this.keys.D.isDown){
-      this.anims.play("walk", true);
-    }else{
-      this.anims.play("none", true);
+    if (
+      this.keys.W.isDown ||
+      this.keys.S.isDown ||
+      this.keys.A.isDown ||
+      this.keys.D.isDown
+    ) {
+      if (this.hasWeapon) {
+        this.anims.play("walkWithGun", true);
+      } else {
+        this.anims.play("walk", true);
+      }
+    } else {
+      if (this.hasWeapon) {
+        this.anims.play("noneWithGun", true);
+      } else {
+        this.anims.play("none", true);
+      }
     }
 
     // @ts-ignore
@@ -102,73 +137,224 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
     this.shootAtEnemy();
 
-    events.on("updateWeapon", this.setWeapon, this);
+    if (this.keys.ONE.isDown) {
+      this.setWeapon({ weapon: "revolver" });
+    }
 
-  }
+    if (this.keys.TWO.isDown && !this.isTWOKeyPressed) {
+      this.usePowerUp("freeze");
+      this.isTWOKeyPressed = true;
+    }
 
-  fireBullet(pointer){
-    if(this.activatedWeapon != null && nBullets>0){
-    this.anims.play("shoot", true);
-    const speed = this.activatedWeapon.speed;
-    const zeroPoint = new Phaser.Math.Vector2(
-      this.scene.cameras.main.centerX,
-      this.scene.cameras.main.centerY
-    );
-    const angle = Phaser.Math.Angle.BetweenPoints(zeroPoint, pointer);
+    if (this.keys.TWO.isUp) {
+      this.isTWOKeyPressed = false;
+    }
 
-    const bullet = new Bullet(this.scene, this.x, this.y, "bullet");
-    this.bullets.add(bullet);
-    bullet.fire(angle, speed);
+    if (this.keys.F.isDown && !this.isFKeyPressed) {
+      this.incrementLife();
+      this.isFKeyPressed = true;
+    }
 
-    nBullets--;
-    this.scene.nBullets--;
-    events.emit("updateBullets", {
-      isIncrease : false
-    });
+    if (this.keys.F.isUp) {
+      this.isFKeyPressed = false;
+    }
+
+    if (this.keys.E.isDown && !this.isEKeyPressed) {
+      this.incrementMana();
+      this.isEKeyPressed = true;
+    }
+
+    if (this.keys.E.isUp) {
+      this.isEKeyPressed = false;
     }
   }
 
-  looseLife(amount){
-    this.lifes -= amount;
-    events.emit("update",{
-      damage : amount
-    });
-  }
+  fireBullet(pointer) {
+    if (this.activatedWeapon != null && this.nBullets > 0) {
+      const shootSound = this.scene.sound.add("shootSound");
+      shootSound.play();
+      const speed = this.activatedWeapon.speed;
+      const worldPointer = this.scene.cameras.main.getWorldPoint(
+        pointer.x,
+        pointer.y
+      );
+      const playerPosition = new Phaser.Math.Vector2(this.x, this.y);
+      const angle = Phaser.Math.Angle.BetweenPoints(
+        playerPosition,
+        worldPointer
+      );
 
-  shootAtEnemy(){
-    if(this.enemy != null){
-    this.enemy.forEach(element => {
-      this.scene.physics.add.overlap(element, this.bullets, ()=>{
-        element.looseLife();
-        this.bullets.getFirstAlive().destroy();
+      const bullet = new Bullet(this.scene, this.x - 10, this.y + 10, "bullet");
+      this.bullets.add(bullet);
+      bullet.fire(angle, speed);
+
+      this.nBullets--;
+      this.scene.nBullets--;
+
+      events.emit("updateBullets", {
+        isIncrease: false,
       });
-    }, null, this);
-    }else{
-      console.log("nothing");
     }
   }
 
-  addWeapon(weapon){
-    this.weaponsGroup[weapon.name] = weapon;
+  looseLife(ammount) {
+    this.lifes -= ammount;
+    events.emit("updateHP", {
+      isIncrease: false,
+      ammount: ammount,
+    });
   }
 
-  setWeapon(data){
+  shootAtEnemy() {
+    if (this.enemy != null) {
+      this.enemy.forEach(
+        (element) => {
+          this.scene.physics.add.overlap(element, this.bullets, () => {
+            element.looseLife();
+            this.bullets.getFirstAlive().destroy();
+          });
+        },
+        null,
+        this
+      );
+    }
+  }
+
+  addWeapon(weapon) {
+    this.weaponsGroup[weapon.name] = weapon;
+    this.hasWeapon = true;
+    events.emit("updateWeapon");
+  }
+
+  setWeapon(data) {
     this.activatedWeapon = this.weaponsGroup[data.weapon];
   }
 
-  incrementBullets(){
-    nBullets++;
+  addPower(powerName) {
+    this.powers.push(powerName);
+    events.emit("updatePower");
   }
 
-  usePowerUp(data){
-    if(this.mana>20){
-    this.enemy.forEach(element => {
-      element.freeze();
+  incrementBullets() {
+    const ammount = Phaser.Math.Between(25, 40);
+    this.nBullets += ammount;
+
+    events.emit("updateBullets", {
+      isIncrease: true,
+      ammount: ammount,
     });
-    this.mana-=20;
-    }else{
-      console.log("no hay suficiente mana");
+  }
+
+  setNBullets(n) {
+    this.nBullets = n;
+  }
+
+  setNChips(n) {
+    this.nChips = n;
+  }
+
+  setNKits(n) {
+    this.nKits = n;
+  }
+
+  usePowerUp(powerName) {
+    if (this.mana > 20 && this.powers.find((element) => element == "freeze")) {
+      this.enemy.forEach((element) => {
+        const playerPosition = new Phaser.Math.Vector2(this.x, this.y);
+        const enemyPosition = new Phaser.Math.Vector2(element.x, element.y);
+        const angle = Phaser.Math.Angle.BetweenPoints(
+          playerPosition,
+          enemyPosition
+        );
+
+        const freezeSound = this.scene.sound.add("freezeSound");
+        freezeSound.play();
+        freezeSound.setVolume(0.5);
+
+        if (
+          Phaser.Math.Distance.Between(this.x, this.y, element.x, element.y) <=
+          600
+        ) {
+          element.freeze();
+        }
+      });
+
+      this.mana -= 20;
+      events.emit("updateMana", {
+        ammount: 20,
+        isIncrease: false,
+      });
+    } else {
+      console.log("mana no encontraodo o power vacio");
     }
   }
 
+  incrementLife() {
+    if (this.lifes < 300 && this.nKits > 0) {
+      this.lifes += 20;
+
+      events.emit("updateHP", {
+        ammount: 20,
+        isIncrease: true,
+      });
+
+      this.nKits--;
+
+      events.emit("updateKitsUI", {
+        isIncrease: false,
+      });
+    } else {
+    }
+  }
+
+  incrementMana() {
+    if (this.mana < 300 && this.nChips > 0) {
+      this.mana += 20;
+      this.nChips--;
+
+      events.emit("updateMana", {
+        ammount: 20,
+        isIncrease: true,
+      });
+
+      events.emit("updateChipsUI", {
+        isIncrease: false,
+      });
+    } else {
+    }
+  }
+
+  incrementChips() {
+    this.nChips++;
+    events.emit("updateChipsUI", {
+      isIncrease: true,
+      ammount: 1,
+    });
+  }
+
+  incrementKits() {
+    this.nKits++;
+    events.emit("updateKitsUI", {
+      isIncrease: true,
+      ammount: 1,
+    });
+  }
+
+  decreaseChips() {
+    this.nKits--;
+    events.emit("updateKitsUI", {
+      isIncrease: false,
+    });
+  }
+
+  decreaseKits() {
+    this.nChips--;
+    events.emit("updateChipsUI", {
+      isIncrease: false,
+    });
+  }
+
+  validateHasWeapon(value) {
+    this.hasWeapon = value;
+  }
 }

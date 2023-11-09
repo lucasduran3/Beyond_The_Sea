@@ -5,16 +5,23 @@ import MainMenu from "./scenes/MainMenu";
 import Help from "./scenes/Help";
 import Pause from "./scenes/Pause";
 import UI from "./scenes/UI";
-import Controls from "./scenes/Controls";
-import PowerUp from "./scenes/PowerUp";
-import GameOver from "./scenes/GameOver";
 import GameWin from "./scenes/GameWin";
 import SelectLang from "./scenes/SelectLang";
 import Bar from "./scenes/Bar";
 import BarAnimation from "./scenes/BarAnimation";
 import Dialog from "./scenes/Dialog";
 import BarWinAnimation from "./scenes/BarWinAnimation";
-import Drawer from "./scenes/Drawer";
+import FirebasePlugin from "./plugins/FirebasePlugin";
+import MainMusic from "./scenes/MainMusic";
+import AmbientSound from "./scenes/AmbientSound";
+import FinalLevel from "./scenes/FinalLevel";
+import FinalLevelAnimation from "./scenes/FinalLevelAnimation";
+import Intro from "./scenes/Intro";
+import IntroMusic from "./scenes/IntroMusic";
+import Boss1Music from "./scenes/Boss1Music";
+import FinalWin from "./scenes/FinalWin";
+import Credits from "./scenes/Credits";
+
 
 const config = {
   type: Phaser.AUTO,
@@ -39,7 +46,17 @@ const config = {
       debug: false,
     },
   },
-  scene: [Preload, SelectLang, MainMenu, Help, Level1, BarAnimation, Bar, UI, Pause, Controls, PowerUp, GameOver, GameWin, Drawer, BarWinAnimation, Dialog],
+  plugins: {
+    global : [
+      {
+        key : "FirebasePlugin",
+        plugin : FirebasePlugin,
+        start : true,
+        mapping : "firebase"
+      },
+    ],
+  },
+  scene: [Preload, MainMusic, IntroMusic,Boss1Music, AmbientSound, SelectLang, MainMenu, Intro, Level1, BarAnimation, Bar, FinalLevel, UI, Pause, GameWin, FinalWin, BarWinAnimation, FinalLevelAnimation, Dialog, Help, Credits],
 };
 
 export default new Phaser.Game(config);
