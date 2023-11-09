@@ -2739,18 +2739,6 @@
                 }, 
                 {
                  "height":0,
-                 "id":30,
-                 "name":"drawer",
-                 "point":true,
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":7661.33333333333,
-                 "y":4902.66666666667
-                }, 
-                {
-                 "height":0,
                  "id":31,
                  "name":"bullet",
                  "point":true,
@@ -2758,20 +2746,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":7691.5,
-                 "y":4883
-                }, 
-                {
-                 "height":0,
-                 "id":32,
-                 "name":"bullet",
-                 "point":true,
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":7689,
-                 "y":4922.5
+                 "x":7695.5,
+                 "y":4947
                 }, 
                 {
                  "height":0,
@@ -2928,18 +2904,6 @@
                  "width":0,
                  "x":4121.21212121212,
                  "y":6548.48484848485
-                }, 
-                {
-                 "height":0,
-                 "id":46,
-                 "name":"bullet",
-                 "point":true,
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":6002,
-                 "y":7826
                 }, 
                 {
                  "height":0,

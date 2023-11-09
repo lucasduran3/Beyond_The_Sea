@@ -127,7 +127,8 @@ export default class GameWin extends Phaser.Scene {
 
         this.scene.launch("Dialog", {
           content: content,
-          sceneToStart: "Level1",
+          isFinal: true,
+          sceneToStart: "FinalWin",
           sceneToStop: "GameWin",
           level: this.level,
           keyDoor1: this.keyDoor1,

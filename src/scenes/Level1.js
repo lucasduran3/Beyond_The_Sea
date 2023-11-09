@@ -300,6 +300,8 @@ export default class Level1 extends Phaser.Scene {
       this.player,
       this.key_door1_sprite,
       () => {
+        const keySound = this.sound.add('keySound');
+        keySound.play();
         this.key_door1_sprite.destroy();
         this.keyDoor1 = true;
         events.emit("updateKey1");
@@ -312,6 +314,8 @@ export default class Level1 extends Phaser.Scene {
       this.player,
       this.key_door3_sprite,
       () => {
+        const keySound = this.sound.add('keySound');
+        keySound.play();
         this.key_door3_sprite.destroy();
         this.keyDoor3 = true;
         events.emit("updateKey4");
@@ -324,6 +328,8 @@ export default class Level1 extends Phaser.Scene {
       this.player,
       this.keyBarSprite,
       () => {
+        const keySound = this.sound.add('keySound');
+        keySound.play();
         this.keyBarSprite.destroy();
         this.keyBar = true;
         events.emit("updateKeyBar");
@@ -491,6 +497,7 @@ export default class Level1 extends Phaser.Scene {
       barDoorLayer,
       this.player,
       () => {
+        //this.scene.launch("Boss1Music");
         this.scene.start("BarAnimation", {
           keyDoor1: this.keyDoor1,
           keyDoor2: this.keyDoor2,
@@ -555,6 +562,8 @@ export default class Level1 extends Phaser.Scene {
     );
 
     this.physics.add.overlap(this.player, this.powerFreeze, () => {
+      const powerSound = this.sound.add('powerSound');
+      powerSound.play();
       this.player.addPower("freeze");
       this.powers.push("freeze");
       this.powerFreeze.destroy();
@@ -808,6 +817,8 @@ export default class Level1 extends Phaser.Scene {
 
   // @ts-ignore
   collectBullet(player, bullet) {
+    const bulletSound = this.sound.add('bulletSound');
+    bulletSound.play();
     bullet.destroy();
     this.player.incrementBullets();
   }

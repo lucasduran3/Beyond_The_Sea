@@ -8,6 +8,7 @@ export default class Dialog extends Phaser.Scene {
     this.content = data.content;
     this.sceneToStop = data.sceneToStop;
     this.sceneToStart = data.sceneToStart;
+    this.isFinal = data.isFinal || false;
 
     this.level = data.level;
     this.powers = data.powers;
@@ -109,6 +110,11 @@ export default class Dialog extends Phaser.Scene {
           hasRadio: this.hasRadio,
           hasWeapon: this.hasWeapon,
         });
+
+        if(this.isFinal){
+          this.sound.stopAll();
+          this.scene.launch("MainMusic");
+        }
       }
     }
   }

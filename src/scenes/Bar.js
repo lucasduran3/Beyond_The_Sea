@@ -54,7 +54,7 @@ export default class Bar extends Phaser.Scene {
       const { x = 0, y = 0, name } = objData;
       switch (name) {
         case "enemy": {
-          this.enemy = new Enemy(this, x, y, "enemy", 300, this.map, 1);
+          this.enemy = new Enemy(this, x, y, "enemy", 300, this.map, 2);
           console.log(this.enemy);
           this.enemysGroup.add(this.enemy);
           break;

@@ -1432,33 +1432,6 @@
          "tileheight":32,
          "tiles":[
                 {
-                 "id":6,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":7,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":8,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
                  "id":9,
                  "properties":[
                         {
@@ -1621,15 +1594,6 @@
                         }]
                 }, 
                 {
-                 "id":37,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
                  "id":38,
                  "properties":[
                         {
@@ -1684,24 +1648,6 @@
                         }]
                 }, 
                 {
-                 "id":44,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":57,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
                  "id":58,
                  "properties":[
                         {
@@ -1721,42 +1667,6 @@
                 }, 
                 {
                  "id":60,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":61,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":84,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":85,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":86,
                  "properties":[
                         {
                          "name":"colision",
@@ -1927,15 +1837,6 @@
                         }]
                 }, 
                 {
-                 "id":115,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
                  "id":116,
                  "properties":[
                         {
@@ -1990,24 +1891,6 @@
                         }]
                 }, 
                 {
-                 "id":122,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":135,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
                  "id":136,
                  "properties":[
                         {
@@ -2027,15 +1910,6 @@
                 }, 
                 {
                  "id":138,
-                 "properties":[
-                        {
-                         "name":"colision",
-                         "type":"bool",
-                         "value":true
-                        }]
-                }, 
-                {
-                 "id":139,
                  "properties":[
                         {
                          "name":"colision",

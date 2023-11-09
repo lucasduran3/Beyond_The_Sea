@@ -30,4 +30,9 @@
 
 *{
     font-family: 'pixelifySans';
+
+}
+
+body{
+    overflow: hidden;
 }

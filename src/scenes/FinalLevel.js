@@ -60,7 +60,8 @@ export default class FinalLevel extends Phaser.Scene {
       "enemy3",
       400,
       this.map,
-      4
+      4,
+      100
     ).setDepth(10);
 
     this.enemysGroup.add(this.boss);

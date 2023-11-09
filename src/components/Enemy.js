@@ -2,7 +2,7 @@ import Phaser from "phaser";
 import EasyStar from "easystarjs";
 
 export default class Enemy extends Phaser.GameObjects.Sprite {
-  constructor(scene, x, y, texture, speed, map, damage) {
+  constructor(scene, x, y, texture, speed, map, damage, lifes) {
     super(scene, x, y, texture);
     scene.add.existing(this);
     scene.physics.world.enable(this);
@@ -12,7 +12,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
     this.target;
     this.map = map;
     this.damage = damage;
-    this.lifes = 10;
+    this.lifes = lifes||10;
     this.c = 0;
     this.isMoving = true;
     this.isAttacking = false;

@@ -207,7 +207,6 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
   shootAtEnemy() {
     if (this.enemy != null) {
-      console.log("pierde");
       this.enemy.forEach(
         (element) => {
           this.scene.physics.add.overlap(element, this.bullets, () => {

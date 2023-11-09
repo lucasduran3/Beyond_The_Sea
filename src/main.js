@@ -18,6 +18,9 @@ import FinalLevel from "./scenes/FinalLevel";
 import FinalLevelAnimation from "./scenes/FinalLevelAnimation";
 import Intro from "./scenes/Intro";
 import IntroMusic from "./scenes/IntroMusic";
+import Boss1Music from "./scenes/Boss1Music";
+import FinalWin from "./scenes/FinalWin";
+import Credits from "./scenes/Credits";
 
 
 const config = {
@@ -53,7 +56,7 @@ const config = {
       },
     ],
   },
-  scene: [Preload, MainMusic, IntroMusic, AmbientSound, SelectLang, MainMenu, Intro, Level1, BarAnimation, Bar, FinalLevel, UI, Pause, GameWin, BarWinAnimation, FinalLevelAnimation, Dialog, Help],
+  scene: [Preload, MainMusic, IntroMusic,Boss1Music, AmbientSound, SelectLang, MainMenu, Intro, Level1, BarAnimation, Bar, FinalLevel, UI, Pause, GameWin, FinalWin, BarWinAnimation, FinalLevelAnimation, Dialog, Help, Credits],
 };
 
 export default new Phaser.Game(config);

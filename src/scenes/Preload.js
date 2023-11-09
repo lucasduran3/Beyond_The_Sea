@@ -98,10 +98,16 @@ export default class Preload extends Phaser.Scene {
     //audio
     this.load.audio("ambient", "/assets/audio/ambiente.wav");
     this.load.audio("temaMenu", "/assets/audio/tema1.wav");
-    this.load.audio("shootSound", "/assets/audio/shootSound.mp3");
+    this.load.audio("shootSound", "/assets/audio/shootSound.wav");
     this.load.audio("freezeSound", "/assets/audio/freezeSound.wav");
     this.load.audio("rechargeSound", "/assets/audio/rechargeSound.wav");
     this.load.audio("radioSound", "/assets/audio/radioSound.wav");
+    this.load.audio("keySound", "/assets/audio/keySound.wav");
+    this.load.audio("powerSound", "/assets/audio/powerSound.wav");
+    this.load.audio("bulletSound", "/assets/audio/bulletSound.wav");
+    this.load.audio("boss1Music", "/assets/audio/boss1Music.wav");
+    this.load.audio("boss2Music", "/assets/audio/boss2Music.wav");
+    this.load.audio("levelMusic", "/assets/audio/temalvl.wav");
 
     //fonts
     //this.load.script('');

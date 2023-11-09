@@ -49,7 +49,7 @@ export default class MainMenu extends Phaser.Scene {
     });
 
     const playButton = this.add
-      .text(300, 600, getPhrase("Jugar"), {
+      .text(300, 580, getPhrase("Jugar"), {
         fontFamily: "pixelifySans",
         fontSize: "50px",
         color: "#fff",
@@ -75,10 +75,11 @@ export default class MainMenu extends Phaser.Scene {
       this.scene.launch("AmbientSound");
       this.scene.start("Level1");
       this.scene.launch("UI");*/
+
     });
 
     const continueButton = this.add
-      .text(300, 750, getPhrase("Continuar"), {
+      .text(300, 700, getPhrase("Continuar"), {
         fontFamily: "pixelifySans",
         fontSize: "50px",
         color: "#fff",
@@ -134,7 +135,7 @@ export default class MainMenu extends Phaser.Scene {
     });
 
     const helpButton = this.add
-      .text(300, 900, getPhrase("Ayuda"), {
+      .text(300, 820, getPhrase("Ayuda"), {
         fontFamily: "pixelifySans",
         fontSize: "50px",
         color: "#fff",
@@ -158,5 +159,31 @@ export default class MainMenu extends Phaser.Scene {
         preScene: this.scene.key,
       });
     });
+
+    const creditsButton = this.add
+    .text(300, 940, getPhrase("Créditos"), {
+      fontFamily: "pixelifySans",
+      fontSize: "50px",
+      color: "#fff",
+      align: "center",
+    })
+    .setPadding(32)
+    .setOrigin(0.5);
+
+  creditsButton.setInteractive({ useHandCursor: true });
+
+  creditsButton.on("pointerover", () => {
+    creditsButton.setShadow(5, 5, "#328a61", 1, true, true);
+  });
+
+  creditsButton.on("pointerout", () => {
+    creditsButton.setShadow();
+  });
+
+  creditsButton.on("pointerdown", () => {
+    this.scene.start("Credits", {
+      preScene: this.scene.key,
+    });
+  });
   }
 }
