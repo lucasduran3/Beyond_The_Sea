@@ -232,6 +232,7 @@ export default class FinalLevel extends Phaser.Scene {
     if (this.boss.lifes <= 0) {
       this.boss1Dead = true;
       this.boss2Dead = true;
+      this.scene.stop("Level1");
       this.scene.stop("FinalLevel");
       this.scene.start("GameWin", {
         playerX: this.player.x,

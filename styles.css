@@ -4,26 +4,6 @@
 }
 
 @font-face {
-    font-family: rubikPixels;
-    src: url('./public/assets/fonts/RubikPixels-Regular.ttf');
-}
-
-@font-face {
-    font-family: faceonfire;
-    src: url('./public/assets/fonts/pixelfaceonfire.ttf');
-}
-
-@font-face {
-    font-family: scriptorium;
-    src: url('./public/assets/fonts/Scriptorium.ttf');
-}
-
-@font-face {
-    font-family: bmArmy;
-    src: url('./public/assets/fonts/BMarmy.ttf');
-}
-
-@font-face {
     font-family: firstFontasy;
     src: url('./public/assets/fonts/FirstFontasy.ttf');
 }
