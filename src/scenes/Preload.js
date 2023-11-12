@@ -3,6 +3,7 @@ import { getLanguageConfig, getTranslations } from "../services/translation";
 
 export default class Preload extends Phaser.Scene {
   #language;
+  #loadingBar;
   constructor() {
     super("Preload");
   }
@@ -115,6 +116,32 @@ export default class Preload extends Phaser.Scene {
       "https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexhorrifipipelineplugin.min.js",
       true
     );
+
+    //Loading bar
+    const centerX = this.cameras.main.width / 2;
+    const centerY = this.cameras.main.height / 2;
+
+    this.#loadingBar = this.add.graphics({x : centerX, y : centerY});
+
+    this.#loadingBar.fillStyle(0x328077, 1);
+    this.#loadingBar.lineStyle(2, 0x328077, 1);
+
+    this.#loadingBar.strokeCircle(0,0,50);
+    this.#loadingBar.fillCircle(0,0,50);
+
+    this.load.on("progress", this.updateLoadingBar, this);
+  }
+
+  updateLoadingBar(value){
+    const progressBarWidth = 200;
+    const newWidth = value * progressBarWidth;
+    this.#loadingBar.clear();
+    this.#loadingBar.fillStyle(0x328077, 1);
+    this.#loadingBar.lineStyle(2, 0x328077, 1);
+    this.#loadingBar.strokeCircle(0, 0, 50);
+    this.#loadingBar.fillCircle(0, 0, 50);
+    this.#loadingBar.fillRect(-progressBarWidth / 2, 60, newWidth, 10);
+
   }
 
   create() {
@@ -122,60 +149,6 @@ export default class Preload extends Phaser.Scene {
       this.scene.start("menu", { language: this.#language })
     );
 
-    const titleText = this.add.text(750, 140, " Login", {
-      fontSize: 100,
-      fontFamily: "firstFontasy",
-      align: "center",
-    });
-    titleText.setTint(0x00ffff, 0x00ff80, 0x0000ff, 0xaa00ff);
-
-    this.add
-      .image(956, 450, "anon-icon")
-      .setOrigin(0.5)
-      .setInteractive({ useHandCursor: true })
-      .on("pointerdown", () => {
-        // @ts-ignore
-        this.firebase
-          .signInAnonymously()
-          .then(() => {
-            //this.scene.launch("MainMusic");
-            this.scene.start("SelectLang");
-          })
-          .catch((error) => {
-            console.log("🚀 ~ file: Login.js:74 ~ .catch ~ error", error);
-          });
-      });
-
-    this.add
-      .image(956, 650, "google-icon")
-      .setOrigin(0.5)
-      .setInteractive({ useHandCursor: true })
-      .on("pointerdown", () => {
-        // @ts-ignore
-        this.firebase
-          .signInWithGoogle()
-          .then(() => {
-            this.scene.start("SelectLang");
-          })
-          .catch((error) => {
-            console.log("🚀 ~ file: Login.js:74 ~ .catch ~ error", error);
-          });
-      });
-
-    this.add
-      .image(956, 850, "git-icon")
-      .setOrigin(0.5)
-      .setInteractive({ useHandCursor: true })
-      .on("pointerdown", () => {
-        // @ts-ignore
-        this.firebase
-          .signInWithGithub()
-          .then(() => {
-            this.scene.start("SelectLang");
-          })
-          .catch((error) => {
-            console.log("🚀 ~ file: Login.js:74 ~ .catch ~ error", error);
-          });
-      });
+    this.scene.start("Login");
   }
 }

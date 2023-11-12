@@ -555,18 +555,6 @@
                 }, 
                 {
                  "height":0,
-                 "id":18,
-                 "name":"bullet",
-                 "point":true,
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":886.666666666667,
-                 "y":282.666666666667
-                }, 
-                {
-                 "height":0,
                  "id":19,
                  "name":"bullet",
                  "point":true,
