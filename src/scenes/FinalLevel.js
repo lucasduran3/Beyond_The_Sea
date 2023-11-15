@@ -188,7 +188,7 @@ export default class FinalLevel extends Phaser.Scene {
     this.winLevel();
 
     if (this.keyESC.isDown) {
-      this.scene.pause("Bar");
+      this.scene.pause("FinalLevel");
       this.scene.launch("Pause", {
         preScene: this.scene.key,
       });
