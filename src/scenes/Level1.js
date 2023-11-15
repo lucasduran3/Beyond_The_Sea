@@ -422,6 +422,7 @@ export default class Level1 extends Phaser.Scene {
           keyDoor2: this.keyDoor2,
           keyDoor3: this.keyDoor3,
           keyDoor4: this.keyDoor4,
+          keyBar: this.keyBar,
           weaponsGroup: this.weaponsGroup,
           playerLifes: this.playerLifes,
           playerMana: this.playerMana,

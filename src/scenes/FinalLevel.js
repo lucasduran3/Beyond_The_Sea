@@ -213,7 +213,7 @@ export default class FinalLevel extends Phaser.Scene {
         weaponsGroup: this.player.weaponsGroup,
         playerLifes: 300,
         playerMana: this.player.mana,
-        playerBullets: null,
+        playerBullets: this.playerBullets,
         playerChips: null,
         playerKits: null,
         boss1Dead: this.boss1Dead,
