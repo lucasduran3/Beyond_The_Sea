@@ -206,10 +206,11 @@ export default class Bar extends Phaser.Scene {
         keyDoor2: this.keyDoor2,
         keyDoor3: this.keyDoor3,
         keyDoor4: this.keyDoor4,
+        keyBar : true,
         weaponsGroup: this.player.weaponsGroup,
         playerLifes: 300,
         playerMana: this.player.mana,
-        playerBullets: null,
+        playerBullets: this.playerBullets,
         playerChips: null,
         playerKits: null,
         boss1Dead: this.boss1Dead,
@@ -220,7 +221,7 @@ export default class Bar extends Phaser.Scene {
         hasWeapon: this.hasWeapon,
       });
 
-      events.emit("resetUI");
+      events.emit("resetUI",{bullets: this.playerBullets});
     }
   }
 
@@ -255,11 +256,11 @@ export default class Bar extends Phaser.Scene {
   }
 
   spawnEnemy() {
-    this.enemy = new Enemy(this, 600, 100, "enemy", 300, this.map);
+    this.enemy = new Enemy(this, 600, 100, "enemy", 300, this.map,1,5);
     this.enemy.setTarget(this.player);
     this.enemysGroup.add(this.enemy);
 
-    this.enemy = new Enemy(this, 600, 1080, "enemy", 300, this.map);
+    this.enemy = new Enemy(this, 600, 1080, "enemy", 300, this.map,1,5);
     this.enemy.setTarget(this.player);
     this.enemysGroup.add(this.enemy);
   }
