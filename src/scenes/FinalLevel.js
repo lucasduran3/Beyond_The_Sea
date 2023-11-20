@@ -1,8 +1,8 @@
 import Phaser from "phaser";
 import Player from "../components/Player";
 import Enemy from "../components/Enemy";
-import events from "../scenes/EventCenter";
-import HorrifiPostFxPipeline from "phaser3-rex-plugins/plugins/horrifipipeline";
+import events from "./EventCenter";
+import HorroriFi from "./HorroriFi";
 
 export default class FinalLevel extends Phaser.Scene {
   constructor() {
@@ -41,6 +41,7 @@ export default class FinalLevel extends Phaser.Scene {
     const decoL = this.map.addTilesetImage("deco", "deco");
 
     const floorLayer = this.map.createLayer("floor", floorL, 0, 0);
+    console.log(floorLayer);
     const wallLayer = this.map.createLayer("wall", wallL, 0, 0);
     const decoLayer = this.map.createLayer("deco", decoL, 0, 0);
 
@@ -104,51 +105,15 @@ export default class FinalLevel extends Phaser.Scene {
       this.map.heightInPixels
     );
 
-    const postFxPlugin = this.plugins.get("rexhorrifipipelineplugin");
-    const effect = this.cameras.main.setPostPipeline(HorrifiPostFxPipeline);
-
-    // @ts-ignore
-    const postFxPipeline = postFxPlugin.add(effect, {
-      enable: true,
-
-      // Bloom
-      bloomRadius: 10,
-      bloomIntensity: 0,
-      bloomThreshold: 1,
-      bloomTexelWidth: 0.5,
-
-      // Chromatic abberation
-      chromaticEnable: true,
-      chabIntensity: 0.2,
-
-      // Vignette
-      vignetteStrength: 1,
-      vignetteIntensity: 0.82,
-
-      // Noise
-      noiseEnable: true,
-      noiseStrength: 0.1,
-      seed: 0.63,
-
-      // VHS
-      vhsEnable: true,
-      vhsStrength: 0.22,
-
-      // Scanlines
-      scanlinesEnable: false,
-      scanStrength: 0.1,
-
-      //CRT
-      crtWidth: 5,
-      crtHeight: 5,
-    });
+    this.pluginHorror = new HorroriFi(this);
+    this.pluginHorror.create();
 
     this.keyESC = this.input.keyboard.addKey("ESC");
 
-    /*---TRANSPARENT BACKGROUND-----*/
+    /* ---TRANSPARENT BACKGROUND-----*/
     this.add.image(1920 / 2, 1080 / 2, "bg").setScrollFactor(0);
 
-    /*--OBJECTS--*/
+    /* --OBJECTS--*/
     objectsLayer.objects.forEach((objData) => {
       const { x = 0, y = 0, name } = objData;
       switch (name) {
@@ -162,6 +127,7 @@ export default class FinalLevel extends Phaser.Scene {
           this.bulletsGroup.add(this.bulletToCollect);
           break;
         }
+        default: console.log("");
       }
     });
 
@@ -197,9 +163,6 @@ export default class FinalLevel extends Phaser.Scene {
     this.scene.setVisible(true, "UI");
 
     this.isOver();
-
-    if (this.player.y <= 900) {
-    }
   }
 
   isOver() {
@@ -266,5 +229,8 @@ export default class FinalLevel extends Phaser.Scene {
     this.player.incrementBullets();
   }
 
-  enemyDropObjects() {}
+/* eslint-disable class-methods-use-this */
+  enemyDropObjects() {
+  }
+/* eslint-enable class-methods-use-this */
 }

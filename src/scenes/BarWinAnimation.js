@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import HorrifiPostFxPipeline from "phaser3-rex-plugins/plugins/horrifipipeline";
+import HorroriFi from "./HorroriFi";
 import { getPhrase } from "../services/translation";
 
 export default class BarWinAnimation extends Phaser.Scene {
@@ -57,9 +57,9 @@ export default class BarWinAnimation extends Phaser.Scene {
       repeat: 0,
     });
 
-    const shootSound = this.sound.add('shootSound');
+    const shootSound = this.sound.add("shootSound");
     shootSound.play();
-    
+
     this.cameras.main.fadeIn(500);
     this.map = this.make.tilemap({ key: "map-mercado-bar" });
     const floorL = this.map.addTilesetImage("floor", "floor");
@@ -71,6 +71,8 @@ export default class BarWinAnimation extends Phaser.Scene {
     const wallLayer = this.map.createLayer("wall", wallL, 0, 0);
     const barTableLayer = this.map.createLayer("bar-table", barTableL, 0, 0);
     const decoLayer = this.map.createLayer("deco", decoL, 0, 0);
+
+    console.log(floorLayer, wallLayer, barTableLayer, decoLayer);
 
     this.boss = this.physics.add
       .sprite(270, 662, "enemy")
@@ -84,44 +86,9 @@ export default class BarWinAnimation extends Phaser.Scene {
       .setAngle(-90)
       .setDepth(10);
 
-    const postFxPlugin = this.plugins.get("rexhorrifipipelineplugin");
-    const effect = this.cameras.main.setPostPipeline(HorrifiPostFxPipeline);
+    this.pluginHorror = new HorroriFi(this);
+    this.pluginHorror.create();
 
-    // @ts-ignore
-    const postFxPipeline = postFxPlugin.add(effect, {
-      enable: true,
-
-      // Bloom
-      bloomRadius: 10,
-      bloomIntensity: 0,
-      bloomThreshold: 1,
-      bloomTexelWidth: 0.5,
-
-      // Chromatic abberation
-      chromaticEnable: true,
-      chabIntensity: 0.2,
-
-      // Vignette
-      vignetteStrength: 1,
-      vignetteIntensity: 0.82,
-
-      // Noise
-      noiseEnable: true,
-      noiseStrength: 0.1,
-      seed: 0.63,
-
-      // VHS
-      vhsEnable: true,
-      vhsStrength: 0.22,
-
-      // Scanlines
-      scanlinesEnable: false,
-      scanStrength: 0.1,
-
-      //CRT
-      crtWidth: 5,
-      crtHeight: 5,
-    });
     this.cameras.main.centerOn(this.player.x, this.player.y);
 
     this.cameras.main.pan(270, 662, 2000);
@@ -174,7 +141,7 @@ export default class BarWinAnimation extends Phaser.Scene {
             startOrResume: "start",
             playerX: this.playerX,
             playerY: this.playerY,
-            content: content,
+            content,
             sceneToStart: "Level1",
             sceneToStop: "BarWinAnimation",
             level: this.level,
@@ -202,6 +169,5 @@ export default class BarWinAnimation extends Phaser.Scene {
       });
     }
   }
-
-  update() {}
+  
 }

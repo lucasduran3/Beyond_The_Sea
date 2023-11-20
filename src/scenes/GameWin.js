@@ -1,11 +1,12 @@
-import Phaser1 from "phaser";
-import HorrifiPostFxPipeline from "phaser3-rex-plugins/plugins/horrifipipeline";
+import Phaser from "phaser";
+import HorroriFi from "./HorroriFi";
 import { getPhrase } from "../services/translation";
 
 export default class GameWin extends Phaser.Scene {
   constructor() {
     super("GameWin");
   }
+
   init(data) {
     this.playerX = data.playerX;
     this.playerY = data.playerY;
@@ -47,6 +48,8 @@ export default class GameWin extends Phaser.Scene {
     const wallLayer = this.map.createLayer("wall", wallL, 0, 0);
     const decoLayer = this.map.createLayer("deco", decoL, 0, 0);
 
+    console.log(floorLayer, wallLayer, decoLayer);
+
     this.anims.create({
       key: "none",
       frames: [{ key: "enemy3", frame: 7 }],
@@ -72,44 +75,9 @@ export default class GameWin extends Phaser.Scene {
       .setAngle(-90)
       .setDepth(10);
 
-    const postFxPlugin = this.plugins.get("rexhorrifipipelineplugin");
-    const effect = this.cameras.main.setPostPipeline(HorrifiPostFxPipeline);
+    this.pluginHorror = new HorroriFi(this);
+    this.pluginHorror.create();
 
-    // @ts-ignore
-    const postFxPipeline = postFxPlugin.add(effect, {
-      enable: true,
-
-      // Bloom
-      bloomRadius: 10,
-      bloomIntensity: 0,
-      bloomThreshold: 1,
-      bloomTexelWidth: 0.5,
-
-      // Chromatic abberation
-      chromaticEnable: true,
-      chabIntensity: 0.2,
-
-      // Vignette
-      vignetteStrength: 1,
-      vignetteIntensity: 0.82,
-
-      // Noise
-      noiseEnable: true,
-      noiseStrength: 0.1,
-      seed: 0.63,
-
-      // VHS
-      vhsEnable: true,
-      vhsStrength: 0.22,
-
-      // Scanlines
-      scanlinesEnable: false,
-      scanStrength: 0.1,
-
-      //CRT
-      crtWidth: 5,
-      crtHeight: 5,
-    });
     this.cameras.main.centerOn(this.player.x, this.player.y);
 
     this.cameras.main.pan(this.enemyX, this.enemyY, 2000);
@@ -126,7 +94,7 @@ export default class GameWin extends Phaser.Scene {
         ];
 
         this.scene.launch("Dialog", {
-          content: content,
+          content,
           isFinal: true,
           sceneToStart: "FinalWin",
           sceneToStop: "GameWin",
@@ -159,5 +127,4 @@ export default class GameWin extends Phaser.Scene {
     this.add.image(1920 / 2, 1080 / 2, "bg").setScrollFactor(0);
   }
 
-  update() {}
 }

@@ -1,9 +1,9 @@
 import Phaser from "phaser";
 import Player from "../components/Player";
 import Enemy from "../components/Enemy";
-import events from "../scenes/EventCenter";
-import HorrifiPostFxPipeline from "phaser3-rex-plugins/plugins/horrifipipeline";
+import events from "./EventCenter";
 import ShooterBoss from "../components/ShooterBoss";
+import HorroriFi from "./HorroriFi";
 
 export default class Bar extends Phaser.Scene {
   constructor() {
@@ -43,6 +43,7 @@ export default class Bar extends Phaser.Scene {
     const decoL = this.map.addTilesetImage("deco", "deco");
 
     const floorLayer = this.map.createLayer("floor", floorL, 0, 0);
+    console.log(floorLayer);
     const wallLayer = this.map.createLayer("wall", wallL, 0, 0);
     const barTableLayer = this.map.createLayer("bar-table", barTableL, 0, 0);
     const decoLayer = this.map.createLayer("deco", decoL, 0, 0);
@@ -59,6 +60,7 @@ export default class Bar extends Phaser.Scene {
           this.enemysGroup.add(this.enemy);
           break;
         }
+        default: console.log("");
       }
     });
 
@@ -115,44 +117,8 @@ export default class Bar extends Phaser.Scene {
       this.map.heightInPixels
     );
 
-    const postFxPlugin = this.plugins.get("rexhorrifipipelineplugin");
-    const effect = this.cameras.main.setPostPipeline(HorrifiPostFxPipeline);
-
-    // @ts-ignore
-    const postFxPipeline = postFxPlugin.add(effect, {
-      enable: true,
-
-      // Bloom
-      bloomRadius: 10,
-      bloomIntensity: 0,
-      bloomThreshold: 1,
-      bloomTexelWidth: 0.5,
-
-      // Chromatic abberation
-      chromaticEnable: true,
-      chabIntensity: 0.2,
-
-      // Vignette
-      vignetteStrength: 1,
-      vignetteIntensity: 0.82,
-
-      // Noise
-      noiseEnable: true,
-      noiseStrength: 0.1,
-      seed: 0.63,
-
-      // VHS
-      vhsEnable: true,
-      vhsStrength: 0.22,
-
-      // Scanlines
-      scanlinesEnable: false,
-      scanStrength: 0.1,
-
-      //CRT
-      crtWidth: 5,
-      crtHeight: 5,
-    });
+    this.pluginHorror = new HorroriFi(this);
+    this.pluginHorror.create();
 
     barTableLayer.setCollisionByProperty({ colision: true });
     decoLayer.setCollisionByProperty({ colision: true });
@@ -172,8 +138,10 @@ export default class Bar extends Phaser.Scene {
 
     this.keyESC = this.input.keyboard.addKey("ESC");
 
-    /*---TRANSPARENT BACKGROUND-----*/
+    /* ---TRANSPARENT BACKGROUND-----*/
     this.add.image(1920 / 2, 1080 / 2, "bg").setScrollFactor(0);
+
+    this.enemyDropObjects();
   }
 
   update(time, delta) {
@@ -265,5 +233,9 @@ export default class Bar extends Phaser.Scene {
     this.enemysGroup.add(this.enemy);
   }
 
-  enemyDropObjects() {}
+  /* eslint-disable class-methods-use-this */
+  enemyDropObjects() {
+    
+  }
+  /* eslint-enable class-methods-use-this */
 }
