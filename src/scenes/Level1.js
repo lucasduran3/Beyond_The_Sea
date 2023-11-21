@@ -3,9 +3,9 @@ import Player from "../components/Player";
 import Enemy from "../components/Enemy";
 import ShooterBoss from "../components/ShooterBoss";
 import events from "./EventCenter";
-import HorroriFi from "./HorroriFi";
+import HorroriFi from "../components/HorroriFi";
 import { getPhrase } from "../services/translation";
-import CollisionManager from "./CollisionManager";
+import CollisionManager from "../components/CollisionManager";
 
 export default class Level1 extends Phaser.Scene {
   constructor() {
@@ -119,6 +119,9 @@ export default class Level1 extends Phaser.Scene {
       this.playerLifes,
       this.playerMana
     ).setDepth(10);
+
+    this.physics.world.enable(this.player);
+
 
     this.player.setNBullets(this.playerBullets);
     this.player.setNChips(this.playerChips || 0);
@@ -270,9 +273,7 @@ export default class Level1 extends Phaser.Scene {
       this
     );
 
-    this.collisionManager = new CollisionManager(this);
-    this.collisionManager.setupColliders();
-    this.collisionManager.setupOverlaps();
+
 
     /* ----RADIO---MESSAGES----*/
     if (this.level === "mercado") {
@@ -367,6 +368,10 @@ export default class Level1 extends Phaser.Scene {
     this.tweenObjects(this.revolverSprite);
     this.tweenObjects(this.radio);
     if (this.powerFreeze != null) this.tweenObjects(this.powerFreeze);
+
+    this.collisionManager = new CollisionManager(this);
+    this.collisionManager.setupColliders();
+    this.collisionManager.setupOverlaps();
   }
 
   update(time, delta) {

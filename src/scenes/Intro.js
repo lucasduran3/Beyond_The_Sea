@@ -42,7 +42,7 @@ export default class Intro extends Phaser.Scene {
                         this.scene.start("Level1");
                         this.scene.launch("AmbientSound");
                         this.scene.launch("UI");
-                        this.scene.launch("HorroriFi");
+                        // this.scene.launch("HorroriFi");
                       },
                     });
                   },

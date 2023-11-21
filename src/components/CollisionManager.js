@@ -1,16 +1,23 @@
 import Phaser from "phaser";
-
-import events from "./EventCenter";
+import events from "../scenes/EventCenter";
 import { getPhrase } from "../services/translation";
-import { revolver } from "../components/weapons";
+import { revolver } from "./weapons";
 
-export default class CollisionManager {
+export default class CollisionManager{
   constructor(scene) {
     this.scene = scene;
 
     console.log(Phaser);
-  }
 
+    this.scene.wallLayer.setCollisionByProperty({ colision: true });
+    this.scene.decoLayer.setCollisionByProperty({colision: true});
+    this.scene.doorLvl1Layer.setCollisionByProperty({colision: true});
+    this.scene.doorLvl2Layer.setCollisionByProperty({colision: true});
+    this.scene.doorLvl3Layer.setCollisionByProperty({colision: true});
+    this.scene.doorLobbyLayer.setCollisionByProperty({colision: true});
+    this.scene.barDoorLayer.setCollisionByProperty({colision: true});
+  }
+  
   setupColliders() {
     this.scene.physics.add.collider(this.scene.wallLayer, this.scene.player);
     this.scene.physics.add.collider(
@@ -169,7 +176,7 @@ export default class CollisionManager {
         this.scene.player.bullets.getFirstAlive().destroy();
       },
       null,
-      this
+      this.scene
     );
 
     this.scene.physics.add.collider(

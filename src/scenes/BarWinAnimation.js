@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import HorroriFi from "./HorroriFi";
+import HorroriFi from "../components/HorroriFi";
 import { getPhrase } from "../services/translation";
 
 export default class BarWinAnimation extends Phaser.Scene {

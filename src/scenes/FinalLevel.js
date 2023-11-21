@@ -2,7 +2,7 @@ import Phaser from "phaser";
 import Player from "../components/Player";
 import Enemy from "../components/Enemy";
 import events from "./EventCenter";
-import HorroriFi from "./HorroriFi";
+import HorroriFi from "../components/HorroriFi";
 
 export default class FinalLevel extends Phaser.Scene {
   constructor() {
