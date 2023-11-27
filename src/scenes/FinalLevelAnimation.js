@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import HorrifiPostFxPipeline from "phaser3-rex-plugins/plugins/horrifipipeline";
+import HorroriFi from "../components/HorroriFi";
 import { getPhrase } from "../services/translation";
 
 export default class FinalLevelAnimation extends Phaser.Scene {
@@ -41,6 +41,8 @@ export default class FinalLevelAnimation extends Phaser.Scene {
     const wallLayer = this.map.createLayer("wall", wallL, 0, 0);
     const decoLayer = this.map.createLayer("deco", decoL, 0, 0);
 
+    console.log(floorLayer, wallLayer, decoLayer);
+
     this.anims.create({
       key: "walk",
       frames: this.anims.generateFrameNumbers("enemy3", {
@@ -71,49 +73,14 @@ export default class FinalLevelAnimation extends Phaser.Scene {
     this.boss.anims.play("none", true);
     this.player = this.physics.add.sprite(1212, 1782, "player").setDepth(10);
 
-    const postFxPlugin = this.plugins.get("rexhorrifipipelineplugin");
-    const effect = this.cameras.main.setPostPipeline(HorrifiPostFxPipeline);
+    this.pluginHorror = new HorroriFi(this);
+    this.pluginHorror.create();
 
-    // @ts-ignore
-    const postFxPipeline = postFxPlugin.add(effect, {
-      enable: true,
-
-      // Bloom
-      bloomRadius: 10,
-      bloomIntensity: 0,
-      bloomThreshold: 1,
-      bloomTexelWidth: 0.5,
-
-      // Chromatic abberation
-      chromaticEnable: true,
-      chabIntensity: 0.2,
-
-      // Vignette
-      vignetteStrength: 1,
-      vignetteIntensity: 0.82,
-
-      // Noise
-      noiseEnable: true,
-      noiseStrength: 0.1,
-      seed: 0.63,
-
-      // VHS
-      vhsEnable: true,
-      vhsStrength: 0.22,
-
-      // Scanlines
-      scanlinesEnable: false,
-      scanStrength: 0.1,
-
-      //CRT
-      crtWidth: 5,
-      crtHeight: 5,
-    });
     this.cameras.main.centerOn(this.player.x, this.player.y);
 
     this.cameras.main.pan(1244, 144, 2000);
 
-    let text = [getPhrase("Que se siente ser un esclavo?"), "..."];
+    const text = [getPhrase("Que se siente ser un esclavo?"), "..."];
     this.showPopup(text);
 
     this.time.addEvent({
@@ -127,12 +94,14 @@ export default class FinalLevelAnimation extends Phaser.Scene {
           getPhrase("No pretendia que me rescates..."),
           getPhrase("Yo soy Leon... Por si no lo recordas"),
           getPhrase("Y vos sos mi fiel sirviente."),
-          getPhrase("Pero el chip de tu cerebro ha causado estragos en tu memoria"),
+          getPhrase(
+            "Pero el chip de tu cerebro ha causado estragos en tu memoria"
+          ),
           getPhrase("Parece que todavia necesitas algunos retoques"),
         ];
 
         this.scene.launch("Dialog", {
-          content: content,
+          content,
           sceneToStop: "FinalLevelAnimation",
           sceneToStart: "FinalLevel",
           keyDoor1: this.keyDoor1,
@@ -162,13 +131,11 @@ export default class FinalLevelAnimation extends Phaser.Scene {
     this.add.image(1920 / 2, 1080 / 2, "bg").setScrollFactor(0);
   }
 
-  update() {}
-
   showPopup(text) {
     const radioSound = this.sound.add("radioSound");
     radioSound.play();
     let c = 1;
-    let popupTextStyle = {
+    const popupTextStyle = {
       font: "30px pixelifySans",
       fill: "#ffffff",
       backgroundColor: "#000000",
@@ -177,12 +144,12 @@ export default class FinalLevelAnimation extends Phaser.Scene {
     };
 
     // @ts-ignore
-    let popupText = this.add
+    const popupText = this.add
       // @ts-ignore
       .text(1300, 300, text[0], popupTextStyle)
       .setScrollFactor(0)
       .setDepth(5);
-    let radioimg = this.add
+    const radioimg = this.add
       .image(1230, 350, "radioPopup")
       .setScrollFactor(0)
       .setDepth(5);
@@ -191,10 +158,10 @@ export default class FinalLevelAnimation extends Phaser.Scene {
 
     this.time.addEvent({
       delay: 3000,
-      callback: function () {
+      callback () {
         if (c < text.length) {
           popupText.setText(text[c]);
-          c++;
+          c+=1;
         } else {
           popupText.destroy();
           radioimg.destroy();

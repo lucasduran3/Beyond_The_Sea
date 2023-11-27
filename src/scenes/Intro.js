@@ -1,5 +1,4 @@
 import Phaser from "phaser";
-import events from "./EventCenter";
 
 export default class Intro extends Phaser.Scene {
   constructor() {

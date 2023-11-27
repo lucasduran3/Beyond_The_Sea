@@ -1,5 +1,4 @@
 import Phaser from "phaser";
-import events from "./EventCenter";
 
 import { getPhrase } from "../services/translation";
 
@@ -13,6 +12,7 @@ export default class MainMenu extends Phaser.Scene {
   init(language) {
     this.language = language;
   }
+
   create() {
     this.cameras.main.fadeIn(800);
 
@@ -69,13 +69,7 @@ export default class MainMenu extends Phaser.Scene {
     });
 
     playButton.on("pointerdown", () => {
-      this.scene.start("Intro");
-      /*this.scene.stop("MainMusic");
-      this.sound.stopAll();
-      this.scene.launch("AmbientSound");
-      this.scene.start("Level1");
-      this.scene.launch("UI");*/
-
+     this.scene.start("Intro");
     });
 
     const continueButton = this.add
@@ -104,10 +98,9 @@ export default class MainMenu extends Phaser.Scene {
       // @ts-ignore
       const user = this.firebase.getUser();
       // @ts-ignore
-      const data = this.firebase
+      const dataUser = this.firebase
         .loadGameData(user.uid)
         .then((data) => {
-          console.log(data);
           this.scene.start("Level1", {
             level: data.level,
             keyDoor1: data.keyDoor1,
@@ -126,11 +119,13 @@ export default class MainMenu extends Phaser.Scene {
             hasWeapon: data.hasWeapon,
           });
 
+          console.log(dataUser);
+
           this.scene.launch("UI");
           this.scene.launch("AmbientSound");
         })
         .catch((error) => {
-          console.error("Error en la carga de datos: ", error);
+          console.log("Error en la carga de datos: ", error);
         });
     });
 
