@@ -1,6 +1,7 @@
+# Beyond The Sea
+
 ![phaser3-parceljs-template](https://github.com/lucasduran3/Beyond_The_Sea/blob/main/public/assets/sprites/mainMenuBg.png)
 
-# Beyond The Sea
 
 _Beyond The Sea_ es un videojuego de acción 2D en el cual jugador debe enfrentarse a varios enemigos y explorar diferentes escenarios.
 El videojuego posee una breve historia de ciencia ficción, donde los temas principales son la moralidad, el libre albredío, y la tecnología.
