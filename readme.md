@@ -6,6 +6,7 @@ _Beyond The Sea_ es un videojuego de acción 2D en el cual jugador debe enfrenta
 El videojuego posee una breve historia de ciencia ficción, donde los temas principales son la moralidad, el libre albredío, y la tecnología.
 
 El proyecto fue desarrollado por Lucas Durán, Elias Coria y Máximo Gonzáles para el segundo año de la Lincenciatura en Producción de videojuegos y entretenimiento digitial.
+
 ![phaser3-parceljs-template](https://logo.unraf.edu.ar/wp-content/uploads/2021/07/Logos_UNRaf-350px.png)
 
 Link del videojuego: https://beyond-the-sea.netlify.app/
