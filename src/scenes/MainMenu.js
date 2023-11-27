@@ -69,19 +69,7 @@ export default class MainMenu extends Phaser.Scene {
     });
 
     playButton.on("pointerdown", () => {
-     // this.scene.start("Intro");
-      /* this.scene.stop("MainMusic");
-      this.sound.stopAll();
-      this.scene.launch("AmbientSound");
-      this.scene.start("Level1");
-      this.scene.launch("UI"); */
-
-      this.scene.stop("MainMusic");
-      this.sound.stopAll();
-      this.scene.start("Level1");
-      this.scene.launch("AmbientSound");
-      this.scene.launch("UI");
-
+     this.scene.start("Intro");
     });
 
     const continueButton = this.add

@@ -7,10 +7,6 @@ export default class Credits extends Phaser.Scene {
     super("Credits");
   }
 
-  init() {
-
-  }
-
   create() {
     this.cameras.main.fadeIn(600);
     this.add.image(1920 / 2, 1080 / 2, "mainMenuBg").setScrollFactor(0);
@@ -36,8 +32,8 @@ export default class Credits extends Phaser.Scene {
       },
     });
 
-    const displacement = this.add
-      .text(520, 340, getPhrase("Diseño:  Elias Coria"), {
+    this.add
+      .text(520, 340, getPhrase(`${getPhrase("Diseño")  }:  Elias Coria`), {
         fontFamily: "pixelifySans",
         fontSize: "50px",
         color: "#fff",
@@ -45,8 +41,8 @@ export default class Credits extends Phaser.Scene {
       })
       .setOrigin(0.5);
 
-    const shooting = this.add
-      .text(550, 550, getPhrase("Arte: Maximo Gonzáles"), {
+    this.add
+      .text(550, 550, getPhrase(`${getPhrase("Arte")  }: Maximo Gonzáles`), {
         fontFamily: "pixelifySans",
         fontSize: "50px",
         color: "#fff",
@@ -54,19 +50,22 @@ export default class Credits extends Phaser.Scene {
       })
       .setOrigin(0.5);
 
-
-    const powers = this.add
-      .text(700, 750, getPhrase("Programación - música: Lucas Durán"), {
-        fontFamily: "pixelifySans",
-        fontSize: "50px",
-        color: "#fff",
-        align: "center",
-      })
+    this.add
+      .text(
+        700,
+        750,
+        getPhrase(`${getPhrase("Programación - música")  }: Lucas Durán`),
+        {
+          fontFamily: "pixelifySans",
+          fontSize: "50px",
+          color: "#fff",
+          align: "center",
+        }
+      )
       .setOrigin(0.5);
 
     const backButton = this.add
-      .text(180, 950, getPhrase
-        ("Back"), {
+      .text(180, 950, getPhrase("Back"), {
         fontFamily: "pixelifySans",
         fontSize: "50px",
         color: "#ffaa00",

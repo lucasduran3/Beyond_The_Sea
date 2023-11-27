@@ -1,15 +1,17 @@
 import Phaser from "phaser";
-import { getLanguageConfig, getTranslations } from "../services/translation";
+import { getTranslations } from "../services/translation";
 
 export default class Preload extends Phaser.Scene {
   #language;
+
   #loadingBar;
+
   constructor() {
     super("Preload");
   }
 
   preload() {
-    //sprites
+    // sprites
     this.load.spritesheet("player", "/assets/sprites/player.png", {
       frameWidth: 192,
       frameHeight: 192,
@@ -78,8 +80,9 @@ export default class Preload extends Phaser.Scene {
     this.load.image("german", "/assets/sprites/german.png");
     this.load.image("radioPopup", "/assets/sprites/radioPopup.png");
     this.load.image("msj1", "/assets/sprites/msj1.png");
+    this.load.image("logo", "/assets/sprites/logo.png");
 
-    //tilemaps
+    // tilemaps
     this.load.tilemapTiledJSON("map-lobby", "/assets/tilemaps/lobby.json");
     this.load.tilemapTiledJSON("map-mercado", "/assets/tilemaps/mercado.json");
     this.load.tilemapTiledJSON("map-level1", "/assets/tilemaps/level1.json");
@@ -96,7 +99,7 @@ export default class Preload extends Phaser.Scene {
       "/assets/tilemaps/level-final.json"
     );
 
-    //audio
+    // audio
     this.load.audio("ambient", "/assets/audio/ambiente.wav");
     this.load.audio("temaMenu", "/assets/audio/tema1.wav");
     this.load.audio("shootSound", "/assets/audio/shootSound.wav");
@@ -110,14 +113,14 @@ export default class Preload extends Phaser.Scene {
     this.load.audio("boss2Music", "/assets/audio/boss2Music.wav");
     this.load.audio("levelMusic", "/assets/audio/temalvl.wav");
 
-    //plugins
+    // plugins
     this.load.plugin(
       "rexhorrifipipelineplugin",
       "https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexhorrifipipelineplugin.min.js",
       true
     );
 
-    //Loading bar
+    // Loading bar
     const centerX = this.cameras.main.width / 2;
     const centerY = this.cameras.main.height / 2;
 
