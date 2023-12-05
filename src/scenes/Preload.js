@@ -1,9 +1,6 @@
 import Phaser from "phaser";
-import { getTranslations } from "../services/translation";
 
 export default class Preload extends Phaser.Scene {
-  #language;
-
   #loadingBar;
 
   constructor() {
@@ -128,7 +125,6 @@ export default class Preload extends Phaser.Scene {
 
     this.#loadingBar.fillStyle(0x328077, 1);
     this.#loadingBar.lineStyle(2, 0x328077, 1);
-
     this.#loadingBar.strokeCircle(0,0,50);
     this.#loadingBar.fillCircle(0,0,50);
 
@@ -141,17 +137,11 @@ export default class Preload extends Phaser.Scene {
     this.#loadingBar.clear();
     this.#loadingBar.fillStyle(0x328077, 1);
     this.#loadingBar.lineStyle(2, 0x328077, 1);
-    this.#loadingBar.strokeCircle(0, 0, 50);
     this.#loadingBar.fillCircle(0, 0, 50);
     this.#loadingBar.fillRect(-progressBarWidth / 2, 60, newWidth, 10);
-
   }
 
   create() {
-    getTranslations(this.#language, () =>
-      this.scene.start("menu", { language: this.#language })
-    );
-
     this.scene.start("Login");
   }
 }

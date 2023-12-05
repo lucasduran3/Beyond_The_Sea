@@ -158,33 +158,7 @@ export default class Level1 extends Phaser.Scene {
 
     /* ---FIREBASE----*/
     // @ts-ignore
-    if (
-      this.boss1Dead ||
-      this.keyDoor2 ||
-      (this.boss2Dead && this.level === "lobby")
-    ) {
-      const user = this.firebase.getUser();
-
-      this.firebase.saveGameData(user.uid, {
-        level: this.level,
-        keyDoor1: this.keyDoor1,
-        keyDoor2: this.keyDoor2,
-        keyDoor3: this.keyDoor3,
-        keyDoor4: this.keyDoor4,
-        weaponsGroup: this.weaponsGroup,
-        playerLifes: this.playerLifes,
-        playerMana: this.playerMana,
-        playerBullets: this.player.nBullets,
-        playerChips: this.player.nChips,
-        playerKits: this.player.nKits,
-        boss1Dead: this.boss1Dead,
-        boss2Dead: this.boss2Dead,
-        boss3Dead: this.boss3Dead,
-        powers: this.powers,
-        hasRadio: this.hasRadio,
-        hasWeapon: true,
-      });
-    }
+    this.saveLevel();
 
     /* ----TRANSPARENT BACKGROUND----*/
     this.add.image(1920 / 2, 1080 / 2, "bg").setScrollFactor(0);
@@ -510,5 +484,35 @@ export default class Level1 extends Phaser.Scene {
       },
       loop: true,
     });
+  }
+
+  saveLevel(){
+    if (
+      this.boss1Dead ||
+      this.keyDoor2 ||
+      (this.boss2Dead && this.level === "lobby")
+    ) {
+      const user = this.firebase.getUser();
+
+      this.firebase.saveGameData(user.uid, {
+        level: this.level,
+        keyDoor1: this.keyDoor1,
+        keyDoor2: this.keyDoor2,
+        keyDoor3: this.keyDoor3,
+        keyDoor4: this.keyDoor4,
+        weaponsGroup: this.weaponsGroup,
+        playerLifes: this.playerLifes,
+        playerMana: this.playerMana,
+        playerBullets: this.player.nBullets,
+        playerChips: this.player.nChips,
+        playerKits: this.player.nKits,
+        boss1Dead: this.boss1Dead,
+        boss2Dead: this.boss2Dead,
+        boss3Dead: this.boss3Dead,
+        powers: this.powers,
+        hasRadio: this.hasRadio,
+        hasWeapon: true,
+      });
+    }
   }
 }

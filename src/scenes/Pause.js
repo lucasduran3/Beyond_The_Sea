@@ -1,4 +1,4 @@
-import Phaser1 from "phaser";
+import Phaser from "phaser";
 import { getPhrase } from "../services/translation";
 
 export default class Pause extends Phaser.Scene{
