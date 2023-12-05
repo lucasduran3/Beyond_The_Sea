@@ -9,7 +9,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 
     this.scene = scene;
     this.speed = speed;
-    this.target;
+    this.target = null;
     this.map = map;
     this.damage = damage;
     this.lifes = lifes||10;
@@ -26,21 +26,20 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 
     this.easystar = new EasyStar.js();
     const grid = [];
-    for (let y = 0; y < this.map.height; y++) {
+    for (let y = 0; y < this.map.height; y+=1) {
       const row = [];
-      for (let x = 0; x < this.map.width; x++) {
+      for (let x = 0; x < this.map.width; x+=1) {
         const tile = this.map.getTileAt(x, y);
         row.push(tile && tile.properties.colision ? 1 : 0);
       }
       grid.push(row);
     }
 
-    console.log(grid);
     this.easystar.setGrid(grid);
     this.easystar.setAcceptableTiles([0]);
     this.easystar.enableDiagonals();
 
-    if (texture == "enemy") {
+    if (texture === "enemy") {
       this.anims.create({
         key: "walk",
         frames: this.anims.generateFrameNumbers("enemy", {
@@ -62,7 +61,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
         frameRate: 40,
         repeat: 1,
       });
-    } else if (texture == "enemy3") {
+    } else if (texture === "enemy3") {
       this.anims.create({
         key: "walk",
         frames: this.anims.generateFrameNumbers("enemy3", {
@@ -97,7 +96,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
       ) <= 800 &&
       this.isMoving
     ) {
-      this.findEnemyPath(this.isMoving);
+      this.findEnemyPath();
     } else {
       this.anims.play("walk", false);
       // @ts-ignore
@@ -115,7 +114,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
         this.target.x,
         this.target.y
       ) < 100 &&
-      this.active == true
+      this.active === true
     ) {
       this.attack();
       this.anims.play("hit", true);
@@ -129,7 +128,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
     this.target = target;
   }
 
-  findEnemyPath(isMoving) {
+  findEnemyPath() {
     const playerTile = this.map.worldToTileXY(this.target.x, this.target.y);
     const enemyTile = this.map.worldToTileXY(this.x, this.y);
 
@@ -170,7 +169,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
   }
 
   looseLife() {
-    this.lifes--;
+    this.lifes-=1;
     this.scene.time.addEvent({
       delay: 100,
       callback: () => {
@@ -182,7 +181,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
   }
 
   enemyDeath() {
-    if (this.lifes <= 0 && this.isDead == false) {
+    if (this.lifes <= 0 && this.isDead === false) {
       // @ts-ignore
       this.body.destroy();
       this.setVisible(false);
@@ -192,7 +191,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 
       this.isDead = true;
 
-      this.scene.kills++;
+      this.scene.kills+=1;
     }
   }
 

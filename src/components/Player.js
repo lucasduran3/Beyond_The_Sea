@@ -1,7 +1,6 @@
 import Phaser from "phaser";
 import Bullet from "./Bullet";
 import events from "../scenes/EventCenter";
-import { revolver } from "./weapons";
 
 const ROTATION_SPEED = 5 * Math.PI;
 
@@ -142,7 +141,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
     }
 
     if (this.keys.TWO.isDown && !this.isTWOKeyPressed) {
-      this.usePowerUp("freeze");
+      this.usePowerUp();
       this.isTWOKeyPressed = true;
     }
 
@@ -188,8 +187,8 @@ export default class Player extends Phaser.GameObjects.Sprite {
       this.bullets.add(bullet);
       bullet.fire(angle, speed);
 
-      this.nBullets--;
-      this.scene.nBullets--;
+      this.nBullets-=1;
+      this.scene.nBullets-=1;
 
       events.emit("updateBullets", {
         isIncrease: false,
@@ -257,15 +256,9 @@ export default class Player extends Phaser.GameObjects.Sprite {
     this.nKits = n;
   }
 
-  usePowerUp(powerName) {
-    if (this.mana > 20 && this.powers.find((element) => element == "freeze")) {
+  usePowerUp() {
+    if (this.mana > 20 && this.powers.find((element) => element === "freeze")) {
       this.enemy.forEach((element) => {
-        const playerPosition = new Phaser.Math.Vector2(this.x, this.y);
-        const enemyPosition = new Phaser.Math.Vector2(element.x, element.y);
-        const angle = Phaser.Math.Angle.BetweenPoints(
-          playerPosition,
-          enemyPosition
-        );
 
         const freezeSound = this.scene.sound.add("freezeSound");
         freezeSound.play();
@@ -284,8 +277,6 @@ export default class Player extends Phaser.GameObjects.Sprite {
         ammount: 20,
         isIncrease: false,
       });
-    } else {
-      console.log("mana no encontraodo o power vacio");
     }
   }
 
@@ -298,19 +289,18 @@ export default class Player extends Phaser.GameObjects.Sprite {
         isIncrease: true,
       });
 
-      this.nKits--;
+      this.nKits-=1;
 
       events.emit("updateKitsUI", {
         isIncrease: false,
       });
-    } else {
     }
   }
 
   incrementMana() {
     if (this.mana < 300 && this.nChips > 0) {
       this.mana += 20;
-      this.nChips--;
+      this.nChips-=1;
 
       events.emit("updateMana", {
         ammount: 20,
@@ -320,12 +310,11 @@ export default class Player extends Phaser.GameObjects.Sprite {
       events.emit("updateChipsUI", {
         isIncrease: false,
       });
-    } else {
     }
   }
 
   incrementChips() {
-    this.nChips++;
+    this.nChips+=1;
     events.emit("updateChipsUI", {
       isIncrease: true,
       ammount: 1,
@@ -333,7 +322,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
   }
 
   incrementKits() {
-    this.nKits++;
+    this.nKits+=1;
     events.emit("updateKitsUI", {
       isIncrease: true,
       ammount: 1,
@@ -341,20 +330,17 @@ export default class Player extends Phaser.GameObjects.Sprite {
   }
 
   decreaseChips() {
-    this.nKits--;
+    this.nKits-=1;
     events.emit("updateKitsUI", {
       isIncrease: false,
     });
   }
 
   decreaseKits() {
-    this.nChips--;
+    this.nChips-=1;
     events.emit("updateChipsUI", {
       isIncrease: false,
     });
   }
 
-  validateHasWeapon(value) {
-    this.hasWeapon = value;
-  }
 }

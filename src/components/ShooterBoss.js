@@ -10,7 +10,7 @@ export default class ShooterBoss extends Phaser.GameObjects.Sprite {
     // @ts-ignore
     this.body.setCollideWorldBounds(true);
 
-    this.target;
+    this.target = null;
 
     this.bullets = this.scene.physics.add.group();
 
@@ -61,7 +61,7 @@ export default class ShooterBoss extends Phaser.GameObjects.Sprite {
   }
 
   looseLife() {
-    this.lifes--;
+    this.lifes-=1;
     this.scene.time.addEvent({
       delay: 100,
       callback: () => {
@@ -79,7 +79,6 @@ export default class ShooterBoss extends Phaser.GameObjects.Sprite {
       () => {
         this.target.looseLife(20);
         this.bullets.getFirstAlive().destroy();
-        console.log("fdf");
       },
       null,
       this
@@ -107,7 +106,7 @@ export default class ShooterBoss extends Phaser.GameObjects.Sprite {
   }
 
   enemyDeath() {
-    if (this.lifes <= 0 && this.isDead == false) {
+    if (this.lifes <= 0 && this.isDead === false) {
       // @ts-ignore
       this.body.destroy();
       this.setVisible(false);

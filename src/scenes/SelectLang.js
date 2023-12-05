@@ -2,11 +2,9 @@ import Phaser from "phaser";
 
 import { EN_US, ES_AR, DE_DE } from "../enums/languages";
 import { FETCHED, FETCHING, READY, TODO } from "../enums/status";
-import { getTranslations, getPhrase } from "../services/translation";
+import { getTranslations} from "../services/translation";
 
 export default class SelectLang extends Phaser.Scene {
-  #textSpanish;
-  #textEnglish;
   #language;
   #wasChangedLanguage = TODO;
 
@@ -69,7 +67,7 @@ export default class SelectLang extends Phaser.Scene {
   }
 
   update() {
-    if (this.#wasChangedLanguage == FETCHED) {
+    if (this.#wasChangedLanguage === FETCHED) {
       this.#wasChangedLanguage = READY;
     }
   }

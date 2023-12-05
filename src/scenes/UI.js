@@ -1,6 +1,5 @@
 import Phaser from "phaser";
 import events from "./EventCenter";
-import Player from "../components/Player";
 import HealthBar from "../components/HealthBar";
 
 // Manejador de eventos centralizados para comunicacion de componentes
@@ -95,91 +94,77 @@ export default class UI extends Phaser.Scene {
 
     events.on("resetUI", this.resetUI, this);
 
-    events.on("updateUI", this.updateUI, this);
-
     events.on("updateWeapon", this.updateWeapon, this);
 
     events.on("updatePower", this.updatePower, this);
   }
 
-  update() {}
-
-  updateUI(data) {
-    this.nBullets = data.nBullets;
-    this.nChips = data.nChips;
-    this.nKits = data.nKits;
-    this.bullets.setText("x" + this.nBullets);
-    this.chipsUI.setText(": " + this.nChips);
-    this.kitsUI.setText(": " + this.nKits);
-  }
-
-  updateKey1(data) {
+  updateKey1() {
     this.key1.setAlpha(1);
   }
 
-  updateKeyBar(data) {
+  updateKeyBar() {
     this.keyBar.setAlpha(1);
   }
 
-  updateKey3(data) {
+  updateKey3() {
     this.key2.setAlpha(1);
   }
 
-  updateKey4(data) {
+  updateKey4() {
     this.key3.setAlpha(1);
   }
 
   updateHP(data) {
     if (
-      data.isIncrease == true &&
-      this.playerHP.value != 300 &&
+      data.isIncrease === true &&
+      this.playerHP.value !== 300 &&
       this.nKits > 0
     ) {
       this.playerHP.increment(data.ammount || 0);
-    } else if (data.isIncrease == false) {
+    } else if (data.isIncrease === false) {
       this.playerHP.decrease(data.ammount || 0);
     }
   }
 
   updateMana(data) {
     if (
-      data.isIncrease == true &&
-      this.playerMana.value != 300 &&
+      data.isIncrease === true &&
+      this.playerMana.value !== 300 &&
       this.nChips > 0
     ) {
       this.playerMana.increment(data.ammount || 0);
-    } else if (data.isIncrease == false) {
+    } else if (data.isIncrease === false) {
       this.playerMana.decrease(data.ammount || 0);
     }
   }
 
   updateKitsUI(data) {
-    if (data.isIncrease == true) {
+    if (data.isIncrease === true) {
       this.nKits += data.ammount;
       this.kitsUI.setText(": " + this.nKits);
-    } else if (data.isIncrease == false && this.nKits > 0) {
-      this.nKits--;
+    } else if (data.isIncrease === false && this.nKits > 0) {
+      this.nKits-=1;
       this.kitsUI.setText(": " + this.nKits);
     }
   }
 
   updateChipsUI(data) {
-    console.log(this.nChips);
-    if (data.isIncrease == true) {
+    if (data.isIncrease === true) {
       this.nChips += data.ammount;
       this.chipsUI.setText(": " + this.nChips);
-    } else if (data.isIncrease == false && this.nChips > 0) {
-      this.nChips--;
+    } else if (data.isIncrease === false && this.nChips > 0) {
+      this.nChips-=1;
       this.chipsUI.setText(": " + this.nChips);
     }
   }
 
   updateBullets(data) {
-    if (data.isIncrease == true) {
+    if (data.isIncrease === true) {
       this.nBullets += data.ammount;
       this.bullets.setText("x" + this.nBullets);
-    } else if (data.isIncrease == false && this.nBullets > 0) {
-      this.nBullets--;
+    } else if (data.isIncrease === false && this.nBullets > 0) {
+      this.nBullets-=1;
       this.bullets.setText("x" + this.nBullets);
     }
   }
