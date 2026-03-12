@@ -71,7 +71,6 @@ export default class Preload extends Phaser.Scene {
     this.load.image("revolverUI", "/assets/sprites/revolverUI.png");
     this.load.image("powerFreezeUI", "/assets/sprites/powerFreezeUI.png");
     this.load.image("pauseButton", "/assets/sprites/pauseButton.png");
-    this.load.image("pauseButton", "/assets/sprites/pauseButton.png");
     this.load.image("spain", "/assets/sprites/spain.png");
     this.load.image("usa", "/assets/sprites/usa.png");
     this.load.image("german", "/assets/sprites/german.png");
@@ -110,13 +109,6 @@ export default class Preload extends Phaser.Scene {
     this.load.audio("boss2Music", "/assets/audio/boss2Music.wav");
     this.load.audio("levelMusic", "/assets/audio/temalvl.wav");
 
-    // plugins
-    this.load.plugin(
-      "rexhorrifipipelineplugin",
-      "https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexhorrifipipelineplugin.min.js",
-      true
-    );
-
     // Loading bar
     const centerX = this.cameras.main.width / 2;
     const centerY = this.cameras.main.height / 2;
@@ -129,6 +121,10 @@ export default class Preload extends Phaser.Scene {
     this.#loadingBar.fillCircle(0,0,50);
 
     this.load.on("progress", this.updateLoadingBar, this);
+    this.load.once("complete", () => {
+      this.load.off("progress", this.updateLoadingBar, this);
+      this.#loadingBar.destroy();
+    });
   }
 
   updateLoadingBar(value){
